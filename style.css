@@ -16,7 +16,7 @@
     --trans-pink: #F5A9B8;
     --trans-white: #FFFFFF;
     --card-base-width: clamp(150px, 16vw, 180px); 
-    --card-max-width-grid: 200px;
+    --card-max-width-grid: 200px; 
 }
 
 * {
@@ -315,7 +315,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 
 .detail-back-button, #close-player-button, #back-to-my-lists-button {
     background-color: var(--tertiary-bg); color: var(--primary-text); border: none;
-    padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;
+    padding: 12px 24px; border-radius: 5px; cursor: pointer; font-weight: bold;
     margin-bottom: 25px; transition: background-color 0.2s ease; font-size: 1rem; display: inline-flex; align-items: center;
 }
 .detail-back-button:hover, #close-player-button:hover, #back-to-my-lists-button:hover { background-color: #4f4f4f; }
@@ -343,9 +343,8 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #player-view h3 { text-align: center; margin-bottom: 15px; font-size: 1.5rem; }
 #mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1000px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
 #mappletv-player-container iframe, #live-tv-video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-.video-js { width: 100%; height: 100%; font-size: 14px; } /* Ensure Video.js player font isn't too large */
-.vjs-big-play-button { font-size: 3em; line-height: 2em !important; height: 2em !important; width: 3em !important; border-radius: 0.5em !important; }
-
+.video-js { width: 100%; height: 100%; font-size: 14px; }
+.vjs-big-play-button { font-size: 3em !important; line-height: 2em !important; height: 2em !important; width: 3em !important; border-radius: 0.5em !important; top: 50% !important; left: 50% !important; margin-top: -1em !important; margin-left: -1.5em !important;}
 
 #lists-view .lists-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .button-style, .button-style-alt, .button-style-alt-small { padding: 10px 18px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease; border: none; font-size: 0.95rem; }
@@ -367,7 +366,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #current-list-name-display { font-size: 1.6rem; margin-bottom: 20px; color: var(--accent-color); border-bottom: 1px solid var(--tertiary-bg); padding-bottom: 10px; }
 #current-list-items-grid.media-grid { padding: 0; }
 
-#live-tv-view .npvr-instructions-container { background-color: var(--secondary-bg); padding: 20px; border-radius: var(--card-border-radius); margin-bottom: 30px; }
+#live-tv-view .npvr-instructions-container { background-color: var(--secondary-bg); padding: 20px; border-radius: var(--card-border-radius); margin-bottom: 20px; }
 #live-tv-view .npvr-instructions-container h3 { color: var(--accent-color); margin-top: 0; margin-bottom: 15px; }
 #live-tv-view .npvr-instructions-container h4 { margin-top: 20px; margin-bottom: 10px; color: var(--primary-text); }
 #live-tv-view .npvr-instructions-container ol { padding-left: 20px; margin-bottom: 15px; }
@@ -376,12 +375,12 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #live-tv-view .npvr-instructions-container .button-style { margin-top: 5px; margin-left: 0; display: inline-block; margin-right: 10px; }
 #live-tv-view .url-to-copy-container { background-color: var(--tertiary-bg); padding: 10px; border-radius: 5px; margin: 10px 0; }
 #live-tv-view .url-to-copy-container p { margin: 5px 0; display: flex; align-items: center; word-break: break-all; }
-#live-tv-view .url-to-copy-container code { background-color: var(--primary-bg); padding: 2px 5px; border-radius: 3px; margin-right: 10px; flex-grow: 1; }
+#live-tv-view .url-to-copy-container code { background-color: var(--primary-bg); padding: 2px 5px; border-radius: 3px; margin-right: 10px; flex-grow: 1; user-select: all; }
 #live-tv-view .small-note { font-size: 0.85em; color: var(--secondary-text); margin-top: 15px; }
 .section-hr { border: 0; height: 1px; background-color: var(--tertiary-bg); margin: 25px 0; }
-#live-tv-view h3 + .npvr-instructions-container + h3 { margin-top: 30px; } /* Space before experimental section */
-#live-tv-container { display: none; /* Hide this by default as NPVR is primary */ }
-/* If you want to show it: #live-tv-container { display: flex; gap: 0; flex-wrap: nowrap; padding: 0; max-height: calc(100vh - var(--header-height) - 40px); } */
+#live-tv-view .live-tv-experimental-header { margin-top: 20px; font-size: 1.2rem; color: var(--secondary-text); }
+
+#live-tv-container { display: flex; gap: 0; flex-wrap: nowrap; padding: 0; max-height: calc(100vh - var(--header-height) - 100px); margin-top: 15px; }
 #channel-list-container { flex: 0 0 300px; max-height: 100%; overflow-y: auto; background-color: var(--secondary-bg); padding: var(--standard-padding); border-right: 1px solid var(--primary-bg); }
 #channel-list-container h4 { margin-top: 0; margin-bottom: 10px; color: var(--accent-color); font-size: 1.1rem; }
 #channel-list { list-style-type: none; padding: 0; }
@@ -389,7 +388,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #channel-list li:hover, #channel-list li.active-channel { background-color: var(--accent-color); color: white; }
 #channel-list li:last-child { border-bottom: none; }
 #channel-list li img { width: 24px; height: 24px; margin-right: 10px; border-radius: 3px; object-fit: contain; background-color: rgba(255,255,255,0.05); flex-shrink: 0; }
-#tv-player-section { flex-grow: 1; display: flex; flex-direction: column; padding: var(--standard-padding); overflow: hidden; }
+#tv-player-section { flex-grow: 1; display: flex; flex-direction: column; padding-left: var(--standard-padding); overflow: hidden; }
 #epg-info { background-color: var(--secondary-bg); padding: var(--standard-padding); border-radius: var(--card-border-radius); color: var(--secondary-text); flex-shrink: 0; margin-top: var(--standard-padding); }
 #epg-info h4 { color: var(--primary-text); margin-top: 0; margin-bottom: 5px; font-size: 1.1rem; }
 #epg-info p { margin-bottom: 3px; font-size: 0.9em; }
@@ -405,13 +404,15 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 .donation-button-wrapper { margin-top: 20px; text-align: center; }
 .donate-button-trans {
     display: inline-block; padding: 14px 32px; font-size: 1.3rem; font-weight: bold;
-    text-decoration: none; border-radius: 8px; color: #000;
-    background-image: linear-gradient(135deg, var(--trans-light-blue) 33.33%, var(--trans-pink) 33.33%, var(--trans-pink) 66.66%, var(--trans-white) 66.66%);
-    background-size: 300% 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.4s ease;
-    border: 2px solid var(--primary-bg); text-shadow: 0 0 3px rgba(255,255,255,0.1);
+    text-decoration: none; border-radius: 8px; color: #2c2c2c; 
+    background-image: linear-gradient(135deg, var(--trans-light-blue) 0%, var(--trans-light-blue) 33.33%, var(--trans-pink) 33.33%, var(--trans-pink) 66.66%, var(--trans-white) 66.66%, var(--trans-white) 100%);
+    background-size: 100% 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid var(--primary-bg); 
+    text-shadow: 0 0 3px rgba(255,255,255,0.1);
 }
-.donate-button-trans:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,0.3); background-position: 100% 0; }
+.donate-button-trans:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
 
 .settings-container { max-width: 700px; margin: 0 auto; padding: var(--standard-padding); }
 .setting-item { background-color: var(--secondary-bg); padding: 20px; margin-bottom: 20px; border-radius: var(--card-border-radius); border: 1px solid var(--tertiary-bg); }
