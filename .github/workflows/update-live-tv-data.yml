@@ -1,0 +1,107 @@
+name: Update Live TV Data
+
+on:
+  schedule:
+    # Runs every 6 hours (e.g., at 00:00, 06:00, 12:00, 18:00 UTC)
+    # Adjust the cron schedule as needed for update frequency
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
+
+jobs:
+  update_files:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to allow the GITHUB_TOKEN to push to the repository
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Use a recent version of the checkout action
+        with:
+          # Fetch all history. This is important for 'git pull' to work correctly
+          # if the repo has history beyond the default shallow clone.
+          fetch-depth: 0 
+
+      - name: Create live directory if it doesn't exist
+        # This path should match where your application expects to find these files.
+        # Example: 'public/live/' if your Vercel deployment serves the 'public' folder at the root.
+        # Or just 'live/' if you plan to serve it from the root.
+        run: mkdir -p public/live 
+
+      - name: Download M3U Playlist
+        # -L: follow redirects
+        # -f: fail silently on server errors (don't output HTML error pages to the file)
+        # -sS: silent mode, but still show errors
+        # --fail: return an error on server errors (like 404) to make the step fail
+        run: curl -LfsS --fail -o public/live/playlist.m3u https://tvpass.org/playlist/m3u
+
+      - name: Download EPG XML
+        run: curl -LfsS --fail -o public/live/epg.xml https://tvpass.org/epg.xml
+
+      - name: List downloaded files (for debugging, can be removed later)
+        run: |
+          echo "Contents of public/live:"
+          ls -lh public/live
+          echo "Checking for existence of public/live/playlist.m3u: $(test -f public/live/playlist.m3u && echo 'Exists' || echo 'Does NOT exist')"
+          echo "Checking for existence of public/live/epg.xml: $(test -f public/live/epg.xml && echo 'Exists' || echo 'Does NOT exist')"
+
+      - name: Commit and push if changes
+        run: |
+          git config --global user.name 'GitHub Action Bot'
+          git config --global user.email 'actions@github.com' # A common email for actions
+          
+          # Explicitly define the branch to work with (e.g., main or master)
+          # This uses the branch the workflow was triggered on.
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "Working on branch: $BRANCH_NAME"
+          
+          # Pull latest changes from the remote branch before attempting to add new files
+          # Using rebase to keep history cleaner. If conflicts arise with these auto-generated files (unlikely),
+          # the workflow will fail, requiring manual intervention.
+          echo "Pulling latest changes from origin/$BRANCH_NAME with rebase..."
+          if ! git pull origin $BRANCH_NAME --rebase; then
+            echo "Rebase failed. Attempting a merge pull..."
+            # Abort any failed rebase, then try a merge
+            git rebase --abort || true 
+            # Ensure we are on the correct branch (rebase can detach HEAD)
+            git checkout $BRANCH_NAME 
+            git pull origin $BRANCH_NAME
+          fi
+          
+          # Add only the specific files we downloaded.
+          # This ensures other unrelated changes in the workspace are not accidentally committed.
+          FILES_TO_ADD=""
+          if [ -f "public/live/playlist.m3u" ]; then
+            FILES_TO_ADD="public/live/playlist.m3u"
+          else
+            echo "Warning: public/live/playlist.m3u not found after download. Will not attempt to add."
+          fi
+          if [ -f "public/live/epg.xml" ]; then
+            # Add a space if FILES_TO_ADD is not empty
+            if [ -n "$FILES_TO_ADD" ]; then
+              FILES_TO_ADD="$FILES_TO_ADD public/live/epg.xml"
+            else
+              FILES_TO_ADD="public/live/epg.xml"
+            fi
+          else
+            echo "Warning: public/live/epg.xml not found after download. Will not attempt to add."
+          fi
+          
+          # Trim leading/trailing whitespace from FILES_TO_ADD
+          FILES_TO_ADD=$(echo "$FILES_TO_ADD" | xargs)
+
+          if [ -z "$FILES_TO_ADD" ]; then
+            echo "No new M3U or EPG files were successfully downloaded to add."
+          else
+            git add $FILES_TO_ADD
+            # Check if staging the files actually resulted in a difference to be committed
+            if git diff --staged --quiet; then
+              echo "No actual changes to M3U/EPG files, or downloaded files are identical to remote."
+            else
+              echo "Changes detected in M3U/EPG files. Committing and pushing..."
+              # Add [skip ci] to the commit message to prevent this commit from triggering other workflows
+              git commit -m "Update M3U playlist and EPG XML [skip ci]"
+              git push origin HEAD:$BRANCH_NAME
+            fi
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
