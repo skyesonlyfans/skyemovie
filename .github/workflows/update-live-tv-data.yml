@@ -25,24 +25,24 @@ jobs:
         # This path should match where your application expects to find these files.
         # Example: 'public/live/' if your Vercel deployment serves the 'public' folder at the root.
         # Or just 'live/' if you plan to serve it from the root.
-        run: mkdir -p public/live 
+        run: mkdir -p live/ 
 
       - name: Download M3U Playlist
         # -L: follow redirects
         # -f: fail silently on server errors (don't output HTML error pages to the file)
         # -sS: silent mode, but still show errors
         # --fail: return an error on server errors (like 404) to make the step fail
-        run: curl -LfsS --fail -o public/live/playlist.m3u https://tvpass.org/playlist/m3u
+        run: curl -LfsS --fail -o live/playlist.m3u https://tvpass.org/playlist/m3u
 
       - name: Download EPG XML
-        run: curl -LfsS --fail -o public/live/epg.xml https://tvpass.org/epg.xml
+        run: curl -LfsS --fail -o live/epg.xml https://tvpass.org/epg.xml
 
       - name: List downloaded files (for debugging, can be removed later)
         run: |
-          echo "Contents of public/live:"
-          ls -lh public/live
-          echo "Checking for existence of public/live/playlist.m3u: $(test -f public/live/playlist.m3u && echo 'Exists' || echo 'Does NOT exist')"
-          echo "Checking for existence of public/live/epg.xml: $(test -f public/live/epg.xml && echo 'Exists' || echo 'Does NOT exist')"
+          echo "Contents of live/:"
+          ls -lh live/
+          echo "Checking for existence of live/playlist.m3u: $(test -f live/playlist.m3u && echo 'Exists' || echo 'Does NOT exist')"
+          echo "Checking for existence of live/epg.xml: $(test -f live/epg.xml && echo 'Exists' || echo 'Does NOT exist')"
 
       - name: Commit and push if changes
         run: |
@@ -70,20 +70,20 @@ jobs:
           # Add only the specific files we downloaded.
           # This ensures other unrelated changes in the workspace are not accidentally committed.
           FILES_TO_ADD=""
-          if [ -f "public/live/playlist.m3u" ]; then
-            FILES_TO_ADD="public/live/playlist.m3u"
+          if [ -f "live/playlist.m3u" ]; then
+            FILES_TO_ADD="live/playlist.m3u"
           else
-            echo "Warning: public/live/playlist.m3u not found after download. Will not attempt to add."
+            echo "Warning: live/playlist.m3u not found after download. Will not attempt to add."
           fi
-          if [ -f "public/live/epg.xml" ]; then
+          if [ -f "live/epg.xml" ]; then
             # Add a space if FILES_TO_ADD is not empty
             if [ -n "$FILES_TO_ADD" ]; then
-              FILES_TO_ADD="$FILES_TO_ADD public/live/epg.xml"
+              FILES_TO_ADD="$FILES_TO_ADD live/epg.xml"
             else
-              FILES_TO_ADD="public/live/epg.xml"
+              FILES_TO_ADD="live/epg.xml"
             fi
           else
-            echo "Warning: public/live/epg.xml not found after download. Will not attempt to add."
+            echo "Warning: live/epg.xml not found after download. Will not attempt to add."
           fi
           
           # Trim leading/trailing whitespace from FILES_TO_ADD
