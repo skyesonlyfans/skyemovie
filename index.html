@@ -16,13 +16,52 @@
             fill: currentColor;
             cursor: pointer;
         }
+        /* Initial Loading Overlay Styles */
+        #initial-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #101010; /* Match --primary-bg */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.7s ease-out;
+        }
+        #initial-loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none; /* Allow clicks to pass through after fade */
+        }
+        .initial-loading-logo {
+            font-family: 'Cherry Bomb One', cursive; /* Match --font-logo */
+            font-size: clamp(3rem, 10vw, 6rem); /* Large logo */
+            color: #FF69B4; /* Match --special-accent */
+            animation: pulseLogo 1.5s infinite ease-in-out;
+        }
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        #loading-message-text { /* For actual loading messages if needed after logo animation */
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #a0a0a0; /* Match --secondary-text */
+        }
+
     </style>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="access-gate-section" class="active-section fullscreen-section">
-        <div class="form-container">
+    <div id="initial-loading-overlay">
+        <div class="initial-loading-logo cherry-bomb-one-font">SkyeMovie™</div>
+        <p id="loading-message-text" style="display:none;">Loading...</p> </div>
+
+    <div id="access-gate-section" class="hidden-section fullscreen-section"> <div class="form-container">
             <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
             <p>Enter your 6-digit access code:</p>
             <input type="text" id="access-code-input" maxlength="6" inputmode="numeric" autocomplete="off">
@@ -98,6 +137,7 @@
                         </button>
                     </div>
                     <div id="autocomplete-suggestions" class="autocomplete-suggestions-list"></div>
+                    <p id="search-message" class="search-status-message">Type to search for movies and TV shows.</p>
                     <div class="filter-sort-controls">
                         <select id="filter-type" class="filter-select">
                             <option value="all">All Types</option>
@@ -116,7 +156,6 @@
                     </div>
                 </div>
                 <div id="search-results-container">
-                    <p id="search-message" class="search-status-message">Type to search for movies and TV shows.</p>
                     <div id="search-results-grid" class="media-grid"></div>
                     <div id="pagination-controls" class="pagination-controls" style="display: none;">
                         <button id="prev-page-button" class="pagination-button">Previous</button>
@@ -172,8 +211,20 @@
             <div id="donate-view" class="view">
                 <h2>Support SkyeMovie™</h2>
                 <p class="donate-intro">If you enjoy SkyeMovie™, please consider supporting its development and upkeep. Every little bit helps keep the magic alive!</p>
-                <div class="donation-button-container">
-                    <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="button-style donate-button-trans">Donate!</a>
+                <div class="donation-widgets-container">
+                    <div class="fundly-widget-wrapper" id="fundly-card-wrapper">
+                         <p><strong>View Our Campaign:</strong></p>
+                        <div class='fundly-widget fundly-card-override' id="fundly-campaign-card-container">
+                            <iframe id="fundly-campaign-iframe" src='https://d2wwhrh9otv6z9.cloudfront.net/campaign_card.html?activity=keep-skyemovie-free-for-everyone&hb=t' style='border:none;width:275px;height:510px' title="Fundly Campaign Card"></iframe>
+                            <p id="fundly-campaign-card-footer" style='text-align:right;margin:-6px 0 0 0;padding:5px 10px;border-top:1px solid #eee;font:10px/16px helvetica !important;'>
+                                <a href='https://fundly.com/keep-skyemovie-free-for-everyone?ft_src=widget_campaign_card' style='color:#888;margin:0;text-decoration:none;float:left'>See Skye's Campaign</a>
+                                <a href='https://fundly.com?ft_src=widget_campaign_card' style='color:#888;margin:0;text-decoration:none;' target='_blank'>Powered by Fundly</a>
+                            </p>
+                        </div>
+                    </div>
+                     <div class="donation-button-wrapper">
+                        <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="donate-button-trans">Donate Directly!</a>
+                    </div>
                 </div>
             </div>
             
@@ -186,7 +237,7 @@
                             <input type="checkbox" id="setting-autoplay"> Autoplay next video (when applicable)
                         </label>
                         <label for="setting-autonext">
-                            <input type="checkbox" id="setting-autonext"> Automatically queue next suggested video
+                            <input type="checkbox" id="setting-autonext"> Automatically play next suggestion
                         </label>
                         <p class="setting-note">Note: Player behavior may also depend on Mappletv's own settings.</p>
                     </div>
