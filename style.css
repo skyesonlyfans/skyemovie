@@ -15,7 +15,7 @@
     --trans-light-blue: #5BCEFA;
     --trans-pink: #F5A9B8;
     --trans-white: #FFFFFF;
-    --card-base-width: clamp(150px, 16vw, 180px); /* Responsive base width for cards */
+    --card-base-width: clamp(150px, 16vw, 180px); 
     --card-max-width-grid: 200px;
 }
 
@@ -89,7 +89,6 @@ body {
     font-size: 1rem;
     color: var(--secondary-text);
 }
-
 
 .fullscreen-section {
     display: flex;
@@ -264,7 +263,9 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
     gap: 20px;
 }
 .media-grid .media-card {
-    width: 100%; /* Fill the grid cell defined by minmax */
+    width: 100%; 
+    max-width: var(--card-max-width-grid); 
+    margin: 0 auto; 
 }
 
 .media-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 8px 16px rgba(0,0,0,0.4); }
@@ -342,14 +343,19 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #player-view h3 { text-align: center; margin-bottom: 15px; font-size: 1.5rem; }
 #mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1000px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
 #mappletv-player-container iframe, #live-tv-video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-.video-js { width: 100%; height: 100%; } /* Ensure Video.js fills its container */
+.video-js { width: 100%; height: 100%; font-size: 14px; } /* Ensure Video.js player font isn't too large */
+.vjs-big-play-button { font-size: 3em; line-height: 2em !important; height: 2em !important; width: 3em !important; border-radius: 0.5em !important; }
+
 
 #lists-view .lists-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.button-style, .button-style-alt { padding: 10px 18px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease; border: none; font-size: 0.95rem; }
+.button-style, .button-style-alt, .button-style-alt-small { padding: 10px 18px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease; border: none; font-size: 0.95rem; }
 .button-style { background-color: var(--accent-color); color: white; }
 .button-style:hover { background-color: var(--accent-hover); }
 .button-style-alt { background-color: var(--tertiary-bg); color: var(--primary-text); margin-left: 10px; }
 .button-style-alt:hover { background-color: #444; }
+.button-style-alt-small { padding: 6px 12px; font-size: 0.85rem; background-color: var(--tertiary-bg); color: var(--primary-text); margin-left: 5px;}
+.button-style-alt-small:hover { background-color: #444; }
+
 #create-list-form-container { margin-bottom: 20px; padding: 15px; background-color: var(--secondary-bg); border-radius: var(--card-border-radius); display: flex; gap: 10px; align-items: center; border: 1px solid var(--tertiary-bg); }
 #create-list-form-container input[type="text"] { flex-grow: 1; padding: 10px; border-radius: 5px; border: 1px solid #555; background-color: var(--tertiary-bg); color: var(--primary-text); font-size: 0.95rem; }
 #user-lists-display-container ul.user-lists { list-style: none; padding: 0; }
@@ -361,9 +367,23 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #current-list-name-display { font-size: 1.6rem; margin-bottom: 20px; color: var(--accent-color); border-bottom: 1px solid var(--tertiary-bg); padding-bottom: 10px; }
 #current-list-items-grid.media-grid { padding: 0; }
 
-#live-tv-container { display: flex; gap: 0; flex-wrap: nowrap; padding: 0; max-height: calc(100vh - var(--header-height) - 40px); }
+#live-tv-view .npvr-instructions-container { background-color: var(--secondary-bg); padding: 20px; border-radius: var(--card-border-radius); margin-bottom: 30px; }
+#live-tv-view .npvr-instructions-container h3 { color: var(--accent-color); margin-top: 0; margin-bottom: 15px; }
+#live-tv-view .npvr-instructions-container h4 { margin-top: 20px; margin-bottom: 10px; color: var(--primary-text); }
+#live-tv-view .npvr-instructions-container ol { padding-left: 20px; margin-bottom: 15px; }
+#live-tv-view .npvr-instructions-container ol li { margin-bottom: 10px; }
+#live-tv-view .npvr-instructions-container .button-style-alt, 
+#live-tv-view .npvr-instructions-container .button-style { margin-top: 5px; margin-left: 0; display: inline-block; margin-right: 10px; }
+#live-tv-view .url-to-copy-container { background-color: var(--tertiary-bg); padding: 10px; border-radius: 5px; margin: 10px 0; }
+#live-tv-view .url-to-copy-container p { margin: 5px 0; display: flex; align-items: center; word-break: break-all; }
+#live-tv-view .url-to-copy-container code { background-color: var(--primary-bg); padding: 2px 5px; border-radius: 3px; margin-right: 10px; flex-grow: 1; }
+#live-tv-view .small-note { font-size: 0.85em; color: var(--secondary-text); margin-top: 15px; }
+.section-hr { border: 0; height: 1px; background-color: var(--tertiary-bg); margin: 25px 0; }
+#live-tv-view h3 + .npvr-instructions-container + h3 { margin-top: 30px; } /* Space before experimental section */
+#live-tv-container { display: none; /* Hide this by default as NPVR is primary */ }
+/* If you want to show it: #live-tv-container { display: flex; gap: 0; flex-wrap: nowrap; padding: 0; max-height: calc(100vh - var(--header-height) - 40px); } */
 #channel-list-container { flex: 0 0 300px; max-height: 100%; overflow-y: auto; background-color: var(--secondary-bg); padding: var(--standard-padding); border-right: 1px solid var(--primary-bg); }
-#channel-list-container h3 { margin-top: 0; margin-bottom: 10px; color: var(--accent-color); font-size: 1.2rem; }
+#channel-list-container h4 { margin-top: 0; margin-bottom: 10px; color: var(--accent-color); font-size: 1.1rem; }
 #channel-list { list-style-type: none; padding: 0; }
 #channel-list li { padding: 10px 8px; cursor: pointer; border-bottom: 1px solid var(--tertiary-bg); transition: background-color 0.2s ease, color 0.2s ease; display: flex; align-items: center; font-size: 0.9rem; word-break: break-word; }
 #channel-list li:hover, #channel-list li.active-channel { background-color: var(--accent-color); color: white; }
@@ -373,7 +393,6 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #epg-info { background-color: var(--secondary-bg); padding: var(--standard-padding); border-radius: var(--card-border-radius); color: var(--secondary-text); flex-shrink: 0; margin-top: var(--standard-padding); }
 #epg-info h4 { color: var(--primary-text); margin-top: 0; margin-bottom: 5px; font-size: 1.1rem; }
 #epg-info p { margin-bottom: 3px; font-size: 0.9em; }
-#tv-guide-container { display: none; }
 
 .donate-intro { margin-bottom: 25px; text-align: center; font-size: 1.1em; color: var(--secondary-text); max-width: 600px; margin-left: auto; margin-right: auto; }
 .donation-widgets-container { display: flex; flex-direction: column; align-items: center; gap: 30px; }
@@ -385,17 +404,14 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #fundly-campaign-card-footer a { color: var(--secondary-text) !important; }
 .donation-button-wrapper { margin-top: 20px; text-align: center; }
 .donate-button-trans {
-    display: inline-block; padding: 12px 28px; font-size: 1.25rem; font-weight: bold;
-    text-decoration: none; border-radius: 8px; color: #2c2c2c; /* Darker text for contrast on light parts of gradient */
+    display: inline-block; padding: 14px 32px; font-size: 1.3rem; font-weight: bold;
+    text-decoration: none; border-radius: 8px; color: #000;
     background-image: linear-gradient(135deg, var(--trans-light-blue) 33.33%, var(--trans-pink) 33.33%, var(--trans-pink) 66.66%, var(--trans-white) 66.66%);
-    background-size: 300% 100%; /* For smooth transition on hover if animated */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    background-size: 300% 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.4s ease;
-    border: 2px solid var(--primary-bg); 
-    text-shadow: 0px 0px 3px rgba(255,255,255,0.2);
+    border: 2px solid var(--primary-bg); text-shadow: 0 0 3px rgba(255,255,255,0.1);
 }
 .donate-button-trans:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,0.3); background-position: 100% 0; }
-
 
 .settings-container { max-width: 700px; margin: 0 auto; padding: var(--standard-padding); }
 .setting-item { background-color: var(--secondary-bg); padding: 20px; margin-bottom: 20px; border-radius: var(--card-border-radius); border: 1px solid var(--tertiary-bg); }
@@ -462,8 +478,8 @@ footer { text-align: center; padding: 25px var(--standard-padding); font-size: 0
     main { padding: 10px; }
     .media-grid { gap: 10px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));}
     .discover-media-row .media-card { width: 130px; }
-    .media-card { width: 130px; } /* Ensure smaller cards in grid on mobile too */
-    .media-grid .media-card { width: 100%; } /* Let grid control for auto-fill */
+    .media-card { width: 130px; } 
+    .media-grid .media-card { width: 100%; } 
     .media-card .title { font-size: 0.85rem; }
     .form-container { padding: 20px 15px; }
     .play-button-container button { font-size: 1rem; padding: 10px 20px; }
