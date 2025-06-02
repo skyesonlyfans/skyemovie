@@ -7,9 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-
     <style>
         .settings-icon-svg { 
             width: 20px; 
@@ -32,10 +29,12 @@
             justify-content: center;
             z-index: 9999;
             opacity: 1;
-            transition: opacity 0.7s ease-out;
+            transition: opacity 0.7s ease-out, visibility 0.7s ease-out;
+            visibility: visible;
         }
         #initial-loading-overlay.hidden {
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
         .initial-loading-logo {
@@ -192,34 +191,33 @@
             </div>
 
             <div id="live-tv-view" class="view">
-                <div id="live-tv-container">
-                    <div id="channel-list-container">
-                        <h3>Channels</h3>
-                        <ul id="channel-list"></ul>
-                    </div>
-                    <div id="tv-player-section">
-                        <div id="live-tv-video-player-container">
-                            <video
-                                id="live-tv-video-player"
-                                class="video-js vjs-default-skin vjs-big-play-centered"
-                                controls
-                                preload="auto"
-                                width="100%"
-                                height="100%"
-                                data-setup='{}'>
-                                <p class="vjs-no-js">
-                                To view this video please enable JavaScript, and consider upgrading to a
-                                web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                                </p>
-                            </video>
-                        </div>
-                        <div id="epg-info">
-                            <h4 id="epg-channel-name">Select a channel</h4>
-                            <p id="epg-program-title"></p>
-                            <p id="epg-program-time"></p>
-                            <p id="epg-program-description"></p>
-                        </div>
-                    </div>
+                <h2>Live TV (NPVR for Windows PC)</h2>
+                <div class="npvr-instructions-container">
+                    <h3>Watch with NPVR Media Player</h3>
+                    <p>For the best Live TV experience on a Windows PC, we recommend using the free <a href="https://www.nextpvr.com/" target="_blank" rel="noopener">NPVR</a> application. It's a powerful personal video recorder and media player.</p>
+                    <h4>Setup Steps:</h4>
+                    <ol>
+                        <li><strong>Download NPVR:</strong> 
+                            <a href="YOUR_GITHUB_OR_DIRECT_LINK_TO_NPVRSETUP.EXE" target="_blank" rel="noopener noreferrer" class="button-style-alt" id="download-npvr-button">Download NPVRSetup.exe</a>
+                            <br>(Note: You need to host NPVRSetup.exe and replace the link above).
+                        </li>
+                        <li><strong>Install NPVR:</strong> Run the downloaded installer on your Windows PC.</li>
+                        <li><strong>Initial NPVR Login:</strong> When you first run NPVR, if it prompts for login, the default credentials are typically Username: <strong>admin</strong>, Password: <strong>password</strong>. It's a good idea to check any "Remember me" option.</li>
+                        <li><strong>Get Playlist & EPG URLs for NPVR:</strong>
+                            <p>Copy the following URLs. You will need to add these into NPVR's settings (usually under Settings > Channels > Import Channels > M3U Playlist and for EPG, Settings > Channels > EPG Source > XMLTV).</p>
+                            <div class="url-to-copy-container">
+                                <p><strong>M3U Playlist URL:</strong> <code id="npvr-m3u-url-display"></code> <button id="copy-m3u-url-button" class="button-style-alt-small">Copy</button></p>
+                                <p><strong>EPG XML URL:</strong> <code id="npvr-epg-url-display"></code> <button id="copy-epg-url-button" class="button-style-alt-small">Copy</button></p>
+                            </div>
+                        </li>
+                        <li><strong>Open NPVR Web Interface:</strong>
+                            <button id="open-npvr-web-ui-button" class="button-style">Open NPVR (localhost:8866)</button>
+                            <p class="small-note">This button attempts to open NPVR's web interface at `http://localhost:8866`. Ensure NPVR is running.</p>
+                        </li>
+                    </ol>
+                    <p>Once NPVR is set up with the M3U playlist, you can browse and watch channels through its interface.</p>
+                    <hr class="section-hr">
+                    <p class="small-note">This method is recommended for Windows PC users. Other media players like VLC might also be able to open the downloaded M3U playlist directly, but NPVR offers a more integrated TV experience with EPG support.</p>
                 </div>
             </div>
 
@@ -227,8 +225,11 @@
                 <h2>Support SkyeMovie™</h2>
                 <p class="donate-intro">If you enjoy SkyeMovie™, please consider supporting its development and upkeep. Every little bit helps keep the magic alive!</p>
                 <div class="donation-widgets-container">
+                     <div class="donation-button-wrapper">
+                        <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="donate-button-trans">Donate!</a>
+                    </div>
                     <div class="fundly-widget-wrapper" id="fundly-card-wrapper">
-                         <p><strong>View Our Campaign:</strong></p>
+                         <p><strong>Our Campaign Details:</strong></p>
                         <div class='fundly-widget fundly-card-override' id="fundly-campaign-card-container">
                             <iframe id="fundly-campaign-iframe" src='https://d2wwhrh9otv6z9.cloudfront.net/campaign_card.html?activity=keep-skyemovie-free-for-everyone&hb=t' style='border:none;width:275px;height:510px' title="Fundly Campaign Card"></iframe>
                             <p id="fundly-campaign-card-footer" style='text-align:right;margin:-6px 0 0 0;padding:5px 10px;border-top:1px solid #eee;font:10px/16px helvetica !important;'>
@@ -236,9 +237,6 @@
                                 <a href='https://fundly.com?ft_src=widget_campaign_card' style='color:#888;margin:0;text-decoration:none;' target='_blank'>Powered by Fundly</a>
                             </p>
                         </div>
-                    </div>
-                     <div class="donation-button-wrapper">
-                        <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="donate-button-trans">Donate Directly!</a>
                     </div>
                 </div>
             </div>
@@ -272,7 +270,8 @@
             <div id="player-view" class="view">
                 <button id="close-player-button" class="detail-back-button">&larr; Back to Details</button>
                 <h3 id="player-title"></h3>
-                <div id="mappletv-player-container"></div>
+                <div id="mappletv-player-container">
+                    </div>
             </div>
 
             <div id="add-to-list-modal" class="modal" style="display:none;">
@@ -299,8 +298,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
     <script src="script.js"></script>
 </body>
 </html>
