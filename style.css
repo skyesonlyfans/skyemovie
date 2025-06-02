@@ -11,7 +11,10 @@
     --font-logo: 'Cherry Bomb One', cursive;
     --card-border-radius: 8px;
     --standard-padding: 15px;
-    --header-height: 60px; 
+    --header-height: 60px;
+    --trans-light-blue: #5BCEFA;
+    --trans-pink: #F5A9B8;
+    --trans-white: #FFFFFF;
 }
 
 * {
@@ -212,6 +215,10 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
     background-color: var(--secondary-bg); border-radius: var(--card-border-radius); overflow: hidden;
     cursor: pointer; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    width: clamp(140px, 15vw, 180px); /* Proportional poster size */
+}
+.media-grid .media-card { /* Ensure grid items also respect this or similar sizing */
+    width: auto; /* Let grid control width, aspect ratio will handle height */
 }
 .media-card:hover { transform: translateY(-5px) scale(1.03); box-shadow: 0 8px 16px rgba(0,0,0,0.4); }
 .media-card img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; display: block; border-bottom: 1px solid #333; }
@@ -243,7 +250,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #search-input { flex-grow: 1; border: none; background: transparent; color: var(--primary-text); padding: 10px 15px; font-size: 1rem; outline: none; }
 #search-button-main { background-color: var(--accent-color); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease; flex-shrink: 0; }
 #search-button-main:hover { background-color: var(--accent-hover); }
-.autocomplete-suggestions-list { background-color: var(--tertiary-bg); border: 1px solid #444; border-radius: 0 0 var(--card-border-radius) var(--card-border-radius); max-height: 300px; overflow-y: auto; position: absolute; width: 100%; top: 100%; left: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; }
+.autocomplete-suggestions-list { background-color: var(--tertiary-bg); border: 1px solid #444; border-radius: var(--card-border-radius); max-height: 300px; overflow-y: auto; position: absolute; width: 100%; top: calc(100% + 5px); left: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; }
 .autocomplete-suggestions-list div { padding: 10px 15px; cursor: pointer; transition: background-color 0.2s ease; }
 .autocomplete-suggestions-list div:hover { background-color: #4f4f4f; }
 .filter-sort-controls { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
@@ -251,7 +258,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 .filter-button { padding: 8px 15px; background-color: var(--accent-color); color: white; border: none; border-radius: 5px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: background-color 0.2s ease; }
 .filter-button:hover { background-color: var(--accent-hover); }
 .search-results-container { margin-top: 20px; }
-.search-status-message { text-align: center; color: var(--secondary-text); font-size: 1.1rem; margin-top: 30px; margin-bottom: 20px; }
+.search-status-message { text-align: center; color: var(--secondary-text); font-size: 1.1rem; margin-top: 10px; margin-bottom: 20px; }
 .pagination-controls { display: flex; justify-content: center; align-items: center; margin-top: 30px; gap: 10px; }
 .pagination-button { padding: 10px 18px; background-color: var(--tertiary-bg); color: var(--primary-text); border: 1px solid #555; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease; font-weight: bold; font-size: 0.95rem; }
 .pagination-button:hover:not(:disabled) { background-color: #4f4f4f; }
@@ -303,7 +310,7 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #user-lists-display-container .list-item-actions button { font-size: 0.8rem; padding: 6px 10px; margin-left: 8px; background-color: var(--tertiary-bg); }
 #user-lists-display-container .list-item-actions button:hover { background-color: #555;}
 #current-list-name-display { font-size: 1.6rem; margin-bottom: 20px; color: var(--accent-color); border-bottom: 1px solid var(--tertiary-bg); padding-bottom: 10px; }
-#current-list-items-grid.media-grid { padding: 0; } /* Remove default grid padding if inside a padded container already */
+#current-list-items-grid.media-grid { padding: 0; }
 
 #live-tv-container { display: flex; gap: 0; flex-wrap: nowrap; padding: 0; max-height: calc(100vh - var(--header-height) - 40px); }
 #channel-list-container { flex: 0 0 300px; max-height: 100%; overflow-y: auto; background-color: var(--secondary-bg); padding: var(--standard-padding); border-right: 1px solid var(--primary-bg); }
@@ -320,14 +327,27 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #tv-guide-container { display: none; }
 
 .donate-intro { margin-bottom: 25px; text-align: center; font-size: 1.1em; color: var(--secondary-text); max-width: 600px; margin-left: auto; margin-right: auto; }
-.donation-widgets-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: 30px; }
-.fundly-widget-wrapper { background-color: var(--secondary-bg); padding: 25px; border-radius: var(--card-border-radius); text-align: center; border: 1px solid var(--tertiary-bg); width: 100%; max-width: 380px; display: flex; flex-direction: column; justify-content: space-between; }
-.fundly-widget-wrapper > p strong { display: block; margin-bottom: 15px; font-size: 1.15em; color: var(--primary-text); }
-#fundly-link { margin-top: 10px; width: 100%; }
-#fundly-campaign-card-container { background: transparent !important; border: none !important; display: inline-block; max-width: 100%; margin: 0 auto; }
-#fundly-campaign-card-container iframe { max-width: 100%; display: block; margin: 0 auto; }
-#fundly-campaign-card-footer { margin-top: -6px !important; border-top: 1px solid #444 !important; background-color: var(--secondary-bg) !important; padding: 8px 10px !important;}
-#fundly-campaign-card-footer a { color: var(--secondary-text) !important; }
+.donation-button-container { text-align: center; margin-top: 20px; }
+.donate-button-trans {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    color: var(--trans-white);
+    background: linear-gradient(135deg, var(--trans-light-blue) 0%, var(--trans-light-blue) 33%, 
+                                      var(--trans-pink) 33%, var(--trans-pink) 66%, 
+                                      var(--trans-white) 66%, var(--trans-white) 100%);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid var(--primary-bg); /* Match page background or a contrasting outline */
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+.donate-button-trans:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
 
 .settings-container { max-width: 700px; margin: 0 auto; padding: var(--standard-padding); }
 .setting-item { background-color: var(--secondary-bg); padding: 20px; margin-bottom: 20px; border-radius: var(--card-border-radius); border: 1px solid var(--tertiary-bg); }
