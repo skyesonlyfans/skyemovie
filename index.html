@@ -7,6 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
     <style>
         .settings-icon-svg { 
             width: 20px; 
@@ -16,14 +19,13 @@
             fill: currentColor;
             cursor: pointer;
         }
-        /* Initial Loading Overlay Styles */
         #initial-loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #101010; /* Match --primary-bg */
+            background-color: #101010;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -34,24 +36,23 @@
         }
         #initial-loading-overlay.hidden {
             opacity: 0;
-            pointer-events: none; /* Allow clicks to pass through after fade */
+            pointer-events: none;
         }
         .initial-loading-logo {
-            font-family: 'Cherry Bomb One', cursive; /* Match --font-logo */
-            font-size: clamp(3rem, 10vw, 6rem); /* Large logo */
-            color: #FF69B4; /* Match --special-accent */
+            font-family: 'Cherry Bomb One', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #FF69B4;
             animation: pulseLogo 1.5s infinite ease-in-out;
         }
         @keyframes pulseLogo {
             0%, 100% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.05); opacity: 1; }
         }
-        #loading-message-text { /* For actual loading messages if needed after logo animation */
+        #loading-message-text {
             margin-top: 20px;
             font-size: 1rem;
-            color: #a0a0a0; /* Match --secondary-text */
+            color: #a0a0a0;
         }
-
     </style>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -59,9 +60,11 @@
 
     <div id="initial-loading-overlay">
         <div class="initial-loading-logo cherry-bomb-one-font">SkyeMovie™</div>
-        <p id="loading-message-text" style="display:none;">Loading...</p> </div>
+        <p id="loading-message-text" style="display:none;">Loading...</p>
+    </div>
 
-    <div id="access-gate-section" class="hidden-section fullscreen-section"> <div class="form-container">
+    <div id="access-gate-section" class="hidden-section fullscreen-section">
+        <div class="form-container">
             <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
             <p>Enter your 6-digit access code:</p>
             <input type="text" id="access-code-input" maxlength="6" inputmode="numeric" autocomplete="off">
@@ -196,7 +199,19 @@
                     </div>
                     <div id="tv-player-section">
                         <div id="live-tv-video-player-container">
-                            <video id="live-tv-video-player" controls width="100%"></video>
+                            <video
+                                id="live-tv-video-player"
+                                class="video-js vjs-default-skin vjs-big-play-centered"
+                                controls
+                                preload="auto"
+                                width="100%"
+                                height="100%"
+                                data-setup='{}'>
+                                <p class="vjs-no-js">
+                                To view this video please enable JavaScript, and consider upgrading to a
+                                web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                </p>
+                            </video>
                         </div>
                         <div id="epg-info">
                             <h4 id="epg-channel-name">Select a channel</h4>
@@ -237,7 +252,7 @@
                             <input type="checkbox" id="setting-autoplay"> Autoplay next video (when applicable)
                         </label>
                         <label for="setting-autonext">
-                            <input type="checkbox" id="setting-autonext"> Automatically play next suggestion
+                            <input type="checkbox" id="setting-autonext"> Automatically queue next suggested video
                         </label>
                         <p class="setting-note">Note: Player behavior may also depend on Mappletv's own settings.</p>
                     </div>
@@ -284,7 +299,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+    
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
