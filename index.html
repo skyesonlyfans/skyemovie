@@ -65,7 +65,7 @@
         <header>
             <h1 class="logo-title-small cherry-bomb-one-font">SkyeMovie™</h1>
             <nav>
-                <button id="nav-home" class="nav-button">Home</button> 
+                <button id="nav-home" class="nav-button">Home</button>
                 <button id="nav-search" class="nav-button">Search</button>
                 <button id="nav-favorites" class="nav-button">Favorites</button>
                 <button id="nav-lists" class="nav-button">My Lists</button>
@@ -172,22 +172,8 @@
             <div id="donate-view" class="view">
                 <h2>Support SkyeMovie™</h2>
                 <p class="donate-intro">If you enjoy SkyeMovie™, please consider supporting its development and upkeep. Every little bit helps keep the magic alive!</p>
-                <div class="donation-widgets-container">
-                    <div class="fundly-widget-wrapper" id="fundly-link-wrapper">
-                        <p><strong>Make a one-time donation:</strong></p>
-                        <script type='text/javascript' src='https://fundly.com/assets/widget.loader.js?wid=keep-skyemovie-free-for-everyone'></script>
-                        <div id='fundly-link'></div>
-                    </div>
-                    <div class="fundly-widget-wrapper" id="fundly-card-wrapper">
-                         <p><strong>Or see our campaign details:</strong></p>
-                        <div class='fundly-widget fundly-card-override' id="fundly-campaign-card-container">
-                            <iframe id="fundly-campaign-iframe" src='https://d2wwhrh9otv6z9.cloudfront.net/campaign_card.html?activity=keep-skyemovie-free-for-everyone&hb=t' style='border:none;width:275px;height:510px' title="Fundly Campaign Card"></iframe>
-                            <p id="fundly-campaign-card-footer" style='text-align:right;margin:-6px 0 0 0;padding:5px 10px;border-top:1px solid #eee;font:10px/16px helvetica !important;'>
-                                <a href='https://fundly.com/keep-skyemovie-free-for-everyone?ft_src=widget_campaign_card' style='color:#888;margin:0;text-decoration:none;float:left'>See Skye's Campaign</a>
-                                <a href='https://fundly.com?ft_src=widget_campaign_card' style='color:#888;margin:0;text-decoration:none;' target='_blank'>Powered by Fundly</a>
-                            </p>
-                        </div>
-                    </div>
+                <div class="donation-button-container">
+                    <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="button-style donate-button-trans">Donate!</a>
                 </div>
             </div>
             
@@ -247,6 +233,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
     <script src="script.js"></script>
 </body>
 </html>
