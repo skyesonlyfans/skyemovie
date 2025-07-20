@@ -707,79 +707,63 @@ https://tvpass.org/live/WPIX/hd
 https://tvpass.org/live/yes-network/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network HD" group-title="Live",Yes Network HD
 https://tvpass.org/live/yes-network/hd
-#EXTINF:-1 tvg-id="" tvg-name="Boxing | Oleksandr Usyk vs. Daniel Dubois 2 (07/19 12:30 PM ET) SD" group-title="PPV",Boxing | Oleksandr Usyk vs. Daniel Dubois 2 (07/19 12:30 PM ET) SD
-https://tvpass.org/live/PPV03/sd
-#EXTINF:-1 tvg-id="" tvg-name="Boxing | Oleksandr Usyk vs. Daniel Dubois 2 (07/19 12:30 PM ET) HD" group-title="PPV",Boxing | Oleksandr Usyk vs. Daniel Dubois 2 (07/19 12:30 PM ET) HD
-https://tvpass.org/live/PPV03/hd
-#EXTINF:-1 tvg-id="" tvg-name="San Francisco Giants @ Toronto Blue Jays (07/19 3:07 PM ET) SD" group-title="MLB",San Francisco Giants @ Toronto Blue Jays (07/19 3:07 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="San Francisco Giants @ Toronto Blue Jays (07/20 12:06 PM ET) SD" group-title="MLB",San Francisco Giants @ Toronto Blue Jays (07/20 12:06 PM ET) SD
 https://tvpass.org/live/mlb-12/sd
-#EXTINF:-1 tvg-id="" tvg-name="San Francisco Giants @ Toronto Blue Jays (07/19 3:07 PM ET) HD" group-title="MLB",San Francisco Giants @ Toronto Blue Jays (07/19 3:07 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="San Francisco Giants @ Toronto Blue Jays (07/20 12:06 PM ET) HD" group-title="MLB",San Francisco Giants @ Toronto Blue Jays (07/20 12:06 PM ET) HD
 https://tvpass.org/live/mlb-12/hd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ New York Mets (07/19 4:10 PM ET) SD" group-title="MLB",Cincinnati Reds @ New York Mets (07/19 4:10 PM ET) SD
-https://tvpass.org/live/mlb-24/sd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ New York Mets (07/19 4:10 PM ET) HD" group-title="MLB",Cincinnati Reds @ New York Mets (07/19 4:10 PM ET) HD
-https://tvpass.org/live/mlb-24/hd
-#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Miami Marlins (07/19 4:11 PM ET) SD" group-title="MLB",Kansas City Royals @ Miami Marlins (07/19 4:11 PM ET) SD
-https://tvpass.org/live/mlb-07/sd
-#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Miami Marlins (07/19 4:11 PM ET) HD" group-title="MLB",Kansas City Royals @ Miami Marlins (07/19 4:11 PM ET) HD
-https://tvpass.org/live/mlb-07/hd
-#EXTINF:-1 tvg-id="" tvg-name="UFC 318: Early Prelims (07/19 6:00 PM ET) SD" group-title="PPV",UFC 318: Early Prelims (07/19 6:00 PM ET) SD
-https://tvpass.org/live/PPV01/sd
-#EXTINF:-1 tvg-id="" tvg-name="UFC 318: Early Prelims (07/19 6:00 PM ET) HD" group-title="PPV",UFC 318: Early Prelims (07/19 6:00 PM ET) HD
-https://tvpass.org/live/PPV01/hd
-#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Philadelphia Phillies (07/19 6:05 PM ET) SD" group-title="MLB",Los Angeles Angels @ Philadelphia Phillies (07/19 6:05 PM ET) SD
-https://tvpass.org/live/mlb-18/sd
-#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Philadelphia Phillies (07/19 6:05 PM ET) HD" group-title="MLB",Los Angeles Angels @ Philadelphia Phillies (07/19 6:05 PM ET) HD
-https://tvpass.org/live/mlb-18/hd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Pittsburgh Pirates (07/19 6:41 PM ET) SD" group-title="MLB",Chicago White Sox @ Pittsburgh Pirates (07/19 6:41 PM ET) SD
-https://tvpass.org/live/mlb-26/sd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Pittsburgh Pirates (07/19 6:41 PM ET) HD" group-title="MLB",Chicago White Sox @ Pittsburgh Pirates (07/19 6:41 PM ET) HD
-https://tvpass.org/live/mlb-26/hd
-#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Washington Nationals (07/19 6:46 PM ET) SD" group-title="MLB",San Diego Padres @ Washington Nationals (07/19 6:46 PM ET) SD
-https://tvpass.org/live/mlb-01/sd
-#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Washington Nationals (07/19 6:46 PM ET) HD" group-title="MLB",San Diego Padres @ Washington Nationals (07/19 6:46 PM ET) HD
-https://tvpass.org/live/mlb-01/hd
-#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Texas Rangers (07/19 7:05 PM ET) SD" group-title="MLB",Detroit Tigers @ Texas Rangers (07/19 7:05 PM ET) SD
-https://tvpass.org/live/mlb-13/sd
-#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Texas Rangers (07/19 7:05 PM ET) HD" group-title="MLB",Detroit Tigers @ Texas Rangers (07/19 7:05 PM ET) HD
-https://tvpass.org/live/mlb-13/hd
-#EXTINF:-1 tvg-id="" tvg-name="Baltimore Orioles @ Tampa Bay Rays (07/19 7:06 PM ET) SD" group-title="MLB",Baltimore Orioles @ Tampa Bay Rays (07/19 7:06 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Baltimore Orioles @ Tampa Bay Rays (07/20 12:11 PM ET) SD" group-title="MLB",Baltimore Orioles @ Tampa Bay Rays (07/20 12:11 PM ET) SD
 https://tvpass.org/live/mlb-11/sd
-#EXTINF:-1 tvg-id="" tvg-name="Baltimore Orioles @ Tampa Bay Rays (07/19 7:06 PM ET) HD" group-title="MLB",Baltimore Orioles @ Tampa Bay Rays (07/19 7:06 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Baltimore Orioles @ Tampa Bay Rays (07/20 12:11 PM ET) HD" group-title="MLB",Baltimore Orioles @ Tampa Bay Rays (07/20 12:11 PM ET) HD
 https://tvpass.org/live/mlb-11/hd
-#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Cleveland Guardians (07/19 7:11 PM ET) SD" group-title="MLB",Oakland Athletics @ Cleveland Guardians (07/19 7:11 PM ET) SD
-https://tvpass.org/live/mlb-30/sd
-#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Cleveland Guardians (07/19 7:11 PM ET) HD" group-title="MLB",Oakland Athletics @ Cleveland Guardians (07/19 7:11 PM ET) HD
-https://tvpass.org/live/mlb-30/hd
-#EXTINF:-1 tvg-id="" tvg-name="St. Louis Cardinals @ Arizona Diamondbacks (07/19 7:16 PM ET) SD" group-title="MLB",St. Louis Cardinals @ Arizona Diamondbacks (07/19 7:16 PM ET) SD
-https://tvpass.org/live/mlb-09/sd
-#EXTINF:-1 tvg-id="" tvg-name="St. Louis Cardinals @ Arizona Diamondbacks (07/19 7:16 PM ET) HD" group-title="MLB",St. Louis Cardinals @ Arizona Diamondbacks (07/19 7:16 PM ET) HD
-https://tvpass.org/live/mlb-09/hd
-#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ Chicago Cubs (07/19 7:16 PM ET) SD" group-title="MLB",Boston Red Sox @ Chicago Cubs (07/19 7:16 PM ET) SD
-https://tvpass.org/live/mlb-23/sd
-#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ Chicago Cubs (07/19 7:16 PM ET) HD" group-title="MLB",Boston Red Sox @ Chicago Cubs (07/19 7:16 PM ET) HD
-https://tvpass.org/live/mlb-23/hd
-#EXTINF:-1 tvg-id="" tvg-name="New York Yankees @ Atlanta Braves (07/19 7:16 PM ET) SD" group-title="MLB",New York Yankees @ Atlanta Braves (07/19 7:16 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="New York Yankees @ Atlanta Braves (07/20 1:36 PM ET) SD" group-title="MLB",New York Yankees @ Atlanta Braves (07/20 1:36 PM ET) SD
 https://tvpass.org/live/mlb-28/sd
-#EXTINF:-1 tvg-id="" tvg-name="New York Yankees @ Atlanta Braves (07/19 7:16 PM ET) HD" group-title="MLB",New York Yankees @ Atlanta Braves (07/19 7:16 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="New York Yankees @ Atlanta Braves (07/20 1:36 PM ET) HD" group-title="MLB",New York Yankees @ Atlanta Braves (07/20 1:36 PM ET) HD
 https://tvpass.org/live/mlb-28/hd
-#EXTINF:-1 tvg-id="" tvg-name="Minnesota Twins @ Colorado Rockies (07/19 8:10 PM ET) SD" group-title="MLB",Minnesota Twins @ Colorado Rockies (07/19 8:10 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Pittsburgh Pirates (07/20 1:36 PM ET) SD" group-title="MLB",Chicago White Sox @ Pittsburgh Pirates (07/20 1:36 PM ET) SD
+https://tvpass.org/live/mlb-26/sd
+#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Pittsburgh Pirates (07/20 1:36 PM ET) HD" group-title="MLB",Chicago White Sox @ Pittsburgh Pirates (07/20 1:36 PM ET) HD
+https://tvpass.org/live/mlb-26/hd
+#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Philadelphia Phillies (07/20 1:36 PM ET) SD" group-title="MLB",Los Angeles Angels @ Philadelphia Phillies (07/20 1:36 PM ET) SD
+https://tvpass.org/live/mlb-18/sd
+#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Philadelphia Phillies (07/20 1:36 PM ET) HD" group-title="MLB",Los Angeles Angels @ Philadelphia Phillies (07/20 1:36 PM ET) HD
+https://tvpass.org/live/mlb-18/hd
+#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Washington Nationals (07/20 1:36 PM ET) SD" group-title="MLB",San Diego Padres @ Washington Nationals (07/20 1:36 PM ET) SD
+https://tvpass.org/live/mlb-01/sd
+#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Washington Nationals (07/20 1:36 PM ET) HD" group-title="MLB",San Diego Padres @ Washington Nationals (07/20 1:36 PM ET) HD
+https://tvpass.org/live/mlb-01/hd
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ New York Mets (07/20 1:41 PM ET) SD" group-title="MLB",Cincinnati Reds @ New York Mets (07/20 1:41 PM ET) SD
+https://tvpass.org/live/mlb-24/sd
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ New York Mets (07/20 1:41 PM ET) HD" group-title="MLB",Cincinnati Reds @ New York Mets (07/20 1:41 PM ET) HD
+https://tvpass.org/live/mlb-24/hd
+#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Cleveland Guardians (07/20 1:41 PM ET) SD" group-title="MLB",Oakland Athletics @ Cleveland Guardians (07/20 1:41 PM ET) SD
+https://tvpass.org/live/mlb-30/sd
+#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Cleveland Guardians (07/20 1:41 PM ET) HD" group-title="MLB",Oakland Athletics @ Cleveland Guardians (07/20 1:41 PM ET) HD
+https://tvpass.org/live/mlb-30/hd
+#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Miami Marlins (07/20 1:41 PM ET) SD" group-title="MLB",Kansas City Royals @ Miami Marlins (07/20 1:41 PM ET) SD
+https://tvpass.org/live/mlb-07/sd
+#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Miami Marlins (07/20 1:41 PM ET) HD" group-title="MLB",Kansas City Royals @ Miami Marlins (07/20 1:41 PM ET) HD
+https://tvpass.org/live/mlb-07/hd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ Chicago Cubs (07/20 2:20 PM ET) SD" group-title="MLB",Boston Red Sox @ Chicago Cubs (07/20 2:20 PM ET) SD
+https://tvpass.org/live/mlb-23/sd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ Chicago Cubs (07/20 2:20 PM ET) HD" group-title="MLB",Boston Red Sox @ Chicago Cubs (07/20 2:20 PM ET) HD
+https://tvpass.org/live/mlb-23/hd
+#EXTINF:-1 tvg-id="" tvg-name="Minnesota Twins @ Colorado Rockies (07/20 3:11 PM ET) SD" group-title="MLB",Minnesota Twins @ Colorado Rockies (07/20 3:11 PM ET) SD
 https://tvpass.org/live/mlb-25/sd
-#EXTINF:-1 tvg-id="" tvg-name="Minnesota Twins @ Colorado Rockies (07/19 8:10 PM ET) HD" group-title="MLB",Minnesota Twins @ Colorado Rockies (07/19 8:10 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Minnesota Twins @ Colorado Rockies (07/20 3:11 PM ET) HD" group-title="MLB",Minnesota Twins @ Colorado Rockies (07/20 3:11 PM ET) HD
 https://tvpass.org/live/mlb-25/hd
-#EXTINF:-1 tvg-id="" tvg-name="UFC 318: Max Holloway v Dustin Poirier 3 (07/19 8:10 PM ET) SD" group-title="PPV",UFC 318: Max Holloway v Dustin Poirier 3 (07/19 8:10 PM ET) SD
-https://tvpass.org/live/tnt-sports-1/sd
-#EXTINF:-1 tvg-id="" tvg-name="UFC 318: Max Holloway v Dustin Poirier 3 (07/19 8:10 PM ET) HD" group-title="PPV",UFC 318: Max Holloway v Dustin Poirier 3 (07/19 8:10 PM ET) HD
-https://tvpass.org/live/tnt-sports-1/hd
-#EXTINF:-1 tvg-id="" tvg-name="Boxing |  Manny Pacquiao vs. Mario Barrios (07/19 8:10 PM ET) SD" group-title="PPV",Boxing |  Manny Pacquiao vs. Mario Barrios (07/19 8:10 PM ET) SD
-https://tvpass.org/live/PPV02/sd
-#EXTINF:-1 tvg-id="" tvg-name="Boxing |  Manny Pacquiao vs. Mario Barrios (07/19 8:10 PM ET) HD" group-title="PPV",Boxing |  Manny Pacquiao vs. Mario Barrios (07/19 8:10 PM ET) HD
-https://tvpass.org/live/PPV02/hd
-#EXTINF:-1 tvg-id="" tvg-name="Milwaukee Brewers @ Los Angeles Dodgers (07/19 9:11 PM ET) SD" group-title="MLB",Milwaukee Brewers @ Los Angeles Dodgers (07/19 9:11 PM ET) SD
-https://tvpass.org/live/mlb-14/sd
-#EXTINF:-1 tvg-id="" tvg-name="Milwaukee Brewers @ Los Angeles Dodgers (07/19 9:11 PM ET) HD" group-title="MLB",Milwaukee Brewers @ Los Angeles Dodgers (07/19 9:11 PM ET) HD
-https://tvpass.org/live/mlb-14/hd
-#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ Seattle Mariners (07/19 9:40 PM ET) SD" group-title="MLB",Houston Astros @ Seattle Mariners (07/19 9:40 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ Seattle Mariners (07/20 4:10 PM ET) SD" group-title="MLB",Houston Astros @ Seattle Mariners (07/20 4:10 PM ET) SD
 https://tvpass.org/live/mlb-10/sd
-#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ Seattle Mariners (07/19 9:40 PM ET) HD" group-title="MLB",Houston Astros @ Seattle Mariners (07/19 9:40 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ Seattle Mariners (07/20 4:10 PM ET) HD" group-title="MLB",Houston Astros @ Seattle Mariners (07/20 4:10 PM ET) HD
 https://tvpass.org/live/mlb-10/hd
+#EXTINF:-1 tvg-id="" tvg-name="St. Louis Cardinals @ Arizona Diamondbacks (07/20 4:11 PM ET) SD" group-title="MLB",St. Louis Cardinals @ Arizona Diamondbacks (07/20 4:11 PM ET) SD
+https://tvpass.org/live/mlb-09/sd
+#EXTINF:-1 tvg-id="" tvg-name="St. Louis Cardinals @ Arizona Diamondbacks (07/20 4:11 PM ET) HD" group-title="MLB",St. Louis Cardinals @ Arizona Diamondbacks (07/20 4:11 PM ET) HD
+https://tvpass.org/live/mlb-09/hd
+#EXTINF:-1 tvg-id="" tvg-name="Milwaukee Brewers @ Los Angeles Dodgers (07/20 4:11 PM ET) SD" group-title="MLB",Milwaukee Brewers @ Los Angeles Dodgers (07/20 4:11 PM ET) SD
+https://tvpass.org/live/mlb-14/sd
+#EXTINF:-1 tvg-id="" tvg-name="Milwaukee Brewers @ Los Angeles Dodgers (07/20 4:11 PM ET) HD" group-title="MLB",Milwaukee Brewers @ Los Angeles Dodgers (07/20 4:11 PM ET) HD
+https://tvpass.org/live/mlb-14/hd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Texas Rangers (07/20 7:10 PM ET) SD" group-title="MLB",Detroit Tigers @ Texas Rangers (07/20 7:10 PM ET) SD
+https://tvpass.org/live/mlb-13/sd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Texas Rangers (07/20 7:10 PM ET) HD" group-title="MLB",Detroit Tigers @ Texas Rangers (07/20 7:10 PM ET) HD
+https://tvpass.org/live/mlb-13/hd
