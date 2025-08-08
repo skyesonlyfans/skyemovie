@@ -707,43 +707,83 @@ https://tvpass.org/live/WPIX/hd
 https://tvpass.org/live/yes-network/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network HD" group-title="Live",Yes Network HD
 https://tvpass.org/live/yes-network/hd
-#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Washington Nationals (08/07 12:06 PM ET) SD" group-title="MLB",Oakland Athletics @ Washington Nationals (08/07 12:06 PM ET) SD
-https://tvpass.org/live/mlb-01/sd
-#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Washington Nationals (08/07 12:06 PM ET) HD" group-title="MLB",Oakland Athletics @ Washington Nationals (08/07 12:06 PM ET) HD
-https://tvpass.org/live/mlb-01/hd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Seattle Mariners (08/07 4:11 PM ET) SD" group-title="MLB",Chicago White Sox @ Seattle Mariners (08/07 4:11 PM ET) SD
-https://tvpass.org/live/mlb-10/sd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago White Sox @ Seattle Mariners (08/07 4:11 PM ET) HD" group-title="MLB",Chicago White Sox @ Seattle Mariners (08/07 4:11 PM ET) HD
-https://tvpass.org/live/mlb-10/hd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Pittsburgh Pirates (08/07 6:41 PM ET) SD" group-title="MLB",Cincinnati Reds @ Pittsburgh Pirates (08/07 6:41 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Pittsburgh Pirates (08/08 6:41 PM ET) SD" group-title="MLB",Cincinnati Reds @ Pittsburgh Pirates (08/08 6:41 PM ET) SD
 https://tvpass.org/live/mlb-26/sd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Pittsburgh Pirates (08/07 6:41 PM ET) HD" group-title="MLB",Cincinnati Reds @ Pittsburgh Pirates (08/07 6:41 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Pittsburgh Pirates (08/08 6:41 PM ET) HD" group-title="MLB",Cincinnati Reds @ Pittsburgh Pirates (08/08 6:41 PM ET) HD
 https://tvpass.org/live/mlb-26/hd
-#EXTINF:-1 tvg-id="" tvg-name="Indianapolis Colts @ Baltimore Ravens (08/07 7:00 PM ET) SD" group-title="NFL",Indianapolis Colts @ Baltimore Ravens (08/07 7:00 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Lions @ Atlanta Falcons (08/08 7:00 PM ET) SD" group-title="NFL",Detroit Lions @ Atlanta Falcons (08/08 7:00 PM ET) SD
+https://tvpass.org/live/NFL01/sd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Lions @ Atlanta Falcons (08/08 7:00 PM ET) HD" group-title="NFL",Detroit Lions @ Atlanta Falcons (08/08 7:00 PM ET) HD
+https://tvpass.org/live/NFL01/hd
+#EXTINF:-1 tvg-id="" tvg-name="Cleveland Browns @ Carolina Panthers (08/08 7:00 PM ET) SD" group-title="NFL",Cleveland Browns @ Carolina Panthers (08/08 7:00 PM ET) SD
 https://tvpass.org/live/NFLNetwork/sd
-#EXTINF:-1 tvg-id="" tvg-name="Indianapolis Colts @ Baltimore Ravens (08/07 7:00 PM ET) HD" group-title="NFL",Indianapolis Colts @ Baltimore Ravens (08/07 7:00 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Cleveland Browns @ Carolina Panthers (08/08 7:00 PM ET) HD" group-title="NFL",Cleveland Browns @ Carolina Panthers (08/08 7:00 PM ET) HD
 https://tvpass.org/live/NFLNetwork/hd
-#EXTINF:-1 tvg-id="" tvg-name="Miami Marlins @ Atlanta Braves (08/07 7:16 PM ET) SD" group-title="MLB",Miami Marlins @ Atlanta Braves (08/07 7:16 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Baltimore Orioles (08/08 7:06 PM ET) SD" group-title="MLB",Oakland Athletics @ Baltimore Orioles (08/08 7:06 PM ET) SD
+https://tvpass.org/live/mlb-17/sd
+#EXTINF:-1 tvg-id="" tvg-name="Oakland Athletics @ Baltimore Orioles (08/08 7:06 PM ET) HD" group-title="MLB",Oakland Athletics @ Baltimore Orioles (08/08 7:06 PM ET) HD
+https://tvpass.org/live/mlb-17/hd
+#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ New York Yankees (08/08 7:06 PM ET) SD" group-title="MLB",Houston Astros @ New York Yankees (08/08 7:06 PM ET) SD
+https://tvpass.org/live/mlb-15/sd
+#EXTINF:-1 tvg-id="" tvg-name="Houston Astros @ New York Yankees (08/08 7:06 PM ET) HD" group-title="MLB",Houston Astros @ New York Yankees (08/08 7:06 PM ET) HD
+https://tvpass.org/live/mlb-15/hd
+#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Detroit Tigers (08/08 7:11 PM ET) SD" group-title="MLB",Los Angeles Angels @ Detroit Tigers (08/08 7:11 PM ET) SD
+https://tvpass.org/live/mlb-21/sd
+#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Angels @ Detroit Tigers (08/08 7:11 PM ET) HD" group-title="MLB",Los Angeles Angels @ Detroit Tigers (08/08 7:11 PM ET) HD
+https://tvpass.org/live/mlb-21/hd
+#EXTINF:-1 tvg-id="" tvg-name="Miami Marlins @ Atlanta Braves (08/08 7:16 PM ET) SD" group-title="MLB",Miami Marlins @ Atlanta Braves (08/08 7:16 PM ET) SD
 https://tvpass.org/live/mlb-28/sd
-#EXTINF:-1 tvg-id="" tvg-name="Miami Marlins @ Atlanta Braves (08/07 7:16 PM ET) HD" group-title="MLB",Miami Marlins @ Atlanta Braves (08/07 7:16 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Miami Marlins @ Atlanta Braves (08/08 7:16 PM ET) HD" group-title="MLB",Miami Marlins @ Atlanta Braves (08/08 7:16 PM ET) HD
 https://tvpass.org/live/mlb-28/hd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Bengals @ Philadelphia Eagles (08/07 7:30 PM ET) SD" group-title="NFL",Cincinnati Bengals @ Philadelphia Eagles (08/07 7:30 PM ET) SD
-https://tvpass.org/live/nfl-01/sd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Bengals @ Philadelphia Eagles (08/07 7:30 PM ET) HD" group-title="NFL",Cincinnati Bengals @ Philadelphia Eagles (08/07 7:30 PM ET) HD
-https://tvpass.org/live/nfl-01/hd
-#EXTINF:-1 tvg-id="" tvg-name="Atlanta Dream @ Chicago Sky (08/07 8:00 PM ET) SD" group-title="WNBA",Atlanta Dream @ Chicago Sky (08/07 8:00 PM ET) SD
-https://tvpass.org/live/WNBA01/sd
-#EXTINF:-1 tvg-id="" tvg-name="Atlanta Dream @ Chicago Sky (08/07 8:00 PM ET) HD" group-title="WNBA",Atlanta Dream @ Chicago Sky (08/07 8:00 PM ET) HD
-https://tvpass.org/live/WNBA01/hd
-#EXTINF:-1 tvg-id="" tvg-name="Las Vegas Raiders @ Seattle Seahawks (08/07 10:00 PM ET) SD" group-title="NFL",Las Vegas Raiders @ Seattle Seahawks (08/07 10:00 PM ET) SD
-https://tvpass.org/live/NFLNetwork/sd
-#EXTINF:-1 tvg-id="" tvg-name="Las Vegas Raiders @ Seattle Seahawks (08/07 10:00 PM ET) HD" group-title="NFL",Las Vegas Raiders @ Seattle Seahawks (08/07 10:00 PM ET) HD
-https://tvpass.org/live/NFLNetwork/hd
-#EXTINF:-1 tvg-id="" tvg-name="Connecticut Sun @ Los Angeles Sparks (08/07 10:00 PM ET) SD" group-title="WNBA",Connecticut Sun @ Los Angeles Sparks (08/07 10:00 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="Washington Mystics @ Minnesota Lynx (08/08 7:30 PM ET) SD" group-title="WNBA",Washington Mystics @ Minnesota Lynx (08/08 7:30 PM ET) SD
 https://tvpass.org/live/WNBA02/sd
-#EXTINF:-1 tvg-id="" tvg-name="Connecticut Sun @ Los Angeles Sparks (08/07 10:00 PM ET) HD" group-title="WNBA",Connecticut Sun @ Los Angeles Sparks (08/07 10:00 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Washington Mystics @ Minnesota Lynx (08/08 7:30 PM ET) HD" group-title="WNBA",Washington Mystics @ Minnesota Lynx (08/08 7:30 PM ET) HD
 https://tvpass.org/live/WNBA02/hd
-#EXTINF:-1 tvg-id="" tvg-name="Indiana Fever @ Phoenix Mercury (08/07 10:00 PM ET) SD" group-title="WNBA",Indiana Fever @ Phoenix Mercury (08/07 10:00 PM ET) SD
+#EXTINF:-1 tvg-id="" tvg-name="New York Liberty @ Dallas Wings (08/08 7:30 PM ET) SD" group-title="WNBA",New York Liberty @ Dallas Wings (08/08 7:30 PM ET) SD
+https://tvpass.org/live/WNBA01/sd
+#EXTINF:-1 tvg-id="" tvg-name="New York Liberty @ Dallas Wings (08/08 7:30 PM ET) HD" group-title="WNBA",New York Liberty @ Dallas Wings (08/08 7:30 PM ET) HD
+https://tvpass.org/live/WNBA01/hd
+#EXTINF:-1 tvg-id="" tvg-name="Washington Commanders @ New England Patriots (08/08 7:30 PM ET) SD" group-title="NFL",Washington Commanders @ New England Patriots (08/08 7:30 PM ET) SD
+https://tvpass.org/live/NFL02/sd
+#EXTINF:-1 tvg-id="" tvg-name="Washington Commanders @ New England Patriots (08/08 7:30 PM ET) HD" group-title="NFL",Washington Commanders @ New England Patriots (08/08 7:30 PM ET) HD
+https://tvpass.org/live/NFL02/hd
+#EXTINF:-1 tvg-id="" tvg-name="Cleveland Guardians @ Chicago White Sox (08/08 7:41 PM ET) SD" group-title="MLB",Cleveland Guardians @ Chicago White Sox (08/08 7:41 PM ET) SD
+https://tvpass.org/live/mlb-03/sd
+#EXTINF:-1 tvg-id="" tvg-name="Cleveland Guardians @ Chicago White Sox (08/08 7:41 PM ET) HD" group-title="MLB",Cleveland Guardians @ Chicago White Sox (08/08 7:41 PM ET) HD
+https://tvpass.org/live/mlb-03/hd
+#EXTINF:-1 tvg-id="" tvg-name="Philadelphia Phillies @ Texas Rangers (08/08 8:06 PM ET) SD" group-title="MLB",Philadelphia Phillies @ Texas Rangers (08/08 8:06 PM ET) SD
+https://tvpass.org/live/mlb-13/sd
+#EXTINF:-1 tvg-id="" tvg-name="Philadelphia Phillies @ Texas Rangers (08/08 8:06 PM ET) HD" group-title="MLB",Philadelphia Phillies @ Texas Rangers (08/08 8:06 PM ET) HD
+https://tvpass.org/live/mlb-13/hd
+#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Minnesota Twins (08/08 8:11 PM ET) SD" group-title="MLB",Kansas City Royals @ Minnesota Twins (08/08 8:11 PM ET) SD
+https://tvpass.org/live/mlb-20/sd
+#EXTINF:-1 tvg-id="" tvg-name="Kansas City Royals @ Minnesota Twins (08/08 8:11 PM ET) HD" group-title="MLB",Kansas City Royals @ Minnesota Twins (08/08 8:11 PM ET) HD
+https://tvpass.org/live/mlb-20/hd
+#EXTINF:-1 tvg-id="" tvg-name="New York Mets @ Milwaukee Brewers (08/08 8:11 PM ET) SD" group-title="MLB",New York Mets @ Milwaukee Brewers (08/08 8:11 PM ET) SD
+https://tvpass.org/live/mlb-16/sd
+#EXTINF:-1 tvg-id="" tvg-name="New York Mets @ Milwaukee Brewers (08/08 8:11 PM ET) HD" group-title="MLB",New York Mets @ Milwaukee Brewers (08/08 8:11 PM ET) HD
+https://tvpass.org/live/mlb-16/hd
+#EXTINF:-1 tvg-id="" tvg-name="Chicago Cubs @ St. Louis Cardinals (08/08 8:16 PM ET) SD" group-title="MLB",Chicago Cubs @ St. Louis Cardinals (08/08 8:16 PM ET) SD
+https://tvpass.org/live/mlb-08/sd
+#EXTINF:-1 tvg-id="" tvg-name="Chicago Cubs @ St. Louis Cardinals (08/08 8:16 PM ET) HD" group-title="MLB",Chicago Cubs @ St. Louis Cardinals (08/08 8:16 PM ET) HD
+https://tvpass.org/live/mlb-08/hd
+#EXTINF:-1 tvg-id="" tvg-name="Colorado Rockies @ Arizona Diamondbacks (08/08 9:41 PM ET) SD" group-title="MLB",Colorado Rockies @ Arizona Diamondbacks (08/08 9:41 PM ET) SD
+https://tvpass.org/live/mlb-09/sd
+#EXTINF:-1 tvg-id="" tvg-name="Colorado Rockies @ Arizona Diamondbacks (08/08 9:41 PM ET) HD" group-title="MLB",Colorado Rockies @ Arizona Diamondbacks (08/08 9:41 PM ET) HD
+https://tvpass.org/live/mlb-09/hd
+#EXTINF:-1 tvg-id="" tvg-name="Tampa Bay Rays @ Seattle Mariners (08/08 9:41 PM ET) SD" group-title="MLB",Tampa Bay Rays @ Seattle Mariners (08/08 9:41 PM ET) SD
+https://tvpass.org/live/mlb-10/sd
+#EXTINF:-1 tvg-id="" tvg-name="Tampa Bay Rays @ Seattle Mariners (08/08 9:41 PM ET) HD" group-title="MLB",Tampa Bay Rays @ Seattle Mariners (08/08 9:41 PM ET) HD
+https://tvpass.org/live/mlb-10/hd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ San Diego Padres (08/08 9:41 PM ET) SD" group-title="MLB",Boston Red Sox @ San Diego Padres (08/08 9:41 PM ET) SD
+https://tvpass.org/live/mlb-02/sd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ San Diego Padres (08/08 9:41 PM ET) HD" group-title="MLB",Boston Red Sox @ San Diego Padres (08/08 9:41 PM ET) HD
+https://tvpass.org/live/mlb-02/hd
+#EXTINF:-1 tvg-id="" tvg-name="Seattle Storm @ Las Vegas Aces (08/08 10:00 PM ET) SD" group-title="WNBA",Seattle Storm @ Las Vegas Aces (08/08 10:00 PM ET) SD
 https://tvpass.org/live/WNBA03/sd
-#EXTINF:-1 tvg-id="" tvg-name="Indiana Fever @ Phoenix Mercury (08/07 10:00 PM ET) HD" group-title="WNBA",Indiana Fever @ Phoenix Mercury (08/07 10:00 PM ET) HD
+#EXTINF:-1 tvg-id="" tvg-name="Seattle Storm @ Las Vegas Aces (08/08 10:00 PM ET) HD" group-title="WNBA",Seattle Storm @ Las Vegas Aces (08/08 10:00 PM ET) HD
 https://tvpass.org/live/WNBA03/hd
+#EXTINF:-1 tvg-id="" tvg-name="Toronto Blue Jays @ Los Angeles Dodgers (08/08 10:11 PM ET) SD" group-title="MLB",Toronto Blue Jays @ Los Angeles Dodgers (08/08 10:11 PM ET) SD
+https://tvpass.org/live/mlb-14/sd
+#EXTINF:-1 tvg-id="" tvg-name="Toronto Blue Jays @ Los Angeles Dodgers (08/08 10:11 PM ET) HD" group-title="MLB",Toronto Blue Jays @ Los Angeles Dodgers (08/08 10:11 PM ET) HD
+https://tvpass.org/live/mlb-14/hd
