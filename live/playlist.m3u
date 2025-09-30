@@ -707,11 +707,23 @@ https://tvpass.org/live/WPIX/hd
 https://tvpass.org/live/yes-network/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network HD" group-title="Live",Yes Network HD
 https://tvpass.org/live/yes-network/hd
-#EXTINF:-1 tvg-id="" tvg-name="New York Jets @ Miami Dolphins (09/29 7:16 PM ET) SD" group-title="NFL",New York Jets @ Miami Dolphins (09/29 7:16 PM ET) SD
-https://tvpass.org/live/ESPN/sd
-#EXTINF:-1 tvg-id="" tvg-name="New York Jets @ Miami Dolphins (09/29 7:16 PM ET) HD" group-title="NFL",New York Jets @ Miami Dolphins (09/29 7:16 PM ET) HD
-https://tvpass.org/live/ESPN/hd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Bengals @ Denver Broncos (09/29 8:16 PM ET) SD" group-title="NFL",Cincinnati Bengals @ Denver Broncos (09/29 8:16 PM ET) SD
-https://tvpass.org/live/WABCDT1/sd
-#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Bengals @ Denver Broncos (09/29 8:16 PM ET) HD" group-title="NFL",Cincinnati Bengals @ Denver Broncos (09/29 8:16 PM ET) HD
-https://tvpass.org/live/WABCDT1/hd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Cleveland Guardians (09/30 1:08 PM ET) SD" group-title="MLB",Detroit Tigers @ Cleveland Guardians (09/30 1:08 PM ET) SD
+https://tvpass.org/live/MLB06/sd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Tigers @ Cleveland Guardians (09/30 1:08 PM ET) HD" group-title="MLB",Detroit Tigers @ Cleveland Guardians (09/30 1:08 PM ET) HD
+https://tvpass.org/live/MLB06/hd
+#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Chicago Cubs (09/30 3:08 PM ET) SD" group-title="MLB",San Diego Padres @ Chicago Cubs (09/30 3:08 PM ET) SD
+https://tvpass.org/live/MLB01/sd
+#EXTINF:-1 tvg-id="" tvg-name="San Diego Padres @ Chicago Cubs (09/30 3:08 PM ET) HD" group-title="MLB",San Diego Padres @ Chicago Cubs (09/30 3:08 PM ET) HD
+https://tvpass.org/live/MLB01/hd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ New York Yankees (09/30 6:09 PM ET) SD" group-title="MLB",Boston Red Sox @ New York Yankees (09/30 6:09 PM ET) SD
+https://tvpass.org/live/MLB29/sd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Red Sox @ New York Yankees (09/30 6:09 PM ET) HD" group-title="MLB",Boston Red Sox @ New York Yankees (09/30 6:09 PM ET) HD
+https://tvpass.org/live/MLB29/hd
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Los Angeles Dodgers (09/30 9:08 PM ET) SD" group-title="MLB",Cincinnati Reds @ Los Angeles Dodgers (09/30 9:08 PM ET) SD
+https://tvpass.org/live/MLB22/sd
+#EXTINF:-1 tvg-id="" tvg-name="Cincinnati Reds @ Los Angeles Dodgers (09/30 9:08 PM ET) HD" group-title="MLB",Cincinnati Reds @ Los Angeles Dodgers (09/30 9:08 PM ET) HD
+https://tvpass.org/live/MLB22/hd
+#EXTINF:-1 tvg-id="" tvg-name="Indiana Fever @ Las Vegas Aces (09/30 9:30 PM ET) SD" group-title="WNBA",Indiana Fever @ Las Vegas Aces (09/30 9:30 PM ET) SD
+https://tvpass.org/live/ESPN2/sd
+#EXTINF:-1 tvg-id="" tvg-name="Indiana Fever @ Las Vegas Aces (09/30 9:30 PM ET) HD" group-title="WNBA",Indiana Fever @ Las Vegas Aces (09/30 9:30 PM ET) HD
+https://tvpass.org/live/ESPN2/hd
