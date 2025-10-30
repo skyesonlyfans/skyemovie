@@ -353,31 +353,41 @@ https://tvpass.org/live/WeTVEast/sd
 https://tvpass.org/live/WPIX/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network" group-title="Live",Yes Network
 https://tvpass.org/live/yes-network/sd
-#EXTINF:-1 tvg-id="" tvg-name="Houston Rockets @ Toronto Raptors (10/29 6:40 PM ET)" group-title="NBA",Houston Rockets @ Toronto Raptors (10/29 6:40 PM ET)
-https://tvpass.org/live/NBA25/sd
-#EXTINF:-1 tvg-id="" tvg-name="Cleveland Cavaliers @ Boston Celtics (10/29 7:10 PM ET)" group-title="NBA",Cleveland Cavaliers @ Boston Celtics (10/29 7:10 PM ET)
-https://tvpass.org/live/ESPN/sd
-#EXTINF:-1 tvg-id="" tvg-name="Orlando Magic @ Detroit Pistons (10/29 7:10 PM ET)" group-title="NBA",Orlando Magic @ Detroit Pistons (10/29 7:10 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="Norfolk State vs. Delaware State (10/30 7:00 PM ET)" group-title="NCAAF",Norfolk State vs. Delaware State (10/30 7:00 PM ET)
+https://tvpass.org/live/ESPNU/sd
+#EXTINF:-1 tvg-id="" tvg-name="Buffalo Sabres @ Boston Bruins (10/30 7:00 PM ET)" group-title="NHL",Buffalo Sabres @ Boston Bruins (10/30 7:00 PM ET)
+https://tvpass.org/live/NHL17/sd
+#EXTINF:-1 tvg-id="" tvg-name="Calgary Flames @ Ottawa Senators (10/30 7:00 PM ET)" group-title="NHL",Calgary Flames @ Ottawa Senators (10/30 7:00 PM ET)
+https://tvpass.org/live/NHL02/sd
+#EXTINF:-1 tvg-id="" tvg-name="Dallas Stars @ Tampa Bay Lightning (10/30 7:00 PM ET)" group-title="NHL",Dallas Stars @ Tampa Bay Lightning (10/30 7:00 PM ET)
+https://tvpass.org/live/NHL27/sd
+#EXTINF:-1 tvg-id="" tvg-name="Nashville Predators @ Philadelphia Flyers (10/30 7:00 PM ET)" group-title="NHL",Nashville Predators @ Philadelphia Flyers (10/30 7:00 PM ET)
+https://tvpass.org/live/NHL21/sd
+#EXTINF:-1 tvg-id="" tvg-name="Orlando Magic @ Charlotte Hornets (10/30 7:10 PM ET)" group-title="NBA",Orlando Magic @ Charlotte Hornets (10/30 7:10 PM ET)
 https://tvpass.org/live/NBA02/sd
-#EXTINF:-1 tvg-id="" tvg-name="Atlanta Hawks @ Brooklyn Nets (10/29 7:30 PM ET)" group-title="NBA",Atlanta Hawks @ Brooklyn Nets (10/29 7:30 PM ET)
-https://tvpass.org/live/NBA24/sd
-#EXTINF:-1 tvg-id="" tvg-name="Jacksonville State Gamecocks @ Middle Tennessee Blue Raiders (10/29 7:30 PM ET)" group-title="NCAAF",Jacksonville State Gamecocks @ Middle Tennessee Blue Raiders (10/29 7:30 PM ET)
-https://tvpass.org/live/ESPN2/sd
-#EXTINF:-1 tvg-id="" tvg-name="Toronto Maple Leafs @ Columbus Blue Jackets (10/29 7:40 PM ET)" group-title="NHL",Toronto Maple Leafs @ Columbus Blue Jackets (10/29 7:40 PM ET)
-https://tvpass.org/live/NHLNetwork/sd
-#EXTINF:-1 tvg-id="" tvg-name="Toronto Blue Jays @ Los Angeles Dodgers (10/29 8:00 PM ET)" group-title="MLB",Toronto Blue Jays @ Los Angeles Dodgers (10/29 8:00 PM ET)
-https://tvpass.org/live/WNYWDT1/sd
-#EXTINF:-1 tvg-id="" tvg-name="Florida International Panthers @ Missouri State Bears (10/29 8:00 PM ET)" group-title="NCAAF",Florida International Panthers @ Missouri State Bears (10/29 8:00 PM ET)
-https://tvpass.org/live/CBSSportsNetworkUSA/sd
-#EXTINF:-1 tvg-id="" tvg-name="Sacramento Kings @ Chicago Bulls (10/29 8:10 PM ET)" group-title="NBA",Sacramento Kings @ Chicago Bulls (10/29 8:10 PM ET)
-https://tvpass.org/live/NBA04/sd
-#EXTINF:-1 tvg-id="" tvg-name="Indiana Pacers @ Dallas Mavericks (10/29 8:30 PM ET)" group-title="NBA",Indiana Pacers @ Dallas Mavericks (10/29 8:30 PM ET)
-https://tvpass.org/live/NBA23/sd
-#EXTINF:-1 tvg-id="" tvg-name="New Orleans Pelicans @ Denver Nuggets (10/29 9:00 PM ET)" group-title="NBA",New Orleans Pelicans @ Denver Nuggets (10/29 9:00 PM ET)
-https://tvpass.org/live/NBA27/sd
-#EXTINF:-1 tvg-id="" tvg-name="Portland Trail Blazers @ Utah Jazz (10/29 9:00 PM ET)" group-title="NBA",Portland Trail Blazers @ Utah Jazz (10/29 9:00 PM ET)
-https://tvpass.org/live/NBA17/sd
-#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Lakers @ Minnesota Timberwolves (10/29 9:40 PM ET)" group-title="NBA",Los Angeles Lakers @ Minnesota Timberwolves (10/29 9:40 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="Tulane Green Wave @ UTSA Roadrunners (10/30 7:30 PM ET)" group-title="NCAAF",Tulane Green Wave @ UTSA Roadrunners (10/30 7:30 PM ET)
 https://tvpass.org/live/ESPN/sd
-#EXTINF:-1 tvg-id="" tvg-name="Memphis Grizzlies @ Phoenix Suns (10/29 10:10 PM ET)" group-title="NBA",Memphis Grizzlies @ Phoenix Suns (10/29 10:10 PM ET)
-https://tvpass.org/live/NBA18/sd
+#EXTINF:-1 tvg-id="" tvg-name="Marshall Thundering Herd @ Coastal Carolina Chanticleers (10/30 7:30 PM ET)" group-title="NCAAF",Marshall Thundering Herd @ Coastal Carolina Chanticleers (10/30 7:30 PM ET)
+https://tvpass.org/live/ESPN2/sd
+#EXTINF:-1 tvg-id="" tvg-name="New York Islanders @ Carolina Hurricanes (10/30 7:30 PM ET)" group-title="NHL",New York Islanders @ Carolina Hurricanes (10/30 7:30 PM ET)
+https://tvpass.org/live/NHL09/sd
+#EXTINF:-1 tvg-id="" tvg-name="Chicago Blackhawks @ Winnipeg Jets (10/30 8:00 PM ET)" group-title="NHL",Chicago Blackhawks @ Winnipeg Jets (10/30 8:00 PM ET)
+https://tvpass.org/live/NHL05/sd
+#EXTINF:-1 tvg-id="" tvg-name="Vancouver Canucks @ St Louis Blues (10/30 8:00 PM ET)" group-title="NHL",Vancouver Canucks @ St Louis Blues (10/30 8:00 PM ET)
+https://tvpass.org/live/NHL31/sd
+#EXTINF:-1 tvg-id="" tvg-name="Pittsburgh Penguins @ Minnesota Wild (10/30 8:00 PM ET)" group-title="NHL",Pittsburgh Penguins @ Minnesota Wild (10/30 8:00 PM ET)
+https://tvpass.org/live/NHL10/sd
+#EXTINF:-1 tvg-id="" tvg-name="Washington Wizards @ Oklahoma City Thunder (10/30 8:10 PM ET)" group-title="NBA",Washington Wizards @ Oklahoma City Thunder (10/30 8:10 PM ET)
+https://tvpass.org/live/NBA20/sd
+#EXTINF:-1 tvg-id="" tvg-name="Golden State Warriors @ Milwaukee Bucks (10/30 8:10 PM ET)" group-title="NBA",Golden State Warriors @ Milwaukee Bucks (10/30 8:10 PM ET)
+https://tvpass.org/live/NBA16/sd
+#EXTINF:-1 tvg-id="" tvg-name="Baltimore Ravens @ Miami Dolphins (10/30 8:15 PM ET)" group-title="NFL",Baltimore Ravens @ Miami Dolphins (10/30 8:15 PM ET)
+https://tvpass.org/live/tsn1/sd
+#EXTINF:-1 tvg-id="" tvg-name="Miami Heat @ San Antonio Spurs (10/30 8:30 PM ET)" group-title="NBA",Miami Heat @ San Antonio Spurs (10/30 8:30 PM ET)
+https://tvpass.org/live/NBA10/sd
+#EXTINF:-1 tvg-id="" tvg-name="New York Rangers @ Edmonton Oilers (10/30 9:00 PM ET)" group-title="NHL",New York Rangers @ Edmonton Oilers (10/30 9:00 PM ET)
+https://tvpass.org/live/NHL23/sd
+#EXTINF:-1 tvg-id="" tvg-name="New Jersey Devils @ San Jose Sharks (10/30 10:00 PM ET)" group-title="NHL",New Jersey Devils @ San Jose Sharks (10/30 10:00 PM ET)
+https://tvpass.org/live/NHL26/sd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Red Wings @ Los Angeles Kings (10/30 10:30 PM ET)" group-title="NHL",Detroit Red Wings @ Los Angeles Kings (10/30 10:30 PM ET)
+https://tvpass.org/live/NHL06/sd
