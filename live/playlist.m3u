@@ -353,39 +353,29 @@ https://tvpass.org/live/WeTVEast/sd
 https://tvpass.org/live/WPIX/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network" group-title="Live",Yes Network
 https://tvpass.org/live/yes-network/sd
-#EXTINF:-1 tvg-id="" tvg-name="Utah Jazz @ Detroit Pistons (11/05 7:00 PM ET)" group-title="NBA",Utah Jazz @ Detroit Pistons (11/05 7:00 PM ET)
-https://tvpass.org/live/NBA05/sd
-#EXTINF:-1 tvg-id="" tvg-name="Northern Illinois Huskies @ Toledo Rockets (11/05 7:00 PM ET)" group-title="NCAAF",Northern Illinois Huskies @ Toledo Rockets (11/05 7:00 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="Ottawa Senators @ Boston Bruins (11/06 7:00 PM ET)" group-title="NHL",Ottawa Senators @ Boston Bruins (11/06 7:00 PM ET)
+https://tvpass.org/live/NHL03/sd
+#EXTINF:-1 tvg-id="" tvg-name="St Louis Blues @ Buffalo Sabres (11/06 7:00 PM ET)" group-title="NHL",St Louis Blues @ Buffalo Sabres (11/06 7:00 PM ET)
+https://tvpass.org/live/NHL22/sd
+#EXTINF:-1 tvg-id="" tvg-name="Minnesota Wild @ Carolina Hurricanes (11/06 7:00 PM ET)" group-title="NHL",Minnesota Wild @ Carolina Hurricanes (11/06 7:00 PM ET)
+https://tvpass.org/live/NHL11/sd
+#EXTINF:-1 tvg-id="" tvg-name="Montréal Canadiens @ New Jersey Devils (11/06 7:00 PM ET)" group-title="NHL",Montréal Canadiens @ New Jersey Devils (11/06 7:00 PM ET)
+https://tvpass.org/live/NHL26/sd
+#EXTINF:-1 tvg-id="" tvg-name="Washington Capitals @ Pittsburgh Penguins (11/06 7:30 PM ET)" group-title="NHL",Washington Capitals @ Pittsburgh Penguins (11/06 7:30 PM ET)
+https://tvpass.org/live/NHL30/sd
+#EXTINF:-1 tvg-id="" tvg-name="Georgia Southern Eagles @ Appalachian State Mountaineers (11/06 7:30 PM ET)" group-title="NCAAF",Georgia Southern Eagles @ Appalachian State Mountaineers (11/06 7:30 PM ET)
 https://tvpass.org/live/ESPN2/sd
-#EXTINF:-1 tvg-id="" tvg-name="Kent State Golden Flashes @ Ball State Cardinals (11/05 7:00 PM ET)" group-title="NCAAF",Kent State Golden Flashes @ Ball State Cardinals (11/05 7:00 PM ET)
-https://tvpass.org/live/ESPNU/sd
-#EXTINF:-1 tvg-id="" tvg-name="Utah Mammoth @ Toronto Maple Leafs (11/05 7:00 PM ET)" group-title="NHL",Utah Mammoth @ Toronto Maple Leafs (11/05 7:00 PM ET)
-https://tvpass.org/live/NHL25/sd
-#EXTINF:-1 tvg-id="" tvg-name="Brooklyn Nets @ Indiana Pacers (11/05 7:00 PM ET)" group-title="NBA",Brooklyn Nets @ Indiana Pacers (11/05 7:00 PM ET)
-https://tvpass.org/live/NBA24/sd
-#EXTINF:-1 tvg-id="" tvg-name="Philadelphia 76ers @ Cleveland Cavaliers (11/05 7:10 PM ET)" group-title="NBA",Philadelphia 76ers @ Cleveland Cavaliers (11/05 7:10 PM ET)
-https://tvpass.org/live/NBA07/sd
-#EXTINF:-1 tvg-id="" tvg-name="Minnesota Timberwolves @ New York Knicks (11/05 7:30 PM ET)" group-title="NBA",Minnesota Timberwolves @ New York Knicks (11/05 7:30 PM ET)
-https://tvpass.org/live/NBA21/sd
-#EXTINF:-1 tvg-id="" tvg-name="Washington Wizards @ Boston Celtics (11/05 7:30 PM ET)" group-title="NBA",Washington Wizards @ Boston Celtics (11/05 7:30 PM ET)
-https://tvpass.org/live/NBA20/sd
-#EXTINF:-1 tvg-id="" tvg-name="St Louis Blues @ Washington Capitals (11/05 7:30 PM ET)" group-title="NHL",St Louis Blues @ Washington Capitals (11/05 7:30 PM ET)
-https://tvpass.org/live/TNTEast/sd
-#EXTINF:-1 tvg-id="" tvg-name="Houston Rockets @ Memphis Grizzlies (11/05 8:00 PM ET)" group-title="NBA",Houston Rockets @ Memphis Grizzlies (11/05 8:00 PM ET)
-https://tvpass.org/live/NBA25/sd
-#EXTINF:-1 tvg-id="" tvg-name="New Orleans Pelicans @ Dallas Mavericks (11/05 8:40 PM ET)" group-title="NBA",New Orleans Pelicans @ Dallas Mavericks (11/05 8:40 PM ET)
-https://tvpass.org/live/NBA27/sd
-#EXTINF:-1 tvg-id="" tvg-name="Miami Heat @ Denver Nuggets (11/05 9:00 PM ET)" group-title="NBA",Miami Heat @ Denver Nuggets (11/05 9:00 PM ET)
-https://tvpass.org/live/NBA10/sd
-#EXTINF:-1 tvg-id="" tvg-name="Columbus Blue Jackets @ Calgary Flames (11/05 9:30 PM ET)" group-title="NHL",Columbus Blue Jackets @ Calgary Flames (11/05 9:30 PM ET)
-https://tvpass.org/live/NHL20/sd
-#EXTINF:-1 tvg-id="" tvg-name="Golden State Warriors @ Sacramento Kings (11/05 10:00 PM ET)" group-title="NBA",Golden State Warriors @ Sacramento Kings (11/05 10:00 PM ET)
-https://tvpass.org/live/NBA11/sd
-#EXTINF:-1 tvg-id="" tvg-name="San Antonio Spurs @ Los Angeles Lakers (11/05 10:00 PM ET)" group-title="NBA",San Antonio Spurs @ Los Angeles Lakers (11/05 10:00 PM ET)
-https://tvpass.org/live/NBA09/sd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago Blackhawks @ Vancouver Canucks (11/05 10:00 PM ET)" group-title="NHL",Chicago Blackhawks @ Vancouver Canucks (11/05 10:00 PM ET)
-https://tvpass.org/live/NHL05/sd
-#EXTINF:-1 tvg-id="" tvg-name="San Jose Sharks @ Seattle Kraken (11/05 10:00 PM ET)" group-title="NHL",San Jose Sharks @ Seattle Kraken (11/05 10:00 PM ET)
-https://tvpass.org/live/NHL14/sd
-#EXTINF:-1 tvg-id="" tvg-name="Oklahoma City Thunder @ Portland Trail Blazers (11/05 10:10 PM ET)" group-title="NBA",Oklahoma City Thunder @ Portland Trail Blazers (11/05 10:10 PM ET)
-https://tvpass.org/live/NBA22/sd
+#EXTINF:-1 tvg-id="" tvg-name="UTSA Roadrunners @ South Florida Bulls (11/06 7:30 PM ET)" group-title="NCAAF",UTSA Roadrunners @ South Florida Bulls (11/06 7:30 PM ET)
+https://tvpass.org/live/ESPN/sd
+#EXTINF:-1 tvg-id="" tvg-name="Anaheim Ducks @ Dallas Stars (11/06 8:00 PM ET)" group-title="NHL",Anaheim Ducks @ Dallas Stars (11/06 8:00 PM ET)
+https://tvpass.org/live/NHL24/sd
+#EXTINF:-1 tvg-id="" tvg-name="Philadelphia Flyers @ Nashville Predators (11/06 8:00 PM ET)" group-title="NHL",Philadelphia Flyers @ Nashville Predators (11/06 8:00 PM ET)
+https://tvpass.org/live/NHL21/sd
+#EXTINF:-1 tvg-id="" tvg-name="Las Vegas Raiders @ Denver Broncos (11/06 8:15 PM ET)" group-title="NFL",Las Vegas Raiders @ Denver Broncos (11/06 8:15 PM ET)
+https://tvpass.org/live/tsn1/sd
+#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Clippers @ Phoenix Suns (11/06 9:00 PM ET)" group-title="NBA",Los Angeles Clippers @ Phoenix Suns (11/06 9:00 PM ET)
+https://tvpass.org/live/NBATV/sd
+#EXTINF:-1 tvg-id="" tvg-name="Florida Panthers @ Los Angeles Kings (11/06 10:00 PM ET)" group-title="NHL",Florida Panthers @ Los Angeles Kings (11/06 10:00 PM ET)
+https://tvpass.org/live/NHL07/sd
+#EXTINF:-1 tvg-id="" tvg-name="Tampa Bay Lightning @ Vegas Golden Knights (11/06 10:00 PM ET)" group-title="NHL",Tampa Bay Lightning @ Vegas Golden Knights (11/06 10:00 PM ET)
+https://tvpass.org/live/NHL08/sd
