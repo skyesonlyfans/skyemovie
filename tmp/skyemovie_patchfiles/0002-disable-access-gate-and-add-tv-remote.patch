@@ -1,0 +1,23 @@
+diff --git a/index.html b/index.html
+index 0000000..1111111 100644
+--- a/index.html
++++ b/index.html
+@@ -62,6 +62,13 @@
+     </div>
+
++    <!-- Access code requirement disabled -->
++    <script>
++        // Make sure any legacy access-gate logic can't block the app.
++        try { localStorage.setItem('skyeMovieAccessGranted', 'true'); } catch (e) {}
++    </script>
++
+     <div id="access-gate-section" class="hidden-section fullscreen-section">
+         <div class="form-container">
+             <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
+@@ -176,6 +183,7 @@
+     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
++    <script src="tv-remote.js"></script>
+     <script src="script.js"></script>
+ </body>
+ </html>

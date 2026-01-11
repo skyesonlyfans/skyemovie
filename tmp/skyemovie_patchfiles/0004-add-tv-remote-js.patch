@@ -1,0 +1,127 @@
+diff --git a/tv-remote.js b/tv-remote.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/tv-remote.js
+@@ -0,0 +1,138 @@
++// tv-remote.js
++// Adds Android TV / keyboard remote friendliness + MappleTV player event hooks
++(() => {
++  // --- TV mode detection ---
++  const ua = navigator.userAgent || "";
++  const isTvUA = /Android\sTV|SmartTV|GoogleTV|HbbTV|Tizen|Web0S|BRAVIA|AFTB|AFTT|AFTM|FireTV/i.test(ua);
++  const isLargeScreen = window.matchMedia && window.matchMedia("(min-width: 900px)").matches;
++  if (isTvUA || isLargeScreen) document.body.classList.add("tv-mode");
++
++  // --- Make key UI elements keyboard-focusable ---
++  const makeFocusable = (root = document) => {
++    root.querySelectorAll(".media-card, .discover-arrow, button, a").forEach((el) => {
++      if (el.tabIndex < 0) el.tabIndex = 0;
++      // Enter/OK triggers click
++      if (!el.__tvRemoteBound) {
++        el.__tvRemoteBound = true;
++        el.addEventListener("keydown", (e) => {
++          if (e.key === "Enter" || e.key === " " || e.key === "OK") {
++            e.preventDefault();
++            el.click();
++          }
++        });
++      }
++    });
++  };
++
++  // Run now + on DOM changes
++  makeFocusable();
++  const mo = new MutationObserver((muts) => {
++    for (const m of muts) for (const n of m.addedNodes) if (n.nodeType === 1) makeFocusable(n);
++  });
++  mo.observe(document.documentElement, { subtree: true, childList: true });
++
++  // --- Simple spatial navigation for arrow keys (remote D-pad) ---
++  const getFocusables = () => {
++    const els = Array.from(document.querySelectorAll("button, [href], input, select, textarea, [tabindex], .media-card, .discover-arrow"))
++      .filter((el) => !el.hasAttribute("disabled") && el.tabIndex >= 0 && el.offsetParent !== null);
++    return els;
++  };
++
++  const center = (r) => ({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
++
++  const pickNext = (current, dir) => {
++    const rect = current.getBoundingClientRect();
++    const c = center(rect);
++    const candidates = getFocusables().filter((el) => el !== current);
++    let best = null;
++    let bestScore = Infinity;
++
++    for (const el of candidates) {
++      const r = el.getBoundingClientRect();
++      const p = center(r);
++      const dx = p.x - c.x;
++      const dy = p.y - c.y;
++
++      // Direction gating
++      if (dir === "left" && dx >= -1) continue;
++      if (dir === "right" && dx <= 1) continue;
++      if (dir === "up" && dy >= -1) continue;
++      if (dir === "down" && dy <= 1) continue;
++
++      // Prefer closer + more aligned
++      const primary = (dir === "left" || dir === "right") ? Math.abs(dx) : Math.abs(dy);
++      const secondary = (dir === "left" || dir === "right") ? Math.abs(dy) : Math.abs(dx);
++      const score = primary + secondary * 2.5;
++
++      if (score < bestScore) {
++        bestScore = score;
++        best = el;
++      }
++    }
++    return best;
++  };
++
++  window.addEventListener("keydown", (e) => {
++    const keyMap = {
++      ArrowLeft: "left",
++      ArrowRight: "right",
++      ArrowUp: "up",
++      ArrowDown: "down",
++    };
++    const dir = keyMap[e.key];
++    if (!dir) return;
++
++    const active = document.activeElement;
++    if (!active || active === document.body) return;
++
++    const next = pickNext(active, dir);
++    if (next) {
++      e.preventDefault();
++      next.focus({ preventScroll: true });
++      next.scrollIntoView({ block: "nearest", inline: "nearest" });
++    }
++  }, { passive: false });
++
++  // --- MappleTV event listener (postMessage) ---
++  // Based on MappleTV event docs: window.postMessage payload with { type: "PLAYER_EVENT", event: "...", data: ... }
++  // We keep it robust by accepting messages that match this shape.
++  const PLAYER_EVENT_TYPE = "PLAYER_EVENT";
++
++  const saveProgress = (payload) => {
++    // Store last known event for current session; app can optionally read this later.
++    try {
++      const key = "skyeMoviePlayerLastEvent";
++      localStorage.setItem(key, JSON.stringify({ ts: Date.now(), payload }));
++    } catch (_) {}
++  };
++
++  window.addEventListener("message", (event) => {
++    const msg = event && event.data;
++    if (!msg || typeof msg !== "object") return;
++    if (msg.type !== PLAYER_EVENT_TYPE) return;
++
++    saveProgress(msg);
++
++    // Bubble a DOM event so the main app can hook into it if desired.
++    try {
++      window.dispatchEvent(new CustomEvent("skyeMovie:mappletvEvent", { detail: msg }));
++    } catch (_) {}
++  });
++})();
