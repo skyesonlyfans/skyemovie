@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyeMovie™</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        .settings-icon-svg { 
+            width: 20px; 
+            height: 20px; 
+            vertical-align: middle; 
+            margin-left: 5px; 
+            fill: currentColor;
+            cursor: pointer;
+        }
+        #initial-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #101010;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.7s ease-out, visibility 0.7s ease-out;
+            visibility: visible;
+        }
+        #initial-loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .initial-loading-logo {
+            font-family: 'Cherry Bomb One', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #FF69B4;
+            animation: pulseLogo 1.5s infinite ease-in-out;
+        }
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        #loading-message-text {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #a0a0a0;
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="initial-loading-overlay">
+        <div class="initial-loading-logo cherry-bomb-one-font">SkyeMovie™</div>
+        <p id="loading-message-text" style="display:none;">Loading...</p>
+    </div>
+
+    <div id="auth-section" class="hidden-section fullscreen-section">
+        <div class="form-container">
+            <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
+            <div id="login-form">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Email" autocomplete="email">
+                <input type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+                <button id="login-button">Login</button>
+                <p class="auth-separator"><span>OR</span></p>
+                <button id="google-signin-button" class="google-signin-button">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google G Logo"> Sign in with Google
+                </button>
+                <p class="auth-toggle">Don't have an account? <a href="#" id="show-register">Register here</a></p>
+                <p id="login-error" class="error-message"></p>
+            </div>
+            <div id="register-form" style="display: none;">
+                <h2>Register</h2>
+                <input type="email" id="register-email" placeholder="Email" autocomplete="email">
+                <input type="password" id="register-password" placeholder="Password" autocomplete="new-password">
+                <button id="register-button">Register</button>
+                <p class="auth-separator"><span>OR</span></p>
+                <button id="google-signup-button" class="google-signin-button">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google G Logo"> Sign up with Google
+                </button>
+                <p class="auth-toggle">Already have an account? <a href="#" id="show-login">Login here</a></p>
+                <p id="register-error" class="error-message"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app-section" class="hidden-section">
+        <header>
+            <h1 class="logo-title-small cherry-bomb-one-font">SkyeMovie™</h1>
+            <nav>
+                <button id="nav-home" class="nav-button">Home</button>
+                <button id="nav-search" class="nav-button">Search</button>
+                <button id="nav-favorites" class="nav-button">Favorites</button>
+                <button id="nav-lists" class="nav-button">My Lists</button>
+                <button id="nav-live-tv" class="nav-button">Live TV</button>
+                <button id="nav-donate" class="nav-button">Donate</button>
+            </nav>
+            <div class="user-info">
+                <span id="user-email-display" title="Account Settings" tabindex="0" role="button" aria-label="Open account settings"></span>
+                <button id="logout-button">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <div id="home-view" class="view active-view">
+                <div id="continue-watching-section" class="discover-section" style="display: none;">
+                    <div class="discover-media-row-wrapper">
+                        <div id="continue-watching-row" class="discover-media-row"></div>
+                        <button class="discover-arrow prev-arrow" aria-label="Previous Continue Watching">&#10094;</button>
+                        <button class="discover-arrow next-arrow" aria-label="Next Continue Watching">&#10095;</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="search-view" class="view">
+                <div class="search-controls-container">
+                    <div class="search-bar-wrapper">
+                        <input type="text" id="search-input" placeholder="Search for movies or TV shows..." autocomplete="off">
+                        <button id="search-button-main" aria-label="Search">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        </button>
+                    </div>
+                    <div id="autocomplete-suggestions" class="autocomplete-suggestions-list"></div>
+                    <p id="search-message" class="search-status-message">Type to search for movies and TV shows.</p>
+                    <div class="filter-sort-controls">
+                        <select id="filter-type" class="filter-select">
+                            <option value="all">All Types</option>
+                            <option value="movie">Movies</option>
+                            <option value="tv">TV Shows</option>
+                        </select>
+                        <select id="sort-by" class="filter-select">
+                            <option value="relevance">Relevance (Default)</option>
+                            <option value="popularity.desc">Popularity</option>
+                            <option value="release_date.desc">Release Date (Newest)</option>
+                            <option value="release_date.asc">Release Date (Oldest)</option>
+                            <option value="vote_average.desc">Rating (Highest)</option>
+                            <option value="vote_average.asc">Rating (Lowest)</option>
+                        </select>
+                        <button id="apply-filters-button" class="filter-button">Apply Filters/Sort</button>
+                    </div>
+                </div>
+                <div id="search-results-container">
+                    <div id="search-results-grid" class="media-grid"></div>
+                    <div id="pagination-controls" class="pagination-controls" style="display: none;">
+                        <button id="prev-page-button" class="pagination-button">Previous</button>
+                        <span id="page-info">Page 1 of 1</span>
+                        <button id="next-page-button" class="pagination-button">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="favorites-view" class="view">
+                <h2>My Favorites</h2>
+                <div id="favorites-grid" class="media-grid"></div>
+            </div>
+
+            <div id="lists-view" class="view">
+                <div class="lists-header">
+                    <h2>My Lists</h2>
+                    <button id="show-create-list-form-button" class="button-style">Create New List</button>
+                </div>
+                <div id="create-list-form-container" style="display:none;">
+                    <input type="text" id="new-list-name-input" placeholder="Enter list name (e.g., Sci-Fi Classics)">
+                    <button id="confirm-create-list-button" class="button-style">Save List</button>
+                    <button id="cancel-create-list-button" class="button-style-alt">Cancel</button>
+                </div>
+                <div id="user-lists-display-container"></div>
+                <div id="list-items-view-container" style="display:none;">
+                    <button id="back-to-my-lists-button" class="detail-back-button">&larr; Back to My Lists</button>
+                    <h3 id="current-list-name-display"></h3>
+                    <div id="current-list-items-grid" class="media-grid"></div>
+                </div>
+            </div>
+
+            <div id="live-tv-view" class="view">
+                <h2>Live TV (MAJOR WIP)</h2>
+                <p class="live-tv-intro">Attempting to play live channels in the browser. Playback quality and availability depend on the stream source and your browser's capabilities.</p>
+                <div id="live-tv-container">
+                    <div id="channel-list-container">
+                        <h3>Channels</h3>
+                        <ul id="channel-list"></ul>
+                    </div>
+                    <div id="tv-player-section">
+                        <div id="live-tv-video-player-container">
+                            <video id="live-tv-video-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%" height="100%" data-setup='{"fluid": true}'>
+                                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video.</p>
+                            </video>
+                        </div>
+                        <div id="epg-info">
+                            <h4 id="epg-channel-name">Select a channel</h4>
+                            <p id="epg-program-title"></p>
+                            <p id="epg-program-time"></p>
+                            <p id="epg-program-description"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="npvr-instructions-container" style="margin-top: 30px;">
+                    <hr class="section-hr">
+                    <h3>Alternative: Watch with NPVR (Windows PC)</h3>
+                    <p>For a potentially more stable experience on Windows, you can use NPVR:</p>
+                    <ol>
+                        <li>Download NPVR: <a href="https://github.com/oxyisbad222/skyemovie/releases/download/NPVRSetup/NPVRSetup.exe" target="_blank" rel="noopener noreferrer" class="button-style-alt" id="download-npvr-button">Download NPVRSetup.exe</a></li>
+                        <li>Install and setup NPVR (default login: admin/password).</li>
+                        <li>Use these URLs in NPVR:
+                            <div class="url-to-copy-container">
+                                <p><strong>M3U:</strong> <code id="npvr-m3u-url-display"></code> <button id="copy-m3u-url-button" class="button-style-alt-small">Copy</button></p>
+                                <p><strong>EPG:</strong> <code id="npvr-epg-url-display"></code> <button id="copy-epg-url-button" class="button-style-alt-small">Copy</button></p>
+                            </div>
+                        </li>
+                        <li><button id="open-npvr-web-ui-button" class="button-style">Open NPVR Web UI (localhost:8866)</button></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="donate-view" class="view">
+                <h2>Support SkyeMovie™</h2>
+                <p class="donate-intro">If you enjoy SkyeMovie™, please consider supporting its development and upkeep. Every little bit helps keep the magic alive!</p>
+                <div class="donation-widgets-container">
+                     <div class="donation-button-wrapper">
+                        <a href="https://fundly.com/keep-skyemovie-free-for-everyone" target="_blank" rel="noopener noreferrer" id="custom-donate-button" class="donate-button-trans">Donate!</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="settings-view" class="view">
+                <h2>Settings</h2>
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <h3>Playback Preferences</h3>
+                        <label for="setting-autoplay">
+                            <input type="checkbox" id="setting-autoplay"> Autoplay next video (when applicable)
+                        </label>
+                        <label for="setting-autonext">
+                            <input type="checkbox" id="setting-autonext"> Automatically queue next suggested video
+                        </label>
+                        <p class="setting-note">Note: Player behavior may also depend on Mapple's own settings.</p>
+                    </div>
+                    <div class="setting-item">
+                        <h3>History & Data</h3>
+                        <button id="setting-clear-continue-watching" class="button-style-alt">Clear Continue Watching History</button>
+                        <button id="setting-clear-api-cache" class="button-style-alt">Clear Cached API Data</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detail-view" class="view">
+                <button id="back-to-list-button" class="detail-back-button">&larr; Back</button>
+                <div id="media-detail-content"></div>
+            </div>
+
+            <div id="player-view" class="view">
+                <button id="close-player-button" class="detail-back-button">&larr; Back to Details</button>
+                <h3 id="player-title"></h3>
+                <div id="mappletv-player-container">
+                    </div>
+            </div>
+
+            <div id="add-to-list-modal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <span class="close-modal-button" id="close-add-to-list-modal">&times;</span>
+                    <h3>Add to List</h3>
+                    <p id="add-to-list-modal-item-title"></p>
+                    <div id="modal-existing-lists-container"></div>
+                    <div class="modal-create-new-list">
+                        <input type="text" id="modal-new-list-name" placeholder="Or create new list...">
+                        <button id="modal-confirm-create-and-add-button" class="button-style">Create & Add</button>
+                    </div>
+                    <p id="add-to-list-modal-error" class="error-message"></p>
+                </div>
+            </div>
+
+        </main>
+        <footer>
+            <a href="https://skyebeta.vercel.app/" target="_blank" rel="noopener noreferrer" id="ios-beta-button">SkyeMovie™ iOS App (Beta)</a>
+            <p>&copy; <span id="current-year"></span> SkyeMovie™. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="tv-remote.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

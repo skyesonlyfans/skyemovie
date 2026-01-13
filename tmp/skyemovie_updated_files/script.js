@@ -1,0 +1,438 @@
+const TMDB_API_KEY = 'cf4df30d74d9e322e596d876fd7db13e';
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+const TMDB_DETAIL_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w780';
+const WATCHMODE_API_KEY = 'GnIdrvUyNWlSVmLnZcuxdSCB4jSy18icYwMEojuP';
+const WATCHMODE_BASE_URL = 'https://api.watchmode.com/v1';
+const LIVE_TV_M3U_URL_PATH = './live/playlist.m3u';
+const LIVE_TV_EPG_URL_PATH = './live/epg.xml';
+
+let CONFIG_SKYE_MOVIE_ACCESS_CODE = null;
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCfzT7R2S4zezUeH7BayyQtKSTZ0fDfMGw",
+  authDomain: "skye-movie.firebaseapp.com",
+  projectId: "skye-movie",
+  storageBucket: "skye-movie.firebasestorage.app",
+  messagingSenderId: "622740998651",
+  appId: "1:622740998651:web:d89656336aea5994c3a35e",
+  measurementId: "G-GXEW4WYS30"
+};
+
+let fbApp, fbAuth, fbFirestore, googleAuthProvider;
+try {
+  fbApp = firebase.initializeApp(firebaseConfig);
+  fbAuth = firebase.auth();
+  fbFirestore = firebase.firestore();
+  googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+} catch (e) { console.error("Firebase initialization error:", e); }
+
+let currentUser = null, currentWatchmodeRateLimits = {}, lastActiveListView = 'home-view', currentOpenDetail = null;
+let userFavorites = new Set(), userContinueWatching = [], userSettings = { autoplayVOD: false, autonextVOD: false };
+let currentRawSearchResults = [], currentSearchQuery = '', searchCurrentPage = 1, searchTotalPages = 1;
+let userCustomLists = {}, currentViewingListId = null, currentMediaForListModal = null;
+let hlsInstance = null;
+let mappletvIframeObserver = null;
+
+const DOMElements = {
+    initialLoadingOverlay: document.getElementById('initial-loading-overlay'),
+    loadingMessageText: document.getElementById('loading-message-text'),
+    accessGateSection:document.getElementById('access-gate-section'),accessCodeInput:document.getElementById('access-code-input'),
+    submitAccessCodeButton:document.getElementById('submit-access-code'),accessError:document.getElementById('access-error'),
+    authSection:document.getElementById('auth-section'),loginForm:document.getElementById('login-form'),
+    registerForm:document.getElementById('register-form'),loginEmailInput:document.getElementById('login-email'),
+    loginPasswordInput:document.getElementById('login-password'),loginButton:document.getElementById('login-button'),
+    googleSignInButton:document.getElementById('google-signin-button'),googleSignUpButton:document.getElementById('google-signup-button'),
+    loginError:document.getElementById('login-error'),registerEmailInput:document.getElementById('register-email'),
+    registerPasswordInput:document.getElementById('register-password'),registerButton:document.getElementById('register-button'),
+    registerError:document.getElementById('register-error'),showRegisterLink:document.getElementById('show-register'),
+    showLoginLink:document.getElementById('show-login'),mainAppSection:document.getElementById('main-app-section'),
+    userEmailDisplay:document.getElementById('user-email-display'),logoutButton:document.getElementById('logout-button'),
+    navHome:document.getElementById('nav-home'),navSearch:document.getElementById('nav-search'),
+    navFavorites:document.getElementById('nav-favorites'),navLists:document.getElementById('nav-lists'),
+    navLiveTv:document.getElementById('nav-live-tv'),navDonate:document.getElementById('nav-donate'),navButtons:[],
+    homeView:document.getElementById('home-view'),continueWatchingSection:document.getElementById('continue-watching-section'),
+    continueWatchingRow:document.getElementById('continue-watching-row'),searchView:document.getElementById('search-view'),
+    searchInput:document.getElementById('search-input'),searchButtonMain:document.getElementById('search-button-main'),
+    searchControlsContainer: document.getElementById('search-view').querySelector('.search-controls-container'),
+    searchBarWrapper: document.getElementById('search-view').querySelector('.search-bar-wrapper'),
+    filterTypeSelect:document.getElementById('filter-type'),sortBySelect:document.getElementById('sort-by'),
+    applyFiltersButton:document.getElementById('apply-filters-button'),searchResultsGrid:document.getElementById('search-results-grid'),
+    searchMessage:document.getElementById('search-message'),autocompleteSuggestions:document.getElementById('autocomplete-suggestions'),
+    paginationControls:document.getElementById('pagination-controls'),prevPageButton:document.getElementById('prev-page-button'),
+    nextPageButton:document.getElementById('next-page-button'),pageInfo:document.getElementById('page-info'),
+    favoritesView:document.getElementById('favorites-view'),favoritesGrid:document.getElementById('favorites-grid'),
+    listsView:document.getElementById('lists-view'),myListsContainer:document.getElementById('my-lists-container'),
+    showCreateListFormButton:document.getElementById('show-create-list-form-button'),createListFormContainer:document.getElementById('create-list-form-container'),
+    newListNameInput:document.getElementById('new-list-name-input'),confirmCreateListButton:document.getElementById('confirm-create-list-button'),
+    cancelCreateListButton:document.getElementById('cancel-create-list-button'),userListsDisplayContainer:document.getElementById('user-lists-display-container'),
+    listItemsViewContainer:document.getElementById('list-items-view-container'),backToMyListsButton:document.getElementById('back-to-my-lists-button'),
+    currentListNameDisplay:document.getElementById('current-list-name-display'),currentListItemsGrid:document.getElementById('current-list-items-grid'),
+    addToListModal:document.getElementById('add-to-list-modal'),closeAddToListModalButton:document.getElementById('close-add-to-list-modal'),
+    addToListModalItemTitle:document.getElementById('add-to-list-modal-item-title'),modalExistingListsContainer:document.getElementById('modal-existing-lists-container'),
+    modalNewListNameInput:document.getElementById('modal-new-list-name'),modalConfirmCreateAndAddButton:document.getElementById('modal-confirm-create-and-add-button'),
+    addToListModalError:document.getElementById('add-to-list-modal-error'),
+    liveTvView:document.getElementById('live-tv-view'),
+    liveTvContainer:document.getElementById('live-tv-container'),channelList:document.getElementById('channel-list'),
+    tvPlayerSection:document.getElementById('tv-player-section'),liveTvVideoPlayerContainer:document.getElementById('live-tv-video-player-container'),
+    liveTvVideoPlayer:document.getElementById('live-tv-video-player'),epgInfo:document.getElementById('epg-info'),
+    epgChannelName:document.getElementById('epg-channel-name'),epgProgramTitle:document.getElementById('epg-program-title'),
+    epgProgramTime:document.getElementById('epg-program-time'),epgProgramDescription:document.getElementById('epg-program-description'),
+    downloadNpvrButton: document.getElementById('download-npvr-button'),
+    downloadM3uButton: document.getElementById('download-m3u-button'),
+    npvrM3uUrlDisplay: document.getElementById('npvr-m3u-url-display'),
+    copyM3uUrlButton: document.getElementById('copy-m3u-url-button'),
+    npvrEpgUrlDisplay: document.getElementById('npvr-epg-url-display'),
+    copyEpgUrlButton: document.getElementById('copy-epg-url-button'),
+    openNpvrWebUiButton: document.getElementById('open-npvr-web-ui-button'),
+    donateView:document.getElementById('donate-view'),
+    settingsView:document.getElementById('settings-view'),
+    settingsContainer:document.getElementById('settings-container'),settingAutoplay:document.getElementById('setting-autoplay'),
+    settingAutonext:document.getElementById('setting-autonext'),settingClearContinueWatching:document.getElementById('setting-clear-continue-watching'),
+    settingClearApiCache:document.getElementById('setting-clear-api-cache'),detailView:document.getElementById('detail-view'),
+    mediaDetailContent:document.getElementById('media-detail-content'),backToListButton:document.getElementById('back-to-list-button'),
+    playerView:document.getElementById('player-view'),playerTitle:document.getElementById('player-title'),
+    mappletvPlayerContainer:document.getElementById('mappletv-player-container'),closePlayerButton:document.getElementById('close-player-button'),
+    currentYearSpan:document.getElementById('current-year')
+};
+DOMElements.navButtons=[DOMElements.navHome,DOMElements.navSearch,DOMElements.navFavorites,DOMElements.navLists,DOMElements.navLiveTv,DOMElements.navDonate].filter(Boolean);
+
+const ApiCache=(function(){const C='skyeMovieCache_v7_';const D=3600*1000*3;return{get:(k)=>{const iS=localStorage.getItem(C+k);if(!iS)return null;try{const i=JSON.parse(iS);const n=new Date().getTime();if(n>i.expiry){localStorage.removeItem(C+k);return null;}return i.value;}catch(e){console.error("Cache read:",e);localStorage.removeItem(C+k);return null;}},set:(k,v,t=D)=>{const n=new Date().getTime();const i={value:v,expiry:n+t};try{localStorage.setItem(C+k,JSON.stringify(i));}catch(e){console.warn("Cache write:",e.message);}},updateRateLimits:(h)=>{currentWatchmodeRateLimits={limit:h.get('X-RateLimit-Limit'),remaining:h.get('X-RateLimit-Remaining'),quota:h.get('X-Account-Quota'),quotaUsed:h.get('X-Account-Quota-Used'),timestamp:new Date().toLocaleTimeString()};if(currentWatchmodeRateLimits.remaining&&parseInt(currentWatchmodeRateLimits.remaining)<10)console.warn("Watchmode low rate limit!");},clearAll:()=>{let c=0;for(const k in localStorage)if(k.startsWith(C)){localStorage.removeItem(k);c++;}alert(`API cache cleared (${c} items).`);console.log("API Cache Cleared");}};})();
+
+const ApiService=(function(){return{fetchTMDB:async(ep,p={})=>{const ps=new URLSearchParams({api_key:TMDB_API_KEY,...p});const u=`${TMDB_BASE_URL}/${ep}?${ps}`;const cK=`tmdb_${ep}_${JSON.stringify(p)}`;const ca=ApiCache.get(cK);if(ca)return ca;try{const r=await fetch(u);if(!r.ok){const eD=await r.json().catch(()=>({}));console.error(`TMDB API Error (${r.status}) for ${u}:`,eD);throw new Error(`TMDB API Error: ${r.statusText} (${r.status})`);}const d=await r.json();ApiCache.set(cK,d);return d;}catch(e){console.error('TMDB Fetch Error:',e.message);throw e;}},fetchWatchmode:async(ep,p={},useC=true)=>{const ps=new URLSearchParams({apiKey:WATCHMODE_API_KEY,...p});const u=`${WATCHMODE_BASE_URL}/${ep}/?${ps}`;const cK=`watchmode_${ep}_${JSON.stringify(p)}`;if(useC){const ca=ApiCache.get(cK);if(ca)return ca;}try{const r=await fetch(u);ApiCache.updateRateLimits(r.headers);if(!r.ok){let eD={message:r.statusText};try{eD=await r.json();}catch(e){}console.error(`Watchmode API Error (${r.status}) for ${u}:`,eD);throw new Error(`Watchmode API Error (${r.status}): ${eD.detail||eD.message||r.statusText}`);}const d=await r.json();if(useC)ApiCache.set(cK,d);return d;}catch(e){console.error('Watchmode Error:',e.message);throw e;}},getMappletvPlayerUrl:(type,id,s,ep,opts={})=>{const base='https://mapple.uk/watch';const params=new URLSearchParams();const showTitle=typeof opts.title==='undefined'?false:!!opts.title;const showPoster=typeof opts.poster==='undefined'?false:!!opts.poster;params.set('title',showTitle?'true':'false');params.set('poster',showPoster?'true':'false');if(typeof opts.autoPlay!=='undefined')params.set('autoPlay',opts.autoPlay?'true':'false');if(typeof opts.startAt==='number'&&isFinite(opts.startAt)&&opts.startAt>0)params.set('startAt',String(Math.floor(opts.startAt)));const theme=opts.theme?String(opts.theme).replace('#',''):'FF69B4';if(theme)params.set('theme',theme);if(type==='tv'){if(typeof opts.nextButton!=='undefined')params.set('nextButton',opts.nextButton?'true':'false');if(typeof opts.autoNext!=='undefined')params.set('autoNext',opts.autoNext?'true':'false');const path=`${base}/tv/${id}-${s||1}-${ep||1}`;const qs=params.toString();return qs?`${path}?${qs}`:path;}if(type==='movie'){const path=`${base}/movie/${id}`;const qs=params.toString();return qs?`${path}?${qs}`:path;}console.error("Mapple Error: Unsupported type",type);return null;},fetchM3UPlaylist:async(url)=>{try{const r=await fetch(url);if(!r.ok)throw new Error(`M3U Error: ${r.statusText}`);return await r.text();}catch(e){console.error("M3U Playlist Error:",e);throw e;}},parseM3UPlaylist:(str)=>{const l=str.split('\n');const c=[];let cur=null;for(const ln of l){if(ln.startsWith('#EXTINF:')){const iM=ln.match(/#EXTINF:-1(.*),(.*)/);if(iM&&iM.length>=3){const aS=iM[1].trim();const n=iM[2].trim();cur={name:n,attributes:{},url:''};const aR=/(\S+?)="([^"]*)"/g;let m;while((m=aR.exec(aS))!==null)cur.attributes[m[1]]=m[2];if(cur.attributes['tvg-name'])cur.name=cur.attributes['tvg-name'];}}else if(cur&&ln.trim()&&!ln.startsWith('#')){cur.url=ln.trim();c.push(cur);cur=null;}}return c;},fetchEPG:async(url)=>{try{const r=await fetch(url);if(!r.ok)throw new Error(`EPG Error:${r.statusText}`);const xT=await r.text();const prs=new DOMParser();return prs.parseFromString(xT,"application/xml");}catch(e){console.error("EPG Error:",e);throw e;}}};})();
+
+const UIService=(function(){return{showSection:(el)=>{[DOMElements.accessGateSection,DOMElements.authSection,DOMElements.mainAppSection].filter(Boolean).forEach(s=>{s.classList.remove('active-section');s.classList.add('hidden-section');});if(el){el.classList.add('active-section');el.classList.remove('hidden-section');}},showView:(vId)=>{document.querySelectorAll('#main-app-section .view').forEach(v=>v.classList.remove('active-view'));const tV=document.getElementById(vId);if(tV){tV.classList.add('active-view');if(['home-view','search-view','favorites-view','lists-view','live-tv-view','settings-view','donate-view'].includes(vId))lastActiveListView=vId;}DOMElements.navButtons.forEach(b=>{if(b)b.classList.remove('active-nav');});const aNBId=`nav-${vId.replace('-view','')}`;const aNB=document.getElementById(aNBId);if(aNB)aNB.classList.add('active-nav');window.scrollTo(0,0);},createMediaCard:(item,favOver=null,cT='default')=>{let id=String(item.id||item.tmdb_id),title=item.title||item.name||"Untitled",pP=item.poster_path||item.posterPath,r=item.vote_average?parseFloat(item.vote_average).toFixed(1):(item.user_rating?parseFloat(item.user_rating).toFixed(1):null),y=item.year||(item.release_date?item.release_date.substring(0,4):(item.first_air_date?item.first_air_date.substring(0,4):'')),type=item.type||item.media_type||'unknown';if(['tv_series','tv_miniseries','tv_special'].includes(type))type='tv';const pU=pP?`${TMDB_IMAGE_BASE_URL}${pP}`:'https://via.placeholder.com/180x270.png?text=No+Image';const iF=favOver!==null?favOver:userFavorites.has(id);const card=document.createElement('div');card.className='media-card';card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label',title);card.dataset.id=id;card.dataset.type=type;card.dataset.title=title;card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.click();}});if(item.season_number)card.dataset.season=item.season_number;if(item.episode_number)card.dataset.episode=item.episode_number;let delB=cT==='continue-watching'?`<button class="delete-from-cw-button" data-id="${id}" title="Remove">&times;</button>`:'';let progH=(cT==='continue-watching'&&item.progressPercent>0&&item.progressPercent<95)?`<div class="media-card-progress-bar"><div style="width:${item.progressPercent}%"></div></div>`:'';let epIH=(item.season_number&&item.episode_number&&cT==='continue-watching')?`<p class="episode-info">S${item.season_number} E${item.episode_number}</p>`:'';card.innerHTML=`<img src="${pU}" alt="${title}" loading="lazy">${r?`<span class="rating">⭐ ${r}</span>`:''}<button class="add-to-favorites ${iF?'favorited':''}" data-id="${id}" title="${iF?'Remove Fav':'Add Fav'}">${iF?'♥':'♡'}</button>${delB}<div class="card-content"><p class="title">${title}</p>${y?`<p class="year">${y}</p>`:''}${epIH}</div>${progH}`;card.addEventListener('click',e=>{if(e.target.classList.contains('add-to-favorites')||e.target.classList.contains('delete-from-cw-button'))return;if(cT==='continue-watching')AppLogic.resumeWatching(item);else AppLogic.handleMediaItemClick(id,type);});card.querySelector('.add-to-favorites').addEventListener('click',e=>{e.stopPropagation();FavoritesService.toggleFavorite(id,{title,type,poster_path:pP,vote_average:r,year:y},e.target.classList.contains('favorited'),e.target);});if(cT==='continue-watching'){card.querySelector('.delete-from-cw-button')?.addEventListener('click',e=>{e.stopPropagation();ContinueWatchingService.removeFromContinueWatching(id);});}return card;},renderMediaRow:(el,items,cT='default')=>{el.innerHTML='';if(!items||items.length===0){let m=cT==='continue-watching'?"Nothing here. Watch something!":"No items found.";el.innerHTML=`<p class="empty-row-message">${m}</p>`;const w=el.closest('.discover-media-row-wrapper');if(w)AppLogic.updateDiscoverRowArrows(el,w.querySelector('.prev-arrow'),w.querySelector('.next-arrow'));return;}items.forEach(i=>{if((i.poster_path||i.posterPath)&&(i.title||i.name))el.appendChild(UIService.createMediaCard(i,null,cT));});},renderGrid:(el,items,msgEl,emptyMsg)=>{el.innerHTML='';if(msgEl)msgEl.textContent='';if(!items||items.length===0){if(msgEl)msgEl.textContent=emptyMsg||"No results.";else el.innerHTML=`<p class="empty-grid-message">${emptyMsg||"No results."}</p>`;if(DOMElements.paginationControls)DOMElements.paginationControls.style.display='none';return;}items.forEach(i=>{if((i.poster_path||i.posterPath)&&(i.title||i.name))el.appendChild(UIService.createMediaCard(i));});},renderAutocompleteSuggestions:(suggs)=>{DOMElements.autocompleteSuggestions.innerHTML='';if(!suggs||suggs.length===0){DOMElements.autocompleteSuggestions.style.display='none';return;}suggs.slice(0,5).forEach(i=>{const d=document.createElement('div');d.textContent=`${i.name} (${i.year||'N/A'})`;d.addEventListener('click',()=>{DOMElements.searchInput.value=i.name;UIService.clearAutocomplete();AppLogic.triggerSearchOrFilter(true);});DOMElements.autocompleteSuggestions.appendChild(d);});if(DOMElements.searchInput&&DOMElements.searchBarWrapper){DOMElements.autocompleteSuggestions.style.display='block';const sIR=DOMElements.searchInput.getBoundingClientRect();const sBCR=DOMElements.searchBarWrapper.getBoundingClientRect();DOMElements.autocompleteSuggestions.style.left=`${sIR.left-sBCR.left}px`;DOMElements.autocompleteSuggestions.style.top=`${sIR.bottom-sBCR.top}px`;DOMElements.autocompleteSuggestions.style.width=`${sIR.width}px`;}else{DOMElements.autocompleteSuggestions.style.display='none';}},renderMediaDetail:async(id,type)=>{DOMElements.mediaDetailContent.innerHTML='<p class="loading-message">Loading...</p>';UIService.showView('detail-view');currentOpenDetail=null;try{let det,tmdbId=String(id),cert='N/A';if(type==='movie'){det=await ApiService.fetchTMDB(`movie/${tmdbId}`,{append_to_response:'credits,videos,release_dates'});const rD=det.release_dates;if(rD&&rD.results){const uR=rD.results.find(r=>r.iso_3166_1==='US');if(uR&&uR.release_dates){const cE=uR.release_dates.find(rd=>rd.certification&&rd.certification!=="");if(cE)cert=cE.certification;}}}else if(type==='tv'){det=await ApiService.fetchTMDB(`tv/${tmdbId}`,{append_to_response:'credits,videos,content_ratings,external_ids'});const cR=det.content_ratings;if(cR&&cR.results){const uR=cR.results.find(r=>r.iso_3166_1==='US');if(uR&&uR.rating)cert=uR.rating;}}else throw new Error(`Unsupported type "${type}"`);currentOpenDetail={...det,id:tmdbId,type:type,certification:cert};let srcs=[];try{const wT=type==='movie'?'movie':'tv'; const sD=await ApiService.fetchWatchmode(`title/tmdb-${wT}-${tmdbId}/sources`); if(sD&&Array.isArray(sD))srcs=sD.filter(s=>['sub','rent','buy'].includes(s.type)).map(s=>({name:s.name,type:s.type.replace('_',' '),web_url:s.web_url}));}catch(e){console.warn("Sources fetch error:",e.message);} const title=det.title||det.name,pPath=det.poster_path,ov=det.overview,rating=det.vote_average?parseFloat(det.vote_average).toFixed(1):null,rlsDate=det.release_date||det.first_air_date,genres=det.genres?det.genres.map(g=>`<span>${g.name}</span>`).join(''):'',pUrl=pPath?`${TMDB_DETAIL_IMAGE_BASE_URL}${pPath}`:'https://via.placeholder.com/300x450.png?text=No+Image',certDisp=cert&&cert!=='N/A'?`<span class="content-rating-tag">${cert}</span>`:'';let sHtml='';if(type==='tv'&&det.seasons){const dS=det.seasons.filter(s=>s.episode_count>0&&(s.season_number>0||det.seasons.length===1));if(dS.length>0)sHtml=`<div id="season-episode-selector"><label for="season-select">Season:</label><select id="season-select">${dS.map(s=>`<option value="${s.season_number}" data-episodes="${s.episode_count}">${s.name} (${s.episode_count} ep.)</option>`).join('')}</select><label for="episode-select">Episode:</label><select id="episode-select"></select></div>`;} const isFav=userFavorites.has(tmdbId); const srcsDisp=srcs.length>0?`<p><strong>Available on:</strong></p><div class="sources-list">${srcs.map(s=>`<a href="${s.web_url}" target="_blank" rel="noopener noreferrer"><span>${s.name} (${s.type})</span></a>`).join('')}</div>`:''; DOMElements.mediaDetailContent.innerHTML=`<img src="${pUrl}" alt="${title}" class="detail-poster"><div class="media-info"><h3>${title} ${certDisp}</h3>${rating?`<p><strong>Rating:</strong> ⭐ ${rating}/10</p>`:''}${rlsDate?`<p><strong>Released:</strong> ${new Date(rlsDate).toLocaleDateString()}</p>`:''}${genres?`<p><strong>Genres:</strong></p><div class="genres-list">${genres}</div>`:''}<p><strong>Plot:</strong> ${ov||'No overview.'}</p>${srcsDisp}${sHtml}<div class="play-button-container"><button id="play-media-button">▶ Play ${type==='tv'?'Episode':'Movie'}</button><button id="detail-favorite-button" class="add-to-favorites ${isFav?'favorited':''}" data-id="${tmdbId}">${isFav?'♥ Favorited':'♡ Add to Favs'}</button><button id="add-to-list-button-detail" data-id="${tmdbId}" data-title="${encodeURIComponent(title)}" data-type="${type}" data-poster="${pPath||''}">Add to List</button></div></div>`; const dFavBtn=DOMElements.mediaDetailContent.querySelector('#detail-favorite-button'); if(dFavBtn)dFavBtn.addEventListener('click',function(){FavoritesService.toggleFavorite(tmdbId,{title,type,poster_path:pPath,vote_average:rating,year:rlsDate?rlsDate.substring(0,4):''},this.classList.contains('favorited'),this,true);}); const addToListBtn=DOMElements.mediaDetailContent.querySelector('#add-to-list-button-detail'); if(addToListBtn)addToListBtn.addEventListener('click',()=>AppLogic.handleAddToListModal(tmdbId,{title,type,poster_path:pPath})); if(type==='tv'&&document.getElementById('season-select'))AppLogic.setupSeasonEpisodeSelector(); const playBtn=document.getElementById('play-media-button'); if(playBtn)playBtn.addEventListener('click',AppLogic.handlePlayMedia);}catch(e){console.error('Detail render error:',e.message);DOMElements.mediaDetailContent.innerHTML=`<p class="error-message">Error: ${e.message}</p>`;}},renderPlayer:(type,id,title,s,ep,startAt)=>{if(mappletvIframeObserver)mappletvIframeObserver.disconnect();mappletvIframeObserver=null;DOMElements.mappletvPlayerContainer.innerHTML='';const opts={autoPlay:userSettings.autoplayVOD,autoNext:(userSettings.autoplayVOD&&userSettings.autonextVOD),nextButton:true,startAt:(typeof startAt==='number'?startAt:undefined)};const pUrl=ApiService.getMappletvPlayerUrl(type,id,s,ep,opts);if(!pUrl){DOMElements.mappletvPlayerContainer.innerHTML=`<p class="error-message">Player URL error.</p>`;UIService.showView('player-view');if(DOMElements.playerTitle)DOMElements.playerTitle.textContent="Playback Error";return;}if(DOMElements.playerTitle)DOMElements.playerTitle.textContent=(type==='tv'&&s&&ep)?`${title} - S${s} E${ep}`:title;const iframe=document.createElement('iframe');iframe.id='mappletv-iframe-player';iframe.src=pUrl;iframe.tabIndex=0;iframe.setAttribute('title',title||'Player');iframe.setAttribute('allow','autoplay; fullscreen');iframe.setAttribute('allowfullscreen','');DOMElements.mappletvPlayerContainer.appendChild(iframe);UIService.showView('player-view');if(currentUser&&currentOpenDetail)ContinueWatchingService.addToContinueWatching(currentOpenDetail,s,ep);if(type==='tv'&&iframe)AppLogic.observeMappletvPlayer(iframe,id,title);},clearAutocomplete:()=>{if(DOMElements.autocompleteSuggestions){DOMElements.autocompleteSuggestions.innerHTML='';DOMElements.autocompleteSuggestions.style.display='none';}}};})();
+
+const AuthService=(function(){
+  return{
+    handleRegister:async()=>{
+      const e=DOMElements.registerEmailInput.value;
+      const p=DOMElements.registerPasswordInput.value;
+      DOMElements.registerError.textContent='';
+      DOMElements.loginError.textContent='';
+      try{
+        await fbAuth.createUserWithEmailAndPassword(e,p);
+      }catch(err){
+        DOMElements.registerError.textContent=err.message;
+      }
+    },
+
+    handleLogin:async()=>{
+      const e=DOMElements.loginEmailInput.value;
+      const p=DOMElements.loginPasswordInput.value;
+      DOMElements.loginError.textContent='';
+      DOMElements.registerError.textContent='';
+      try{
+        await fbAuth.signInWithEmailAndPassword(e,p);
+      }catch(err){
+        DOMElements.loginError.textContent=err.message;
+      }
+    },
+
+    handleGoogleSignIn:async()=>{
+      DOMElements.loginError.textContent='';
+      DOMElements.registerError.textContent='';
+      try{
+        await fbAuth.signInWithPopup(googleAuthProvider);
+      }catch(err){
+        console.error("Google Sign-In Error:",err);
+        const eM=`Google Sign-In failed: ${err.code==='auth/popup-closed-by-user'?'Popup closed.':err.message}`;
+        DOMElements.loginError.textContent=eM;
+        DOMElements.registerError.textContent=eM;
+      }
+    },
+
+    handleLogout:async()=>{
+      try{
+        await fbAuth.signOut();
+      }catch(err){
+        console.error("Logout error:",err);
+      }
+    },
+
+    observeAuthState:()=>{
+      fbAuth.onAuthStateChanged(async user=>{
+        if(user){
+          currentUser=user;
+          if(DOMElements.userEmailDisplay){
+            DOMElements.userEmailDisplay.innerHTML=`${user.email} <svg class="settings-icon-svg" viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19-.15-.24-.42-.12-.64l2 3.46c.12.22.39.3.61-.22l2.49-1c.52.4 1.08.73 1.69-.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>`;
+          }
+
+          SettingsService.loadSettings();
+          await FavoritesService.loadFavorites();
+          await ContinueWatchingService.loadContinueWatching();
+
+          UIService.showSection(DOMElements.mainAppSection);
+          const hVIE=DOMElements.homeView&&(DOMElements.homeView.innerHTML.includes('loading-message')||DOMElements.homeView.innerHTML.trim()==='');
+          if(!lastActiveListView||lastActiveListView==='home-view'||hVIE)AppLogic.showHome();
+          else UIService.showView(lastActiveListView);
+        }else{
+          currentUser=null;
+          userFavorites.clear();
+          userContinueWatching=[];
+          if(DOMElements.userEmailDisplay)DOMElements.userEmailDisplay.textContent='';
+          if(DOMElements.continueWatchingSection)DOMElements.continueWatchingSection.style.display='none';
+
+          UIService.showSection(DOMElements.authSection);
+          if(DOMElements.loginForm)DOMElements.loginForm.style.display='block';
+          if(DOMElements.registerForm)DOMElements.registerForm.style.display='none';
+
+          ['loginEmailInput','loginPasswordInput','registerEmailInput','registerPasswordInput'].forEach(id=>{
+            if(DOMElements[id])DOMElements[id].value='';
+          });
+          ['loginError','registerError'].forEach(id=>{
+            if(DOMElements[id])DOMElements[id].textContent='';
+          });
+        }
+      });
+    },
+  };
+})();
+
+const FavoritesService=(function(){return{loadFavorites:async()=>{if(!currentUser)return;userFavorites.clear();try{const snap=await fbFirestore.collection('users').doc(currentUser.uid).collection('favorites').orderBy('addedAt','desc').get();snap.forEach(doc=>userFavorites.add(doc.id));if(DOMElements.favoritesView&&DOMElements.favoritesView.classList.contains('active-view'))AppLogic.showFavorites();document.querySelectorAll('.media-card .add-to-favorites').forEach(btn=>{const cId=btn.dataset.id;if(userFavorites.has(cId)){btn.classList.add('favorited');btn.innerHTML='♥';btn.title='Remove from favs';}else{btn.classList.remove('favorited');btn.innerHTML='♡';btn.title='Add to favs';}});}catch(e){console.error("Fav load error:",e.message);}},toggleFavorite:async(mId,mDet,isCurFav,btnEl,isDetBtn=false)=>{if(!currentUser){alert("Login to manage favs.");return;}mId=String(mId);try{const fRef=fbFirestore.collection('users').doc(currentUser.uid).collection('favorites').doc(mId);if(isCurFav){await fRef.delete();userFavorites.delete(mId);if(btnEl){btnEl.classList.remove('favorited');btnEl.innerHTML=isDetBtn?'♡ Add to Favorites':'♡';btnEl.title='Add to favs';}}else{const fData={...mDet,tmdb_id:mId,addedAt:firebase.firestore.FieldValue.serverTimestamp()};await fRef.set(fData);userFavorites.add(mId);if(btnEl){btnEl.classList.add('favorited');btnEl.innerHTML=isDetBtn?'♥ Favorited':'♥';btnEl.title='Remove from favs';}}if(isCurFav&&DOMElements.favoritesView&&DOMElements.favoritesView.classList.contains('active-view'))AppLogic.showFavorites();}catch(e){console.error("Fav toggle error:",e.message,e);alert(`Fav update error: ${e.message}.`);}},getFavoritedItemsDetails:async()=>{if(!currentUser||userFavorites.size===0)return[];const favItemsData=[];try{const snap=await fbFirestore.collection('users').doc(currentUser.uid).collection('favorites').orderBy('addedAt','desc').get();snap.forEach(doc=>favItemsData.push({id:doc.id,...doc.data()}));}catch(e){console.error("Fav details fetch error:",e.message);}return favItemsData;}};})();
+
+const ContinueWatchingService=(function(){
+  const DB_PATH=(uid)=>`users/${uid}/continueWatching`;
+
+  // Throttle Firestore writes from frequent player progress events
+  const _progressThrottle={};
+  const _key=(tmdbId,mediaType,season,episode)=>`${tmdbId}_${mediaType}_${season||''}_${episode||''}`;
+
+  const getStartAtSeconds=(item)=>{
+    const seconds=Number(item?.progressSeconds||0);
+    const duration=Number(item?.durationSeconds||0);
+    const percent=Number(item?.progressPercent||0);
+    if(!seconds||!duration||duration<=0||percent>=95)return 0;
+    // Small rewind for context
+    return Math.max(0,Math.floor(seconds-5));
+  };
+
+  const updateProgressFromMappleEvent=async(payload)=>{
+    if(!currentUser)return;
+    const {tmdbId,mediaType,season,episode,currentTime,duration,event}=payload||{};
+    if(!tmdbId||!mediaType)return;
+
+    // Some event types (or browser edge cases) may not include timing data.
+    // Still handle movie completion events so "Continue Watching" cleans up.
+    if(mediaType==='movie'&&event==='ended'){
+      try{
+        await fbFirestore.collection(DB_PATH(currentUser.uid)).doc(String(tmdbId)).delete();
+        AppLogic.loadContinueWatching();
+      }catch(e){
+        console.error("CW remove on end error:",e);
+      }
+      return;
+    }
+
+    if(typeof currentTime!=='number'||typeof duration!=='number'||duration<=0)return;
+
+    const pct=Math.max(0,Math.min(100,Math.floor((currentTime/duration)*100)));
+    const k=_key(String(tmdbId),mediaType,season,episode);
+    const now=Date.now();
+    const last=_progressThrottle[k]||{ts:0,pct:-1};
+    const MIN_MS=15000;
+    const shouldWrite=(now-last.ts>=MIN_MS)||(pct!==last.pct)||(event==='ended');
+    if(!shouldWrite)return;
+    _progressThrottle[k]={ts:now,pct};
+
+    // If a movie is basically finished, remove it from Continue Watching.
+    if(mediaType==='movie'&&pct>=97){
+      try{
+        await fbFirestore.collection(DB_PATH(currentUser.uid)).doc(String(tmdbId)).delete();
+        AppLogic.loadContinueWatching();
+      }catch(e){
+        console.error("CW remove on end error:",e);
+      }
+      return;
+    }
+
+    const update={
+      tmdb_id:String(tmdbId),
+      type:mediaType,
+      progressPercent:pct,
+      progressSeconds:Math.floor(currentTime),
+      durationSeconds:Math.floor(duration),
+      lastWatched:firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    if(mediaType==='tv'){
+      if(season)update.season_number=season;
+      if(episode)update.episode_number=episode;
+    }
+
+    try{
+      await fbFirestore.collection(DB_PATH(currentUser.uid)).doc(String(tmdbId)).set(update,{merge:true});
+    }catch(e){
+      console.error("CW progress update error:",e);
+    }
+  };
+
+  return{
+    addToContinueWatching:async(mDet,s,ep)=>{
+      if(!currentUser||!mDet||!mDet.id)return;
+      const mId=String(mDet.id);
+      const docRef=fbFirestore.collection(DB_PATH(currentUser.uid)).doc(mId);
+
+      let existing=null;
+      try{
+        const snap=await docRef.get();
+        if(snap.exists)existing=snap.data();
+      }catch(e){/* ignore */}
+
+      const iData={
+        tmdb_id:mId,
+        title:mDet.title||mDet.name,
+        type:mDet.type,
+        poster_path:mDet.poster_path,
+        lastWatched:firebase.firestore.FieldValue.serverTimestamp(),
+      };
+
+      if(mDet.type==='tv'){
+        iData.season_number=s||(mDet.season_number||1);
+        iData.episode_number=ep||(mDet.episode_number||1);
+      }
+
+      // Preserve progress fields if they already exist (don't reset on resume/play).
+      if(existing){
+        if(typeof existing.progressPercent==='number')iData.progressPercent=existing.progressPercent;
+        if(typeof existing.progressSeconds==='number')iData.progressSeconds=existing.progressSeconds;
+        if(typeof existing.durationSeconds==='number')iData.durationSeconds=existing.durationSeconds;
+      }else{
+        iData.progressPercent=0;
+      }
+
+      try{
+        await docRef.set(iData,{merge:true});
+        AppLogic.loadContinueWatching();
+      }catch(e){
+        console.error("CW add error:",e);
+      }
+    },
+
+    updateProgressFromMappleEvent,
+    getStartAtSeconds,
+
+    loadContinueWatching:async()=>{
+      if(!currentUser){
+        if(DOMElements.continueWatchingSection)DOMElements.continueWatchingSection.style.display='none';
+        return;
+      }
+
+      try{
+        const snap=await fbFirestore.collection(DB_PATH(currentUser.uid)).orderBy('lastWatched','desc').limit(15).get();
+        userContinueWatching=snap.docs.map(doc=>{
+          const d=doc.data();
+          // Backfill progressPercent if only seconds are present
+          if(typeof d.progressPercent!=='number'&&typeof d.progressSeconds==='number'&&typeof d.durationSeconds==='number'&&d.durationSeconds>0){
+            d.progressPercent=Math.floor((d.progressSeconds/d.durationSeconds)*100);
+          }
+          return({id:doc.id,...d});
+        });
+
+        if(DOMElements.continueWatchingSection){
+          if(userContinueWatching.length>0){
+            DOMElements.continueWatchingSection.style.display='block';
+            let tE=DOMElements.continueWatchingSection.querySelector('.discover-section-title');
+            if(!tE){
+              tE=document.createElement('h2');
+              tE.className='discover-section-title';
+              tE.textContent='Continue Watching';
+              DOMElements.continueWatchingSection.prepend(tE);
+            }
+            UIService.renderMediaRow(DOMElements.continueWatchingRow,userContinueWatching,'continue-watching');
+            const w=DOMElements.continueWatchingRow.closest('.discover-media-row-wrapper');
+            if(w)AppLogic.updateDiscoverRowArrows(DOMElements.continueWatchingRow,w.querySelector('.prev-arrow'),w.querySelector('.next-arrow'));
+          }else{
+            DOMElements.continueWatchingSection.style.display='none';
+          }
+        }
+      }catch(e){
+        console.error("CW load error:",e);
+        if(DOMElements.continueWatchingSection)DOMElements.continueWatchingSection.style.display='none';
+      }
+    },
+
+    removeFromContinueWatching:async(mId)=>{
+      if(!currentUser||!mId)return;
+      if(!confirm("Remove from Continue Watching?"))return;
+      try{
+        await fbFirestore.collection(DB_PATH(currentUser.uid)).doc(String(mId)).delete();
+        AppLogic.loadContinueWatching();
+      }catch(e){
+        console.error("CW remove error:",e);
+      }
+    },
+
+    clearContinueWatchingHistory:async()=>{
+      if(!currentUser){
+        alert("Login first.");
+        return;
+      }
+      if(!confirm("Clear Continue Watching history?"))return;
+      try{
+        const batch=fbFirestore.batch();
+        const snap=await fbFirestore.collection(DB_PATH(currentUser.uid)).get();
+        snap.docs.forEach(doc=>batch.delete(doc.ref));
+        await batch.commit();
+        alert("Continue Watching history cleared.");
+        AppLogic.loadContinueWatching();
+      }catch(e){
+        console.error("CW clear error:",e);
+        alert("Failed to clear history.");
+      }
+    },
+  };
+})();
+
+const MappleEventsBridge=(function(){
+  // Mapple sends postMessage events from the iframe origin (https://mapple.uk)
+  const ORIGIN='https://mapple.uk';
+  let lastMediaData=null;
+
+  const safeStoreMediaData=(data)=>{
+    try{
+      localStorage.setItem('mapplePlayerProgress',JSON.stringify(data));
+    }catch(e){
+      // Ignore storage errors (private mode / quotas)
+    }
+  };
+
+  const handleMessage=(event)=>{
+    if(event.origin!==ORIGIN) return;
+    const msg=event.data;
+    if(!msg||typeof msg!=='object') return;
+
+    if(msg.type==='MEDIA_DATA'){
+      lastMediaData=msg.data;
+      safeStoreMediaData(msg.data);
+      return;
+    }
+
+    if(msg.type==='PLAYER_EVENT'){
+      const d=msg.data||{};
+
+      // Keep local detail state in sync so "Back to Details" reflects the
+      // correct season/episode when Mapple auto-advances.
+      if(currentOpenDetail&&currentOpenDetail.type==='tv'){
+        if(d.season) currentOpenDetail.season_number=d.season;
+        if(d.episode) currentOpenDetail.episode_number=d.episode;
+      }
+
+      ContinueWatchingService.updateProgressFromMappleEvent(d);
+    }
+  };
+
+  const init=()=>{
+    window.addEventListener('message',handleMessage);
+  };
+
+  return{init,getLastMediaData:()=>lastMediaData};
+})();
+
+const SettingsService=(function(){const KEY='skyeMovieUserSettings_v2';return{loadSettings:()=>{const sS=localStorage.getItem(KEY);if(sS)userSettings={...userSettings,...JSON.parse(sS)};if(DOMElements.settingAutoplay)DOMElements.settingAutoplay.checked=userSettings.autoplayVOD||false;if(DOMElements.settingAutonext)DOMElements.settingAutonext.checked=userSettings.autonextVOD||false;},saveSettings:()=>{localStorage.setItem(KEY,JSON.stringify(userSettings));console.log("Settings saved:",userSettings);},toggleAutoplayVOD:(val)=>{userSettings.autoplayVOD=val;SettingsService.saveSettings();},toggleAutonextVOD:(val)=>{userSettings.autonextVOD=val;SettingsService.saveSettings();}};})();
+
+const ListService=(function(){const LMetaP=(uid)=>`users/${uid}/customListsMetadata`;const LItemsP=(uid,lId)=>`users/${uid}/customLists/${lId}/items`;return{createList:async(name)=>{if(!currentUser||!name.trim()){alert("List name empty.");return null;}try{const nLR=await fbFirestore.collection(LMetaP(currentUser.uid)).add({name:name.trim(),createdAt:firebase.firestore.FieldValue.serverTimestamp(),itemCount:0});await AppLogic.loadUserLists();if(DOMElements.createListFormContainer)DOMElements.createListFormContainer.style.display='none';return nLR.id;}catch(e){console.error("List create error:",e);alert("Failed to create list.");return null;}},addItemToList:async(lId,mId,mDet)=>{if(!currentUser||!lId||!mId||!mDet){alert("Missing info for list add.");return false;}try{const iR=fbFirestore.collection(LItemsP(currentUser.uid,lId)).doc(String(mId));const iDoc=await iR.get();if(iDoc.exists){alert(`"${mDet.title}" already in this list.`);return false;}await iR.set({tmdb_id:String(mId),title:mDet.title,type:mDet.type,poster_path:mDet.poster_path,addedAt:firebase.firestore.FieldValue.serverTimestamp()});const lMR=fbFirestore.collection(LMetaP(currentUser.uid)).doc(lId);await lMR.update({itemCount:firebase.firestore.FieldValue.increment(1)});alert(`"${mDet.title}" added to list!`);if(currentViewingListId===lId&&DOMElements.listItemsViewContainer.style.display==='block')AppLogic.viewListItems(lId,userCustomLists[lId]?.name||"List");AppLogic.loadUserLists();return true;}catch(e){console.error("List add item error:",e);alert("Failed to add item.");return false;}},getUserLists:async()=>{if(!currentUser)return{};const lists={};try{const snap=await fbFirestore.collection(LMetaP(currentUser.uid)).orderBy('createdAt','desc').get();snap.forEach(doc=>{lists[doc.id]={id:doc.id,...doc.data()};});}catch(e){console.error("Get lists error:",e);}userCustomLists=lists;return lists;},getListItems:async(lId)=>{if(!currentUser||!lId)return[];const items=[];try{const snap=await fbFirestore.collection(LItemsP(currentUser.uid,lId)).orderBy('addedAt','desc').get();snap.forEach(doc=>items.push({id:doc.id,...doc.data()}));}catch(e){console.error(`Get list items error for ${lId}:`,e);}return items;},removeItemFromList:async(lId,mId)=>{if(!currentUser||!lId||!mId)return;if(!confirm("Remove from list?"))return;try{await fbFirestore.collection(LItemsP(currentUser.uid,lId)).doc(String(mId)).delete();const lMR=fbFirestore.collection(LMetaP(currentUser.uid)).doc(lId);await lMR.update({itemCount:firebase.firestore.FieldValue.increment(-1)});alert("Item removed.");AppLogic.viewListItems(lId,userCustomLists[lId]?.name||"List");AppLogic.loadUserLists();}catch(e){console.error("Remove item error:",e);alert("Failed to remove item.");}},deleteList:async(lId)=>{if(!currentUser||!lId)return;const lName=userCustomLists[lId]?.name||'this list';if(!confirm(`Delete list "${lName}" and all items?`))return;try{const itemsSnap=await fbFirestore.collection(LItemsP(currentUser.uid,lId)).get();const batch=fbFirestore.batch();itemsSnap.docs.forEach(doc=>batch.delete(doc.ref));await batch.commit();await fbFirestore.collection(LMetaP(currentUser.uid)).doc(lId).delete();alert(`List "${lName}" deleted.`);AppLogic.showMyLists();}catch(e){console.error("Delete list error:",e);alert("Failed to delete list.");}}};})();
+
+const AppLogic=(function(){const _sDRA=(rD,pA,nA)=>{if(!rD||!pA||!nA)return;const sA=()=>rD.clientWidth*0.8;pA.addEventListener('click',()=>{rD.scrollLeft-=sA();});nA.addEventListener('click',()=>{rD.scrollLeft+=sA();});const obs=new ResizeObserver(()=>_uDRA(rD,pA,nA));obs.observe(rD);rD.addEventListener('scroll',()=>_uDRA(rD,pA,nA),{passive:true});_uDRA(rD,pA,nA);};const _uDRA=(rD,pA,nA)=>{if(!rD||!pA||!nA)return;const tol=10;const atS=rD.scrollLeft<=tol;const atE=rD.scrollLeft+rD.clientWidth>=rD.scrollWidth-tol;const noS=rD.scrollWidth<=rD.clientWidth+tol;pA.classList.toggle('hidden-arrow',atS||noS);nA.classList.toggle('hidden-arrow',atE||noS);};return{init:async()=>{if(DOMElements.currentYearSpan)DOMElements.currentYearSpan.textContent=new Date().getFullYear();if(DOMElements.initialLoadingOverlay)DOMElements.initialLoadingOverlay.style.display='flex';if(DOMElements.initialLoadingOverlay){DOMElements.initialLoadingOverlay.classList.add('hidden');setTimeout(()=>{if(DOMElements.initialLoadingOverlay)DOMElements.initialLoadingOverlay.style.display='none';},700);}AuthService.observeAuthState();MappleEventsBridge.init();DOMElements.registerButton?.addEventListener('click',AuthService.handleRegister);DOMElements.loginButton?.addEventListener('click',AuthService.handleLogin);DOMElements.googleSignInButton?.addEventListener('click',AuthService.handleGoogleSignIn);DOMElements.googleSignUpButton?.addEventListener('click',AuthService.handleGoogleSignIn);DOMElements.logoutButton?.addEventListener('click',AuthService.handleLogout);DOMElements.showRegisterLink?.addEventListener('click',e=>{e.preventDefault();DOMElements.loginForm.style.display='none';DOMElements.registerForm.style.display='block';if(DOMElements.loginError)DOMElements.loginError.textContent='';if(DOMElements.registerError)DOMElements.registerError.textContent='';});DOMElements.showLoginLink?.addEventListener('click',e=>{e.preventDefault();DOMElements.registerForm.style.display='none';DOMElements.loginForm.style.display='block';if(DOMElements.loginError)DOMElements.loginError.textContent='';if(DOMElements.registerError)DOMElements.registerError.textContent='';});DOMElements.navHome?.addEventListener('click',AppLogic.showHome);DOMElements.navSearch?.addEventListener('click',AppLogic.showSearch);DOMElements.navFavorites?.addEventListener('click',AppLogic.showFavorites);DOMElements.navLists?.addEventListener('click',AppLogic.showMyLists);DOMElements.navLiveTv?.addEventListener('click',AppLogic.showLiveTV);DOMElements.navDonate?.addEventListener('click',AppLogic.showDonate);DOMElements.userEmailDisplay?.addEventListener('click',AppLogic.showSettings);DOMElements.settingAutoplay?.addEventListener('change',e=>SettingsService.toggleAutoplayVOD(e.target.checked));DOMElements.settingAutonext?.addEventListener('change',e=>SettingsService.toggleAutonextVOD(e.target.checked));DOMElements.settingClearContinueWatching?.addEventListener('click',ContinueWatchingService.clearContinueWatchingHistory);DOMElements.settingClearApiCache?.addEventListener('click',ApiCache.clearAll);DOMElements.backToListButton?.addEventListener('click',()=>UIService.showView(lastActiveListView||'home-view'));DOMElements.closePlayerButton?.addEventListener('click',()=>{if(DOMElements.mappletvPlayerContainer)DOMElements.mappletvPlayerContainer.innerHTML='';if(mappletvIframeObserver)mappletvIframeObserver.disconnect();mappletvIframeObserver=null;if(DOMElements.liveTvVideoPlayer&&DOMElements.liveTvVideoPlayer.src){DOMElements.liveTvVideoPlayer.pause();DOMElements.liveTvVideoPlayer.src="";if(hlsInstance){hlsInstance.destroy();hlsInstance=null;}DOMElements.liveTvVideoPlayer.load();}if(currentUser)AppLogic.loadContinueWatching();UIService.showView(currentOpenDetail?'detail-view':(lastActiveListView||'home-view')) ;});let sDT;DOMElements.searchInput?.addEventListener('input',()=>{clearTimeout(sDT);const q=DOMElements.searchInput.value.trim();if(q.length>2)sDT=setTimeout(()=>AppLogic.performAutocompleteSearch(q),300);else UIService.clearAutocomplete();});DOMElements.searchInput?.addEventListener('keypress',e=>{if(e.key==='Enter'){UIService.clearAutocomplete();AppLogic.triggerSearchOrFilter(true);}});DOMElements.searchButtonMain?.addEventListener('click',()=>{UIService.clearAutocomplete();AppLogic.triggerSearchOrFilter(true);});DOMElements.applyFiltersButton?.addEventListener('click',()=>AppLogic.triggerSearchOrFilter(false));DOMElements.filterTypeSelect?.addEventListener('change',()=>AppLogic.triggerSearchOrFilter(false));DOMElements.sortBySelect?.addEventListener('change',()=>AppLogic.triggerSearchOrFilter(false));DOMElements.prevPageButton?.addEventListener('click',AppLogic.handlePrevPage);DOMElements.nextPageButton?.addEventListener('click',AppLogic.handleNextPage);DOMElements.showCreateListFormButton?.addEventListener('click',()=>{DOMElements.createListFormContainer.style.display='flex';DOMElements.newListNameInput.focus();});DOMElements.cancelCreateListButton?.addEventListener('click',()=>{DOMElements.createListFormContainer.style.display='none';DOMElements.newListNameInput.value='';});DOMElements.confirmCreateListButton?.addEventListener('click',async()=>{const n=DOMElements.newListNameInput.value;if(n)await ListService.createList(n);DOMElements.newListNameInput.value='';});DOMElements.backToMyListsButton?.addEventListener('click',AppLogic.showMyLists);DOMElements.closeAddToListModalButton?.addEventListener('click',()=>DOMElements.addToListModal.style.display='none');DOMElements.modalConfirmCreateAndAddButton?.addEventListener('click',async()=>{const nLN=DOMElements.modalNewListNameInput.value.trim();if(nLN&&currentMediaForListModal){DOMElements.addToListModalError.textContent='Creating...';const nLId=await ListService.createList(nLN);if(nLId){const added=await ListService.addItemToList(nLId,currentMediaForListModal.mediaId,currentMediaForListModal.mediaDetails);if(added)DOMElements.addToListModal.style.display='none';else DOMElements.addToListModalError.textContent='Item already in list or error adding.';}else DOMElements.addToListModalError.textContent='Failed to create list.';}else if(!nLN)DOMElements.addToListModalError.textContent='Enter list name.';});document.addEventListener('click',e=>{if(DOMElements.searchView&&DOMElements.searchView.classList.contains('active-view')&&DOMElements.searchView.contains(e.target)&&DOMElements.searchInput&&DOMElements.searchInput.closest('.search-bar-wrapper')&&!DOMElements.searchInput.closest('.search-bar-wrapper').contains(e.target)&&DOMElements.autocompleteSuggestions&&DOMElements.autocompleteSuggestions.style.display==='block'&&!DOMElements.autocompleteSuggestions.contains(e.target))UIService.clearAutocomplete();if(DOMElements.addToListModal&&e.target===DOMElements.addToListModal)DOMElements.addToListModal.style.display="none";});DOMElements.downloadM3uButton?.addEventListener('click',()=>{const link=document.createElement('a');link.href=LIVE_TV_M3U_URL_PATH;link.download='playlist.m3u';document.body.appendChild(link);link.click();document.body.removeChild(link);});DOMElements.copyM3uUrlButton?.addEventListener('click',()=>AppLogic.copyToClipboard(window.location.origin+(LIVE_TV_M3U_URL_PATH.startsWith('/')?LIVE_TV_M3U_URL_PATH:LIVE_TV_M3U_URL_PATH.substring(1)),'M3U URL'));DOMElements.copyEpgUrlButton?.addEventListener('click',()=>AppLogic.copyToClipboard(window.location.origin+(LIVE_TV_EPG_URL_PATH.startsWith('/')?LIVE_TV_EPG_URL_PATH:LIVE_TV_EPG_URL_PATH.substring(1)),'EPG URL'));DOMElements.openNpvrWebUiButton?.addEventListener('click',AppLogic.openNpvrWithPlaylist);},homeSectionsConfig:[{title:'Top Rated Movies (IMDB)',endpoint:'movie/top_rated',params:{'vote_count.gte':1500,region:'US'},type:'movie'},{title:'Top Rated TV Shows (IMDB)',endpoint:'tv/top_rated',params:{'vote_count.gte':750,region:'US'},type:'tv'},{title:'Top Anime Series',endpoint:'discover/tv',params:{with_genres:'16',sort_by:'popularity.desc',with_original_language:'ja','vote_count.gte':100},type:'tv'},{title:'Popular Action Movies',endpoint:'discover/movie',params:{with_genres:'28',sort_by:'popularity.desc'},type:'movie'},{title:'Popular Sci-Fi Movies',endpoint:'discover/movie',params:{with_genres:'878',sort_by:'popularity.desc'},type:'movie'},{title:'Popular Crime TV Shows',endpoint:'discover/tv',params:{with_genres:'80',sort_by:'popularity.desc'},type:'tv'},],showHome:async()=>{UIService.showView('home-view');const hVC=DOMElements.homeView;const dynamicSections=hVC.querySelectorAll('.discover-section:not(#continue-watching-section)');dynamicSections.forEach(s=>s.remove());if(DOMElements.continueWatchingRow)DOMElements.continueWatchingRow.innerHTML='';if(DOMElements.continueWatchingSection)DOMElements.continueWatchingSection.style.display='none';if(currentUser)await ContinueWatchingService.loadContinueWatching();for(const s of AppLogic.homeSectionsConfig){const sD=document.createElement('div');sD.className='discover-section';const tE=document.createElement('h2');tE.className='discover-section-title';tE.textContent=s.title;sD.appendChild(tE);const rW=document.createElement('div');rW.className='discover-media-row-wrapper';const rD=document.createElement('div');rD.className='discover-media-row';rD.innerHTML='<p class="loading-message">Loading...</p>';rW.appendChild(rD);const pA=document.createElement('button');pA.className='discover-arrow prev-arrow';pA.innerHTML='&#10094;';pA.title="Previous";pA.setAttribute('aria-label','Previous');const nA=document.createElement('button');nA.className='discover-arrow next-arrow';nA.innerHTML='&#10095;';nA.title="Next";nA.setAttribute('aria-label','Next');rW.appendChild(pA);rW.appendChild(nA);sD.appendChild(rW);hVC.appendChild(sD);_sDRA(rD,pA,nA);try{const data=await ApiService.fetchTMDB(s.endpoint,s.params||{page:1});const items=data.results.map(i=>({...i,media_type:i.media_type||s.type}));UIService.renderMediaRow(rD,items);_uDRA(rD,pA,nA);}catch(e){console.error(`Error section "${s.title}":`,e.message);rD.innerHTML=`<p class="error-message">Could not load.</p>`;_uDRA(rD,pA,nA);}}},updateDiscoverRowArrows:_uDRA,resumeWatching:(item)=>{const startAt=ContinueWatchingService.getStartAtSeconds(item);currentOpenDetail={id:item.tmdb_id||item.id,title:item.title,name:item.title,type:item.type,poster_path:item.poster_path,season_number:item.season_number,episode_number:item.episode_number,seasons:item.seasons};if(item.type==='tv'&&item.season_number&&item.episode_number)UIService.renderPlayer(item.type,item.tmdb_id||item.id,item.title,item.season_number,item.episode_number,startAt);else if(item.type==='movie')UIService.renderPlayer(item.type,item.tmdb_id||item.id,item.title,null,null,startAt);else AppLogic.handleMediaItemClick(item.tmdb_id||item.id,item.type);},setupSeasonEpisodeSelector:()=>{const sS=document.getElementById('season-select');const eS=document.getElementById('episode-select');if(!sS||!eS)return;const pE=(eC)=>{eS.innerHTML='';if(eC>0){for(let i=1;i<=eC;i++)eS.add(new Option(`Episode ${i}`,i));eS.disabled=false;}else{eS.add(new Option('No episodes',''));eS.disabled=true;}};const iSO=sS.options[sS.selectedIndex];if(iSO)pE(parseInt(iSO.dataset.episodes));sS.addEventListener('change',e=>{const sO=e.target.options[e.target.selectedIndex];eS.disabled=false;pE(parseInt(sO.dataset.episodes));});},showSearch:()=>{UIService.showView('search-view');DOMElements.searchMessage.textContent='Type to search or apply filters.';DOMElements.searchResultsGrid.innerHTML='';DOMElements.searchInput.value='';currentRawSearchResults=[];searchCurrentPage=1;searchTotalPages=1;AppLogic.updatePaginationControls();UIService.clearAutocomplete();DOMElements.filterTypeSelect.value='all';DOMElements.sortBySelect.value='relevance';},performAutocompleteSearch:async(q)=>{if(q.length<3){UIService.renderAutocompleteSuggestions([]);return;}try{const d=await ApiService.fetchWatchmode('autocomplete-search',{search_value:q,search_type:2});UIService.renderAutocompleteSuggestions(d&&d.results?d.results:[]);}catch(e){console.warn("Autocomplete error:",e.message);UIService.renderAutocompleteSuggestions([]);}},triggerSearchOrFilter:(newS=false)=>{const q=DOMElements.searchInput.value.trim();if(newS){if(q){currentSearchQuery=q;searchCurrentPage=1;AppLogic.performSearchAPICall(currentSearchQuery,searchCurrentPage);}else{DOMElements.searchMessage.textContent='Please enter search term.';currentRawSearchResults=[];searchCurrentPage=1;searchTotalPages=1;AppLogic.applyClientSideFiltersAndSort();}}else AppLogic.applyClientSideFiltersAndSort();},performSearchAPICall:async(q,p=1)=>{UIService.clearAutocomplete();UIService.showView('search-view');if(!q){DOMElements.searchMessage.textContent='Enter search term.';currentRawSearchResults=[];searchCurrentPage=p;searchTotalPages=0;AppLogic.applyClientSideFiltersAndSort();AppLogic.updatePaginationControls();return;}DOMElements.searchMessage.textContent=`Searching for "${q}" (Page ${p})...`;DOMElements.searchResultsGrid.innerHTML='<p class="loading-message">Loading...</p>';try{const eP='search/multi';const fP={query:q,page:p,include_adult:'false'};const data=await ApiService.fetchTMDB(eP,fP);currentRawSearchResults=(data.results||[]).filter(i=>(i.media_type==='movie'||i.media_type==='tv')&&i.poster_path).map(i=>({...i,id:String(i.id)}));searchCurrentPage=data.page||p;searchTotalPages=data.total_pages||0;AppLogic.applyClientSideFiltersAndSort();AppLogic.updatePaginationControls();}catch(e){console.error("Search API fail:",e.message);DOMElements.searchMessage.textContent=`Search failed: ${e.message}.`;currentRawSearchResults=[];searchTotalPages=0;AppLogic.applyClientSideFiltersAndSort();AppLogic.updatePaginationControls();}},applyClientSideFiltersAndSort:()=>{let procRes=[...currentRawSearchResults];const typeF=DOMElements.filterTypeSelect.value;const sortB=DOMElements.sortBySelect.value;if(typeF!=='all')procRes=procRes.filter(i=>i.media_type===typeF);if(sortB!=='relevance'&&procRes.length>0){const[sF,sO]=sortB.split('.');procRes.sort((a,b)=>{let vA,vB;const mA=a.media_type;const mB=b.media_type;if(sF==='release_date'){vA=new Date(mA==='movie'?a.release_date:a.first_air_date||'1900-01-01').getTime();vB=new Date(mB==='movie'?b.release_date:b.first_air_date||'1900-01-01').getTime();}else if(sF==='vote_average'){vA=parseFloat(a.vote_average||0);vB=parseFloat(b.vote_average||0);}else if(sF==='popularity'){vA=parseFloat(a.popularity||0);vB=parseFloat(b.popularity||0);}else return 0;if(isNaN(vA))vA=(sO==='asc'?Infinity:-Infinity);if(isNaN(vB))vB=(sO==='asc'?Infinity:-Infinity);if(vA<vB)return sO==='asc'?-1:1;if(vA>vB)return sO==='asc'?1:-1;return 0;});}const q=currentSearchQuery;if(procRes.length>0)DOMElements.searchMessage.textContent=q?`Results for "${q}":`:'Displaying items:';else if(q&&currentRawSearchResults.length>0)DOMElements.searchMessage.textContent=`No results for current filters for "${q}".`;else if(q)DOMElements.searchMessage.textContent=`No results for "${q}".`;else DOMElements.searchMessage.textContent='Type to search or apply filters.';UIService.renderGrid(DOMElements.searchResultsGrid,procRes,null);AppLogic.updatePaginationControls();},handleNextPage:()=>{if(searchCurrentPage<searchTotalPages)AppLogic.performSearchAPICall(currentSearchQuery,searchCurrentPage+1);},handlePrevPage:()=>{if(searchCurrentPage>1)AppLogic.performSearchAPICall(currentSearchQuery,searchCurrentPage-1);},updatePaginationControls:()=>{if(DOMElements.paginationControls){if(searchTotalPages>0&&currentRawSearchResults.length>0){DOMElements.paginationControls.style.display='flex';DOMElements.pageInfo.textContent=`Page ${searchCurrentPage} of ${searchTotalPages}`;DOMElements.prevPageButton.disabled=searchCurrentPage<=1;DOMElements.nextPageButton.disabled=searchCurrentPage>=searchTotalPages;}else DOMElements.paginationControls.style.display='none';}},showFavorites:async()=>{UIService.showView('favorites-view');DOMElements.favoritesGrid.innerHTML='<p class="loading-message">Loading favs...</p>';if(!currentUser){DOMElements.favoritesGrid.innerHTML='<p>Login to see favs.</p>';return;}const favData=await FavoritesService.getFavoritedItemsDetails();if(favData.length===0){DOMElements.favoritesGrid.innerHTML='<p class="empty-grid-message">No favs yet.</p>';return;}const mapFavs=favData.map(f=>({id:f.tmdb_id||f.id,title:f.title,poster_path:f.poster_path,vote_average:f.vote_average,media_type:f.type,year:f.year}));UIService.renderGrid(DOMElements.favoritesGrid,mapFavs,null,"No favs yet.");},showMyLists:async()=>{UIService.showView('lists-view');DOMElements.createListFormContainer.style.display='none';DOMElements.listItemsViewContainer.style.display='none';DOMElements.userListsDisplayContainer.style.display='block';await AppLogic.loadUserLists();},loadUserLists:async()=>{const lists=await ListService.getUserLists();const cont=DOMElements.userListsDisplayContainer;cont.innerHTML='';if(Object.keys(lists).length===0){cont.innerHTML='<p class="empty-grid-message">No lists. Click "Create New List" to start!</p>';return;}const ul=document.createElement('ul');ul.className='user-lists';for(const lId in lists){const l=lists[lId];const li=document.createElement('li');li.className='list-item';li.innerHTML=`<span class="list-item-name" data-list-id="${lId}" data-list-name="${l.name}">${l.name} (${l.itemCount||0})</span><div class="list-item-actions"><button class="delete-list-button button-style-alt" data-list-id="${lId}">Del</button></div>`;li.querySelector('.list-item-name').addEventListener('click',e=>{e.stopPropagation();AppLogic.viewListItems(e.target.dataset.listId,e.target.dataset.listName);});li.querySelector('.delete-list-button').addEventListener('click',e=>{e.stopPropagation();ListService.deleteList(e.target.dataset.listId);});ul.appendChild(li);}cont.appendChild(ul);},viewListItems:async(lId,lName)=>{currentViewingListId=lId;DOMElements.userListsDisplayContainer.style.display='none';DOMElements.createListFormContainer.style.display='none';DOMElements.listItemsViewContainer.style.display='block';DOMElements.currentListNameDisplay.textContent=lName||'List Items';DOMElements.currentListItemsGrid.innerHTML='<p class="loading-message">Loading...</p>';const items=await ListService.getListItems(lId);const mapItems=items.map(i=>({id:i.tmdb_id,title:i.title,poster_path:i.poster_path,media_type:i.type,vote_average:i.vote_average,year:i.year}));UIService.renderGrid(DOMElements.currentListItemsGrid,mapItems,null,"This list is empty. Add some items!");},handleAddToListModal:(id,details)=>{currentMediaForListModal={mediaId:id,mediaDetails:details};DOMElements.addToListModalItemTitle.textContent=`Add "${details.title}" to:`;DOMElements.modalExistingListsContainer.innerHTML='<p>Loading...</p>';DOMElements.addToListModalError.textContent='';DOMElements.modalNewListNameInput.value='';ListService.getUserLists().then(lists=>{DOMElements.modalExistingListsContainer.innerHTML='';if(Object.keys(lists).length===0)DOMElements.modalExistingListsContainer.innerHTML='<p>No lists. Create new.</p>';else{for(const lId in lists){const l=lists[lId];const d=document.createElement('div');d.className='modal-list-item';d.textContent=`${l.name} (${l.itemCount||0} items)`;d.dataset.listId=lId;d.addEventListener('click',async()=>{const added=await ListService.addItemToList(lId,currentMediaForListModal.mediaId,currentMediaForListModal.mediaDetails);if(added)DOMElements.addToListModal.style.display='none';});DOMElements.modalExistingListsContainer.appendChild(d);}}});DOMElements.addToListModal.style.display='flex';},showLiveTV:async()=>{const isMobile=/Mobi/i.test(navigator.userAgent);if(isMobile&&DOMElements.navLiveTv){DOMElements.navLiveTv.style.display='none';UIService.showView('home-view');alert("Live TV is primarily designed for desktop use with NPVR.");return;}else if(DOMElements.navLiveTv){DOMElements.navLiveTv.style.display='inline-block';}UIService.showView('live-tv-view');if(DOMElements.npvrM3uUrlDisplay)DOMElements.npvrM3uUrlDisplay.textContent=window.location.origin+(LIVE_TV_M3U_URL_PATH.startsWith('/')?LIVE_TV_M3U_URL_PATH:LIVE_TV_M3U_URL_PATH.substring(1));if(DOMElements.npvrEpgUrlDisplay)DOMElements.npvrEpgUrlDisplay.textContent=window.location.origin+(LIVE_TV_EPG_URL_PATH.startsWith('/')?LIVE_TV_EPG_URL_PATH:LIVE_TV_EPG_URL_PATH.substring(1));const inBrowserChannelList=document.getElementById('channel-list');const inBrowserEpgChannelName=document.getElementById('epg-channel-name');const inBrowserEpgTitle=document.getElementById('epg-program-title');const inBrowserEpgTime=document.getElementById('epg-program-time');const inBrowserEpgDesc=document.getElementById('epg-program-description');if(inBrowserChannelList)inBrowserChannelList.innerHTML='<li>Loading channels for in-browser player...</li>';if(inBrowserEpgChannelName)inBrowserEpgChannelName.textContent='Select channel';if(inBrowserEpgTitle)inBrowserEpgTitle.textContent='';if(inBrowserEpgTime)inBrowserEpgTime.textContent='';if(inBrowserEpgDesc)inBrowserEpgDesc.textContent='';try{const m3u=await ApiService.fetchM3UPlaylist(LIVE_TV_M3U_URL_PATH);const chans=ApiService.parseM3UPlaylist(m3u);if(inBrowserChannelList)inBrowserChannelList.innerHTML='';if(chans.length>0&&inBrowserChannelList){chans.forEach(ch=>{const li=document.createElement('li');li.tabIndex=0;li.setAttribute('role','button');li.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click();}});let dN=ch.name||ch.attributes['tvg-name']||'Unknown';li.textContent=dN;li.dataset.url=ch.url;li.dataset.channelId=ch.attributes['tvg-id']||dN.replace(/\s+/g,'-');if(ch.attributes['tvg-logo']){const img=document.createElement('img');img.src=ch.attributes['tvg-logo'];img.alt='';img.style.cssText='width:24px;height:24px;margin-right:8px;vertical-align:middle;border-radius:3px;background:rgba(255,255,255,0.05);object-fit:contain;';li.prepend(img);}li.addEventListener('click',()=>AppLogic.playLiveTVChannel(ch,li));inBrowserChannelList.appendChild(li);});}else if(inBrowserChannelList)inBrowserChannelList.innerHTML='<li>No channels found. Try the NPVR option.</li>';}catch(e){if(inBrowserChannelList)inBrowserChannelList.innerHTML=`<li>Error loading channels: ${e.message}</li>`;}},playLiveTVChannel:(ch,liEl)=>{const p=DOMElements.liveTvVideoPlayer;if(!p){console.error("Live TV Player element not found");return;}if(hlsInstance){hlsInstance.destroy();hlsInstance=null;}p.poster='';p.src='';const streamUrl=ch.url;if(!streamUrl){alert("No stream URL found for this channel.");return;}try{if(streamUrl.toLowerCase().includes('.m3u8')||(typeof Hls!=='undefined'&&Hls.isSupported())){console.log("Attempting HLS.js for stream:",streamUrl);hlsInstance=new Hls({debug:false,enableWorker:true,lowLatencyMode:true,backBufferLength:90});hlsInstance.loadSource(streamUrl);hlsInstance.attachMedia(p);hlsInstance.on(Hls.Events.MANIFEST_PARSED,()=>{p.play().catch(e=>console.error("HLS Playback Error:",e));});hlsInstance.on(Hls.Events.ERROR,(event,data)=>{console.error('HLS Error:',data.type,data.details,data.fatal);if(data.fatal){let errorMsg="Error playing stream.";switch(data.type){case Hls.ErrorTypes.NETWORK_ERROR:errorMsg=`Network error: ${data.details}`;if(data.details===Hls.ErrorDetails.MANIFEST_LOAD_ERROR||data.details===Hls.ErrorDetails.MANIFEST_LOAD_TIMEOUT)errorMsg="Error loading channel data (manifest).";break;case Hls.ErrorTypes.MEDIA_ERROR:errorMsg=`Media error: ${data.details}`;try{hlsInstance.recoverMediaError();}catch(recErr){console.error("HLS recoverMediaError failed:",recErr);}break;}alert(errorMsg);if(hlsInstance){hlsInstance.destroy();hlsInstance=null;}}});}else if(p.canPlayType('application/vnd.apple.mpegurl')){console.log("Using native HLS for stream:",streamUrl);p.src=streamUrl;p.play().catch(e=>console.error("Native HLS Playback Error:",e));}else{console.log("Attempting direct play for stream (non-HLS):",streamUrl);p.src=streamUrl;p.play().catch(e=>{console.error("Direct Playback Error:",e);alert("Cannot play this channel type directly. It might not be a compatible HLS (m3u8) stream or your browser lacks support.");});}}catch(error){console.error("General playback setup error:",error);alert("An error occurred trying to play the channel.");}if(DOMElements.epgChannelName)DOMElements.epgChannelName.textContent=ch.name;AppLogic.loadAndDisplayEPG(ch.attributes['tvg-id']);document.querySelectorAll('#channel-list li').forEach(l=>l.classList.remove('active-channel'));if(liEl)liEl.classList.add('active-channel');},loadAndDisplayEPG:async(chId)=>{if(!DOMElements.epgProgramTitle||!chId){if(DOMElements.epgProgramTitle)DOMElements.epgProgramTitle.textContent='EPG N/A for this channel.';if(DOMElements.epgProgramTime)DOMElements.epgProgramTime.textContent='';if(DOMElements.epgProgramDescription)DOMElements.epgProgramDescription.textContent='';return;}DOMElements.epgProgramTitle.textContent='Loading EPG...';DOMElements.epgProgramTime.textContent='';DOMElements.epgProgramDescription.textContent='';try{const xDoc=await ApiService.fetchEPG(LIVE_TV_EPG_URL_PATH);const progs=xDoc.querySelectorAll(`programme[channel="${chId}"]`);const now=new Date();let curProg=null;let nextProg=null;progs.forEach(p=>{const s=new Date(p.getAttribute('start').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));const e=new Date(p.getAttribute('stop').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));if(now>=s&&now<e)curProg=p;else if(now<s&&(!nextProg||s<new Date(nextProg.getAttribute('start').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'))))nextProg=p;});if(curProg){DOMElements.epgProgramTitle.textContent=curProg.querySelector('title')?.textContent||'No title';const sT=new Date(curProg.getAttribute('start').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));const eT=new Date(curProg.getAttribute('stop').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));DOMElements.epgProgramTime.textContent=`${sT.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} - ${eT.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;DOMElements.epgProgramDescription.textContent=curProg.querySelector('desc')?.textContent||'';if(nextProg){const nT=nextProg.querySelector('title')?.textContent||'Up next unknown';const nST=new Date(nextProg.getAttribute('start').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));DOMElements.epgProgramDescription.textContent+=(DOMElements.epgProgramDescription.textContent?' ':'')+`(Up next @ ${nST.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}: ${nT})`;}}else if(nextProg){DOMElements.epgProgramTitle.textContent=`Up next: ${nextProg.querySelector('title')?.textContent||'Unknown'}`;const nST=new Date(nextProg.getAttribute('start').replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})\s*([\+\-]\d{4})?/,'$1-$2-$3T$4:$5:$6$7'));DOMElements.epgProgramTime.textContent=`Starts at ${nST.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;DOMElements.epgProgramDescription.textContent=nextProg.querySelector('desc')?.textContent||'';}else DOMElements.epgProgramTitle.textContent='No current program info.';}catch(e){console.error("EPG Load/Parse Error:",e);DOMElements.epgProgramTitle.textContent='EPG data unavailable.';}},openNpvrWithPlaylist:()=>{const m3uFullUrl=window.location.origin+(LIVE_TV_M3U_URL_PATH.startsWith('/')?LIVE_TV_M3U_URL_PATH:LIVE_TV_M3U_URL_PATH.substring(1));const epgFullUrl=window.location.origin+(LIVE_TV_EPG_URL_PATH.startsWith('/')?LIVE_TV_EPG_URL_PATH:LIVE_TV_EPG_URL_PATH.substring(1));const npvrBaseUrl='http://localhost:8866/';let npvrUrl=npvrBaseUrl;try{npvrUrl=`${npvrBaseUrl}index.html?m3u=${encodeURIComponent(m3uFullUrl)}&epg=${encodeURIComponent(epgFullUrl)}`;const npvrWindow=window.open(npvrUrl,'_blank');if(!npvrWindow||npvrWindow.closed||typeof npvrWindow.closed=='undefined'){alert("Pop-up to NPVR was blocked by your browser. Please check your browser's pop-up blocker settings and allow pop-ups for this site, then try again.\n\nEnsure NPVR is running and accessible at "+npvrBaseUrl+"\n\nAlternatively, manually add these URLs to NPVR:\nM3U: "+m3uFullUrl+"\nEPG: "+epgFullUrl);}else{}}catch(e){console.error("Error constructing NPVR URL",e);alert(`Could not open NPVR. Please open NPVR manually via ${npvrBaseUrl} and add:\nM3U: ${m3uFullUrl}\nEPG: ${epgFullUrl}`);}},copyToClipboard:(text,type)=>{navigator.clipboard.writeText(text).then(()=>{alert(`${type} copied to clipboard!`);},(err)=>{alert(`Failed to copy ${type}. Please copy it manually.`);console.error('Clipboard copy error: ',err);});},observeMappletvPlayer:(iframe,originalTmdbId,originalTitle)=>{if(mappletvIframeObserver)mappletvIframeObserver.disconnect();const callback=(mutationsList)=>{for(const mutation of mutationsList){if(mutation.type==='attributes'&&mutation.attributeName==='src'){const newSrc=iframe.getAttribute('src');if(newSrc&&newSrc.startsWith('https://mapple.uk/watch/tv/')){const cleanSrc=newSrc.split('?')[0];const parts=cleanSrc.split('/').pop().split('-');if(parts.length===3){const[newTmdbId,newSeason,newEpisode]=parts;if(newTmdbId===String(originalTmdbId)){const curSeason=String(currentOpenDetail?.season_number||'');const curEpisode=String(currentOpenDetail?.episode_number||'');if(newSeason!==curSeason||newEpisode!==curEpisode){const currentTitle=currentOpenDetail?.title||currentOpenDetail?.name||originalTitle;console.log(`Mapple Player changed to S${newSeason}E${newEpisode} for ${currentTitle}`);if(!currentOpenDetail)currentOpenDetail={id:newTmdbId,title:currentTitle,name:currentTitle,type:'tv'};currentOpenDetail.season_number=newSeason;currentOpenDetail.episode_number=newEpisode;const updatedDetail={id:newTmdbId,title:currentTitle,name:currentTitle,type:'tv',poster_path:currentOpenDetail?.poster_path,seasons:currentOpenDetail?.seasons};ContinueWatchingService.addToContinueWatching(updatedDetail,newSeason,newEpisode);}}}}}}};mappletvIframeObserver=new MutationObserver(callback);mappletvIframeObserver.observe(iframe,{attributes:true,attributeFilter:['src']});},showDonate:()=>{UIService.showView('donate-view');},showSettings:()=>{UIService.showView('settings-view');SettingsService.loadSettings();},handleMediaItemClick:async(id,type)=>{if(!id||!type||type==='unknown'){console.error("Invalid media info for detail:",id,type);return;}await UIService.renderMediaDetail(String(id),type);},handlePlayMedia:()=>{if(!currentOpenDetail||!currentOpenDetail.id){alert("Media details error for playback.");return;}const{id:tmdbId,title:mTitle,name,type:mType,seasons:mediaSeasons}=currentOpenDetail;const fTitle=mTitle||name;let s,e;if(mType==='tv'){const sS=document.getElementById('season-select');const eS=document.getElementById('episode-select');if(sS&&eS&&sS.value&&eS.value&&!eS.disabled){s=sS.value;e=eS.value;}else if(mediaSeasons&&mediaSeasons.length>0&&mediaSeasons.some(sea=>(sea.season_number>0||mediaSeasons.length===1)&&sea.episode_count>0)){const firstValidSeason=mediaSeasons.find(sea=>(sea.season_number>0||mediaSeasons.length===1)&&sea.episode_count>0);if(firstValidSeason){s=String(firstValidSeason.season_number);e='1';}else{alert("No playable episodes found for this series.");return;}}else{alert("Select season/episode or data unavailable.");return;}}UIService.renderPlayer(mType,tmdbId,fTitle,s,e);}};})();
+
+document.addEventListener('DOMContentLoaded', AppLogic.init);
