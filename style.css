@@ -33,42 +33,6 @@ body {
     font-size: 16px;
 }
 
-/* ------------------------------------------------------------
-   Focus styles (keyboard / TV remote)
------------------------------------------------------------- */
-
-:focus-visible {
-    outline: 3px solid var(--accent-color);
-    outline-offset: 3px;
-}
-
-.media-card:focus-visible,
-.nav-button:focus-visible,
-#channel-list li:focus-visible,
-#user-email-display:focus-visible {
-    border-radius: 10px;
-}
-
-body.tv-mode {
-    font-size: 18px;
-}
-
-body.tv-mode header {
-    padding: 0 20px;
-}
-
-body.tv-mode .media-card {
-    transform-origin: center;
-}
-
-body.tv-mode .media-card:focus-visible {
-    transform: translateY(-4px) scale(1.03);
-}
-
-body.tv-mode main {
-    padding: 30px;
-}
-
 .cherry-bomb-one-font {
     font-family: var(--font-logo);
 }
@@ -377,13 +341,8 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #season-select, #episode-select { padding: 8px 10px; background-color: var(--tertiary-bg); color: var(--primary-text); border: 1px solid #444; border-radius: 5px; }
 
 #player-view h3 { text-align: center; margin-bottom: 15px; font-size: 1.5rem; }
-#mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1400px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
+#mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1000px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
 #mappletv-player-container iframe, #live-tv-video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-
-body.tv-mode #mappletv-player-container,
-body.tv-mode #live-tv-video-player-container {
-    max-width: 1800px;
-}
 .video-js { width: 100%; height: 100%; font-size: 14px; }
 .vjs-big-play-button { font-size: 3em !important; line-height: 2em !important; height: 2em !important; width: 3em !important; border-radius: 0.5em !important; top: 50% !important; left: 50% !important; margin-top: -1em !important; margin-left: -1.5em !important;}
 
@@ -534,4 +493,82 @@ footer { text-align: center; padding: 25px var(--standard-padding); font-size: 0
     .modal-content { width: 95%; margin: 5% auto; padding: 20px; }
     .modal-create-new-list { flex-direction: column; }
     .modal-create-new-list input[type="text"] { width: 100%; margin-right: 0; margin-bottom: 10px; }
+}
+
+
+/* -----------------------------
+   Professional polish + responsive + TV mode
+------------------------------ */
+
+:root{
+  --focus-ring: 0 0 0 3px rgba(255,105,180,0.55);
+  --shadow-soft: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* smoother typography */
+body{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+header{
+  backdrop-filter: blur(10px);
+}
+
+/* clearer focus state for keyboard / TV remotes */
+:focus-visible{
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.nav-button, button, .media-card{
+  scroll-margin: 20px;
+}
+
+/* Search: keep suggestions anchored to the input */
+.search-bar-wrapper{
+  position: relative;
+}
+.autocomplete-suggestions-list{
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+}
+.autocomplete-suggestions-list div{
+  font-size: 0.98rem;
+}
+
+/* Cards: a bit more modern */
+.media-card{
+  box-shadow: var(--shadow-soft);
+}
+.media-card:hover{
+  transform: translateY(-2px);
+}
+
+/* Better small-screen layout */
+@media (max-width: 640px){
+  main{ padding: 16px; }
+  header{ padding: 10px 12px; }
+  .logo{ font-size: 2rem; }
+  .nav-button{ padding: 10px 12px; font-size: 0.95rem; }
+  .search-controls-container{ padding: 16px; }
+  .filter-sort-controls{ gap: 8px; }
+  .media-grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; }
+}
+
+/* Large-screen + coarse pointer (Android TV / Fire TV / couch) */
+@media (min-width: 900px) and (pointer: coarse){
+  body{ font-size: 18px; }
+  .nav-button{ padding: 14px 18px; font-size: 1.1rem; }
+  #search-input{ font-size: 1.1rem; padding: 14px 18px; }
+  #search-button-main{ width: 52px; height: 52px; }
+  .media-grid{ grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+  .media-card .title{ font-size: 1.05rem; }
+  .detail-back-button{ padding: 14px 26px; font-size: 1.05rem; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
