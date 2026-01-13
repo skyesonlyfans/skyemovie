@@ -7,14 +7,11 @@ export default function handler(request, response) {
     return response.status(405).json({ error: `Method ${request.method} Not Allowed` });
   }
 
-  const accessCode = process.env.SKYE_MOVIE_ACCESS_CODE;
-
-  if (!accessCode) {
-    console.error('SKYE_MOVIE_ACCESS_CODE environment variable is not set in Vercel.');
-    // Do not expose the absence of the variable directly to the client in detail for security.
-    return response.status(500).json({ error: 'Server configuration error.' });
-  }
-
-  // Only return the access code. Could add other public configs here if needed.
-  return response.status(200).json({ skyeMovieAccessCode: accessCode });
+  // Access-gate has been removed. Keep this endpoint for future public config flags
+  // without requiring any server-side environment variables.
+  return response.status(200).json({
+    accessCodeRequired: false,
+    skyeMovieAccessCode: null,
+    mappleOrigin: 'https://mapple.uk',
+  });
 }
