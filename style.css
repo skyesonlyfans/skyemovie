@@ -33,6 +33,42 @@ body {
     font-size: 16px;
 }
 
+/* ------------------------------------------------------------
+   Focus styles (keyboard / TV remote)
+------------------------------------------------------------ */
+
+:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 3px;
+}
+
+.media-card:focus-visible,
+.nav-button:focus-visible,
+#channel-list li:focus-visible,
+#user-email-display:focus-visible {
+    border-radius: 10px;
+}
+
+body.tv-mode {
+    font-size: 18px;
+}
+
+body.tv-mode header {
+    padding: 0 20px;
+}
+
+body.tv-mode .media-card {
+    transform-origin: center;
+}
+
+body.tv-mode .media-card:focus-visible {
+    transform: translateY(-4px) scale(1.03);
+}
+
+body.tv-mode main {
+    padding: 30px;
+}
+
 .cherry-bomb-one-font {
     font-family: var(--font-logo);
 }
@@ -341,8 +377,13 @@ main { padding: 20px; min-height: calc(100vh - var(--header-height) - 70px); }
 #season-select, #episode-select { padding: 8px 10px; background-color: var(--tertiary-bg); color: var(--primary-text); border: 1px solid #444; border-radius: 5px; }
 
 #player-view h3 { text-align: center; margin-bottom: 15px; font-size: 1.5rem; }
-#mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1000px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
+#mappletv-player-container, #live-tv-video-player-container { width: 100%; max-width: 1400px; aspect-ratio: 16 / 9; position: relative; background-color: #000; margin: 0 auto var(--standard-padding) auto; border-radius: var(--card-border-radius); overflow: hidden; }
 #mappletv-player-container iframe, #live-tv-video-player { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+body.tv-mode #mappletv-player-container,
+body.tv-mode #live-tv-video-player-container {
+    max-width: 1800px;
+}
 .video-js { width: 100%; height: 100%; font-size: 14px; }
 .vjs-big-play-button { font-size: 3em !important; line-height: 2em !important; height: 2em !important; width: 3em !important; border-radius: 0.5em !important; top: 50% !important; left: 50% !important; margin-top: -1em !important; margin-left: -1.5em !important;}
 
