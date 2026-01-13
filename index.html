@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyeMovie™</title>
+    <meta name="theme-color" content="#FF69B4">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -62,6 +65,16 @@
         <p id="loading-message-text" style="display:none;">Loading...</p>
     </div>
 
+    <div id="access-gate-section" class="hidden-section fullscreen-section">
+        <div class="form-container">
+            <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
+            <p>Enter your 6-digit access code:</p>
+            <input type="text" id="access-code-input" maxlength="6" inputmode="numeric" autocomplete="off">
+            <button id="submit-access-code">Enter</button>
+            <p id="access-error" class="error-message"></p>
+        </div>
+    </div>
+
     <div id="auth-section" class="hidden-section fullscreen-section">
         <div class="form-container">
             <h1 class="logo-title cherry-bomb-one-font">SkyeMovie™</h1>
@@ -100,11 +113,11 @@
                 <button id="nav-search" class="nav-button">Search</button>
                 <button id="nav-favorites" class="nav-button">Favorites</button>
                 <button id="nav-lists" class="nav-button">My Lists</button>
-                <button id="nav-live-tv" class="nav-button">Live TV</button>
+                
                 <button id="nav-donate" class="nav-button">Donate</button>
             </nav>
             <div class="user-info">
-                <span id="user-email-display" title="Account Settings" tabindex="0" role="button" aria-label="Open account settings"></span>
+                <span id="user-email-display" title="Account Settings"></span>
                 <button id="logout-button">Logout</button>
             </div>
         </header>
@@ -127,8 +140,8 @@
                         <button id="search-button-main" aria-label="Search">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18px" height="18px"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                         </button>
+                        <div id="autocomplete-suggestions" class="autocomplete-suggestions-list"></div>
                     </div>
-                    <div id="autocomplete-suggestions" class="autocomplete-suggestions-list"></div>
                     <p id="search-message" class="search-status-message">Type to search for movies and TV shows.</p>
                     <div class="filter-sort-controls">
                         <select id="filter-type" class="filter-select">
@@ -180,46 +193,6 @@
                 </div>
             </div>
 
-            <div id="live-tv-view" class="view">
-                <h2>Live TV (MAJOR WIP)</h2>
-                <p class="live-tv-intro">Attempting to play live channels in the browser. Playback quality and availability depend on the stream source and your browser's capabilities.</p>
-                <div id="live-tv-container">
-                    <div id="channel-list-container">
-                        <h3>Channels</h3>
-                        <ul id="channel-list"></ul>
-                    </div>
-                    <div id="tv-player-section">
-                        <div id="live-tv-video-player-container">
-                            <video id="live-tv-video-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="100%" height="100%" data-setup='{"fluid": true}'>
-                                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video.</p>
-                            </video>
-                        </div>
-                        <div id="epg-info">
-                            <h4 id="epg-channel-name">Select a channel</h4>
-                            <p id="epg-program-title"></p>
-                            <p id="epg-program-time"></p>
-                            <p id="epg-program-description"></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="npvr-instructions-container" style="margin-top: 30px;">
-                    <hr class="section-hr">
-                    <h3>Alternative: Watch with NPVR (Windows PC)</h3>
-                    <p>For a potentially more stable experience on Windows, you can use NPVR:</p>
-                    <ol>
-                        <li>Download NPVR: <a href="https://github.com/oxyisbad222/skyemovie/releases/download/NPVRSetup/NPVRSetup.exe" target="_blank" rel="noopener noreferrer" class="button-style-alt" id="download-npvr-button">Download NPVRSetup.exe</a></li>
-                        <li>Install and setup NPVR (default login: admin/password).</li>
-                        <li>Use these URLs in NPVR:
-                            <div class="url-to-copy-container">
-                                <p><strong>M3U:</strong> <code id="npvr-m3u-url-display"></code> <button id="copy-m3u-url-button" class="button-style-alt-small">Copy</button></p>
-                                <p><strong>EPG:</strong> <code id="npvr-epg-url-display"></code> <button id="copy-epg-url-button" class="button-style-alt-small">Copy</button></p>
-                            </div>
-                        </li>
-                        <li><button id="open-npvr-web-ui-button" class="button-style">Open NPVR Web UI (localhost:8866)</button></li>
-                    </ol>
-                </div>
-            </div>
-
             <div id="donate-view" class="view">
                 <h2>Support SkyeMovie™</h2>
                 <p class="donate-intro">If you enjoy SkyeMovie™, please consider supporting its development and upkeep. Every little bit helps keep the magic alive!</p>
@@ -241,7 +214,7 @@
                         <label for="setting-autonext">
                             <input type="checkbox" id="setting-autonext"> Automatically queue next suggested video
                         </label>
-                        <p class="setting-note">Note: Player behavior may also depend on Mapple's own settings.</p>
+                        <p class="setting-note">Note: Player behavior may also depend on Mappletv's own settings.</p>
                     </div>
                     <div class="setting-item">
                         <h3>History & Data</h3>
@@ -287,7 +260,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
     <script src="tv-remote.js"></script>
     <script src="script.js"></script>
 </body>
