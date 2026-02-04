@@ -353,37 +353,37 @@ https://tvpass.org/live/WeTVEast/sd
 https://tvpass.org/live/WPIX/sd
 #EXTINF:-1 tvg-id="yes-network" tvg-name="Yes Network" group-title="Live",Yes Network
 https://tvpass.org/live/yes-network/sd
-#EXTINF:-1 tvg-id="" tvg-name="Ottawa Senators @ Carolina Hurricanes (02/03 7:00 PM ET)" group-title="NHL",Ottawa Senators @ Carolina Hurricanes (02/03 7:00 PM ET)
-https://tvpass.org/live/NHL18/sd
-#EXTINF:-1 tvg-id="" tvg-name="Columbus Blue Jackets @ New Jersey Devils (02/03 7:00 PM ET)" group-title="NHL",Columbus Blue Jackets @ New Jersey Devils (02/03 7:00 PM ET)
-https://tvpass.org/live/NHL20/sd
-#EXTINF:-1 tvg-id="" tvg-name="Washington Capitals @ Philadelphia Flyers (02/03 7:00 PM ET)" group-title="NHL",Washington Capitals @ Philadelphia Flyers (02/03 7:00 PM ET)
-https://tvpass.org/live/NHL30/sd
-#EXTINF:-1 tvg-id="" tvg-name="Utah Jazz @ Indiana Pacers (02/03 7:10 PM ET)" group-title="NBA",Utah Jazz @ Indiana Pacers (02/03 7:10 PM ET)
-https://tvpass.org/live/NBA23/sd
-#EXTINF:-1 tvg-id="" tvg-name="New York Knicks @ Washington Wizards (02/03 7:10 PM ET)" group-title="NBA",New York Knicks @ Washington Wizards (02/03 7:10 PM ET)
-https://tvpass.org/live/NBA20/sd
-#EXTINF:-1 tvg-id="" tvg-name="Denver Nuggets @ Detroit Pistons (02/03 7:10 PM ET)" group-title="NBA",Denver Nuggets @ Detroit Pistons (02/03 7:10 PM ET)
-https://tvpass.org/live/NBA26/sd
-#EXTINF:-1 tvg-id="" tvg-name="Buffalo Sabres @ Tampa Bay Lightning (02/03 7:30 PM ET)" group-title="NHL",Buffalo Sabres @ Tampa Bay Lightning (02/03 7:30 PM ET)
-https://tvpass.org/live/NHL17/sd
-#EXTINF:-1 tvg-id="" tvg-name="Pittsburgh Penguins @ New York Islanders (02/03 7:30 PM ET)" group-title="NHL",Pittsburgh Penguins @ New York Islanders (02/03 7:30 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="Montréal Canadiens @ Winnipeg Jets (02/04 7:00 PM ET)" group-title="NHL",Montréal Canadiens @ Winnipeg Jets (02/04 7:00 PM ET)
+https://tvpass.org/live/NHL01/sd
+#EXTINF:-1 tvg-id="" tvg-name="Chicago Blackhawks @ Columbus Blue Jackets (02/04 7:00 PM ET)" group-title="NHL",Chicago Blackhawks @ Columbus Blue Jackets (02/04 7:00 PM ET)
+https://tvpass.org/live/NHL05/sd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Bruins @ Florida Panthers (02/04 7:00 PM ET)" group-title="NHL",Boston Bruins @ Florida Panthers (02/04 7:00 PM ET)
 https://tvpass.org/live/TNTEast/sd
-#EXTINF:-1 tvg-id="" tvg-name="Atlanta Hawks @ Miami Heat (02/03 7:40 PM ET)" group-title="NBA",Atlanta Hawks @ Miami Heat (02/03 7:40 PM ET)
-https://tvpass.org/live/NBA10/sd
-#EXTINF:-1 tvg-id="" tvg-name="Los Angeles Lakers @ Brooklyn Nets (02/03 7:40 PM ET)" group-title="NBA",Los Angeles Lakers @ Brooklyn Nets (02/03 7:40 PM ET)
-https://tvpass.org/live/NBA12/sd
-#EXTINF:-1 tvg-id="" tvg-name="Boston Celtics @ Dallas Mavericks (02/03 8:10 PM ET)" group-title="NBA",Boston Celtics @ Dallas Mavericks (02/03 8:10 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="Denver Nuggets @ New York Knicks (02/04 7:10 PM ET)" group-title="NBA",Denver Nuggets @ New York Knicks (02/04 7:10 PM ET)
+https://tvpass.org/live/ESPN/sd
+#EXTINF:-1 tvg-id="" tvg-name="Minnesota Timberwolves @ Toronto Raptors (02/04 7:40 PM ET)" group-title="NBA",Minnesota Timberwolves @ Toronto Raptors (02/04 7:40 PM ET)
+https://tvpass.org/live/NBA21/sd
+#EXTINF:-1 tvg-id="" tvg-name="Minnesota Wild @ Nashville Predators (02/04 8:00 PM ET)" group-title="NHL",Minnesota Wild @ Nashville Predators (02/04 8:00 PM ET)
+https://tvpass.org/live/NHL11/sd
+#EXTINF:-1 tvg-id="" tvg-name="New Orleans Pelicans @ Milwaukee Bucks (02/04 8:10 PM ET)" group-title="NBA",New Orleans Pelicans @ Milwaukee Bucks (02/04 8:10 PM ET)
+https://tvpass.org/live/NBA27/sd
+#EXTINF:-1 tvg-id="" tvg-name="Boston Celtics @ Houston Rockets (02/04 8:10 PM ET)" group-title="NBA",Boston Celtics @ Houston Rockets (02/04 8:10 PM ET)
 https://tvpass.org/live/NBA14/sd
-#EXTINF:-1 tvg-id="" tvg-name="Chicago Bulls @ Milwaukee Bucks (02/03 8:10 PM ET)" group-title="NBA",Chicago Bulls @ Milwaukee Bucks (02/03 8:10 PM ET)
-https://tvpass.org/live/NBA16/sd
-#EXTINF:-1 tvg-id="" tvg-name="Orlando Magic @ Oklahoma City Thunder (02/03 8:10 PM ET)" group-title="NBA",Orlando Magic @ Oklahoma City Thunder (02/03 8:10 PM ET)
-https://tvpass.org/live/NBA22/sd
-#EXTINF:-1 tvg-id="" tvg-name="Toronto Maple Leafs @ Edmonton Oilers (02/03 8:30 PM ET)" group-title="NHL",Toronto Maple Leafs @ Edmonton Oilers (02/03 8:30 PM ET)
-https://tvpass.org/live/NHL15/sd
-#EXTINF:-1 tvg-id="" tvg-name="Seattle Kraken @ Anaheim Ducks (02/03 10:00 PM ET)" group-title="NHL",Seattle Kraken @ Anaheim Ducks (02/03 10:00 PM ET)
+#EXTINF:-1 tvg-id="" tvg-name="San Jose Sharks @ Colorado Avalanche (02/04 9:00 PM ET)" group-title="NHL",San Jose Sharks @ Colorado Avalanche (02/04 9:00 PM ET)
+https://tvpass.org/live/NHL14/sd
+#EXTINF:-1 tvg-id="" tvg-name="Detroit Red Wings @ Utah Mammoth (02/04 9:00 PM ET)" group-title="NHL",Detroit Red Wings @ Utah Mammoth (02/04 9:00 PM ET)
+https://tvpass.org/live/NHL06/sd
+#EXTINF:-1 tvg-id="" tvg-name="St Louis Blues @ Dallas Stars (02/04 9:30 PM ET)" group-title="NHL",St Louis Blues @ Dallas Stars (02/04 9:30 PM ET)
 https://tvpass.org/live/TNTEast/sd
-#EXTINF:-1 tvg-id="" tvg-name="Philadelphia 76ers @ Golden State Warriors (02/03 10:10 PM ET)" group-title="NBA",Philadelphia 76ers @ Golden State Warriors (02/03 10:10 PM ET)
-https://tvpass.org/live/NBA11/sd
-#EXTINF:-1 tvg-id="" tvg-name="Phoenix Suns @ Portland Trail Blazers (02/03 11:10 PM ET)" group-title="NBA",Phoenix Suns @ Portland Trail Blazers (02/03 11:10 PM ET)
-https://tvpass.org/live/NBA18/sd
+#EXTINF:-1 tvg-id="" tvg-name="Oklahoma City Thunder @ San Antonio Spurs (02/04 9:40 PM ET)" group-title="NBA",Oklahoma City Thunder @ San Antonio Spurs (02/04 9:40 PM ET)
+https://tvpass.org/live/ESPN/sd
+#EXTINF:-1 tvg-id="" tvg-name="Edmonton Oilers @ Calgary Flames (02/04 10:00 PM ET)" group-title="NHL",Edmonton Oilers @ Calgary Flames (02/04 10:00 PM ET)
+https://tvpass.org/live/NHL15/sd
+#EXTINF:-1 tvg-id="" tvg-name="Seattle Kraken @ Los Angeles Kings (02/04 10:00 PM ET)" group-title="NHL",Seattle Kraken @ Los Angeles Kings (02/04 10:00 PM ET)
+https://tvpass.org/live/NHL16/sd
+#EXTINF:-1 tvg-id="" tvg-name="Vancouver Canucks @ Vegas Golden Knights (02/04 10:00 PM ET)" group-title="NHL",Vancouver Canucks @ Vegas Golden Knights (02/04 10:00 PM ET)
+https://tvpass.org/live/NHL31/sd
+#EXTINF:-1 tvg-id="" tvg-name="Memphis Grizzlies @ Sacramento Kings (02/04 10:10 PM ET)" group-title="NBA",Memphis Grizzlies @ Sacramento Kings (02/04 10:10 PM ET)
+https://tvpass.org/live/NBA15/sd
+#EXTINF:-1 tvg-id="" tvg-name="Cleveland Cavaliers @ Los Angeles Clippers (02/04 10:40 PM ET)" group-title="NBA",Cleveland Cavaliers @ Los Angeles Clippers (02/04 10:40 PM ET)
+https://tvpass.org/live/NBA19/sd
